@@ -1,0 +1,10 @@
+{
+  "name": "prelude",
+  "version": "1.0.0",
+  "scripts": {
+    "lerna": "lerna"
+  },
+  "devDependencies": {
+    "lerna": "^3.18.4"
+  }
+}

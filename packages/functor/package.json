@@ -1,0 +1,32 @@
+{
+  "name": "@prelude/functor",
+  "version": "1.0.0",
+  "description": "Simple combinators working solely on and with functions.",
+  "author": "Yoann Sitbon <yoann@askia.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "nyc mocha --require esm"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1"
+  },
+  "dependencies": {
+    "@prelude/function": "1.0.0",
+    "@prelude/protocol": "1.0.0"
+  }
+}
