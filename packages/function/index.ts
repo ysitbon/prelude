@@ -200,7 +200,7 @@ export const flip = <Fn extends F.Function>(
  * @param {b} _
  * @returns {a}
  */
-export const constant = curry((x, _) => x);
+export const constant = curry(<A, B>(x: A, _: B): A => x);
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is
@@ -224,7 +224,7 @@ export const constant = curry((x, _) => x);
  * @param {a} x
  * The value to pass over the to the predicate `p` and the function `f`.
  */
-export const until = curry((p, f, x) => {
+export const until = curry(<A, B>(p: (x: A) => boolean, f: (x: A) => A, x: A): A => {
   while (!p(x)) x = f(x);
   return x;
 });
