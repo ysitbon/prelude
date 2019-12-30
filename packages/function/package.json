@@ -17,11 +17,6 @@
     "test": "nyc mocha --require esm"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "esm": "^3.2.25",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1",
-    "typescript": "^3.7.4"
   },
   "dependencies": {
     "ts-toolbelt": "^6.0.1"

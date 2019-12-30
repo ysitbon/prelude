@@ -1,5 +1,4 @@
-// @ts-check
-import {F, L} from 'ts-toolbelt'
+import {F, L} from "ts-toolbelt";
 
 /** Symbols to use functions to store current curried arity */
 const curried: unique symbol = Symbol("Function.curried");
@@ -46,9 +45,10 @@ const curryN = <Fn extends F.Function>(
   fn: Fn
 ): F.Curry<Fn> => curryF(
   n,
-  (...xs) => (xs.length >= n)
+  (...xs) => xs.length >= n
+  // @ts-ignore
     ? fn.apply(undefined, xs)
-    // @ts-ignore
+  // @ts-ignore
     : curryN(n - xs.length, (...ys) => fn.apply(undefined, xs.concat(ys)))
 );
 
@@ -111,15 +111,12 @@ export const identity = <A>(x: A): A => x;
 export const compose = <Fns extends F.Function[]>(
   ...fns:  F.Composer<Fns>
 ): F.Curry<F.Composed<Fns>> => {
-  const last = fns[fns.length - 1];
+  const f = fns[fns.length - 1];
   return curryN(
-    curried in last
-      ? last[curried]
-      : last.length,
-    (...args) => fns
-      .slice(0, -1)
-      // @ts-ignore
-      .reduceRight((x, f) => f(x), last(...args))
+    // @ts-ignore
+    f?.[curried] ?? f.length,
+    // @ts-ignore
+    (...args) => fns.slice(0, -1).reduceRight((x, f) => f(x), f(...args))
   )
 };
 
@@ -149,13 +146,12 @@ export const compose = <Fns extends F.Function[]>(
 export const pipe = <Fns extends F.Function[]>(
   ...fns:  F.Piper<Fns>
 ): F.Curry<F.Piped<Fns>> => {
-  const [head, ...tail] = fns;
+  const f = fns[0];
   return curryN(
-    curried in head
-      ? head[curried]
-      : head.length,
     // @ts-ignore
-    (...args) => tail.reduce((x, f) => f(x), head(...args))
+    f?.[curried] ?? f.length,
+    // @ts-ignore
+    (...args) => fns.slice(1).reduce((x, f) => f(x), f(...args))
   )
 };
 
@@ -178,29 +174,29 @@ export const pipe = <Fns extends F.Function[]>(
 export const flip = <Fn extends F.Function>(
   fn: Fn
 ): F.Curry<(...args: L.Reverse<F.Parameters<Fn>>) => F.Return<Fn>> =>
-  // @ts-ignore
   curryN(
     curried in fn
+    // @ts-ignore
       ? fn[curried]
       : fn.length,
     // @ts-ignore
     (...args) => fn(...args.reverse())
-  );
+  )
 
 /**
  * Creates an unary function which evaluates to `x` for all inputs.
  *
  * ```
- * flow([1, 2, 3, 4], map(const(42));
+ * const fill = pipe(constant, map);
+ * fill(42)(new Array(4));
  * // => [42, 42, 42, 42]
  * ```
  *
- * @template a
- * @param {a} x
- * @param {b} _
- * @returns {a}
+ * @template A,B
+ * @param {A} x
+ * @returns {(B) => A}
  */
-export const constant = curry(<A, B>(x: A, _: B): A => x);
+export const constant = <A, B>(x: A): ((_: B) => A) => _ => x;
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is
@@ -214,17 +210,17 @@ export const constant = curry(<A, B>(x: A, _: B): A => x);
  * )
  * // => ['c', 'd']
  *
- * @template a
- * @param {function(a): boolean} p
+ * @template A
+ * @param {(A) => boolean} p
  * The predicate always computed before `f`.
  *
- * @param {function(a): a} f
+ * @param {(A) => A} f
  * The function computed after the predicate `p` returned `false`.
  *
- * @param {a} x
+ * @param {A} x
  * The value to pass over the to the predicate `p` and the function `f`.
  */
-export const until = curry(<A, B>(p: (x: A) => boolean, f: (x: A) => A, x: A): A => {
-  while (!p(x)) x = f(x);
-  return x;
+export const until = curry(<A>(p: (x: A) => boolean, f: (x: A) => A, r: A): A => {
+  while (!p(r)) r = f(r);
+  return r;
 });

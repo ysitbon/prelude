@@ -15,10 +15,6 @@
     "test": "nyc mocha --require esm"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "esm": "^3.2.25",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1"
   },
   "dependencies": {
     "@prelude/function": "1.0.0"

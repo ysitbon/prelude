@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "ts-toolbelt": [
+        "node_modules/ts-toolbelt/out/index"
+      ]
+    },
+    "strictNullChecks": true,
+    "strict": true,
+    "target": "ES2019"
+  }
+}
