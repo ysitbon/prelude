@@ -1,7 +1,7 @@
 import {F, L} from "ts-toolbelt";
 
 /** Symbols to use functions to store current curried arity */
-const curried: unique symbol = Symbol("Function.curried");
+const curried = Symbol("Function.curried");
 
 /**
  * Attaches `Function.curried` symbol which stores the arguments length
@@ -18,7 +18,7 @@ const curried: unique symbol = Symbol("Function.curried");
  * @returns {Fn}
  * Returns the passed function.
  */
-const curryF = <Fn extends F.Function>(n: number, f: Fn): Fn =>
+const curryF = (n, f) =>
   Object.defineProperty(f, curried, {value: n});
 
 /**
@@ -40,10 +40,7 @@ const curryF = <Fn extends F.Function>(n: number, f: Fn): Fn =>
  * @returns {F.Curry<Fn>}
  * Returns the curried function.
  */
-const curryN = <Fn extends F.Function>(
-  n: number,
-  fn: Fn
-): F.Curry<Fn> => curryF(
+const curryN = (n, fn) => curryF(
   n,
   (...xs) => xs.length >= n
   // @ts-ignore
@@ -70,8 +67,7 @@ const curryN = <Fn extends F.Function>(
  * @returns {F.Curry<Fn>}
  * Returns the curried function.
  */
-export const curry = <Fn extends F.Function>(f: Fn): F.Curry<Fn> =>
-  curryN(f.length, f);
+export const curry = f => curryN(f.length, f);
 
 /**
  * Identity function.
@@ -83,7 +79,7 @@ export const curry = <Fn extends F.Function>(f: Fn): F.Curry<Fn> =>
  * @returns {A}
  * Returns the passed argument.
  */
-export const identity = <A>(x: A): A => x;
+export const identity = x => x;
 
 /**
  * Composes two functions `f` and `g` to create a new one. The new function
@@ -101,22 +97,20 @@ export const identity = <A>(x: A): A => x;
  *   .then(console.log)
  * // => "John Doe"
  *
- * @template {F.Function} Fns
- * @param  {...F.Composer<Fns>} fns
+ * @template {F.Function[]} Fns
+ * @param {...F.Composer<Fns>} fns
  * The functions to compose from right to left.
  *
  * @returns {F.Curry<F.Composed<Fns>>}
  * Returns the new composed function.
  */
-export const compose = <Fns extends F.Function[]>(
-  ...fns:  F.Composer<Fns>
-): F.Curry<F.Composed<Fns>> => {
+export const compose = (...fns) => {
   const f = fns[fns.length - 1];
   return curryN(
-    // @ts-ignore
     f?.[curried] ?? f.length,
-    // @ts-ignore
-    (...args) => fns.slice(0, -1).reduceRight((x, f) => f(x), f(...args))
+    (...args) => fns
+      .slice(0, -1)
+      .reduceRight((x, f) => f(x), f(...args))
   )
 };
 
@@ -143,20 +137,18 @@ export const compose = <Fns extends F.Function[]>(
  * @returns {F.Curry<F.Piped<Fns>>}
  * Returns the new composed function.
  */
-export const pipe = <Fns extends F.Function[]>(
-  ...fns:  F.Piper<Fns>
-): F.Curry<F.Piped<Fns>> => {
+export const pipe = (...fns) => {
   const f = fns[0];
   return curryN(
-    // @ts-ignore
     f?.[curried] ?? f.length,
-    // @ts-ignore
-    (...args) => fns.slice(1).reduce((x, f) => f(x), f(...args))
+    (...args) => fns
+      .slice(1)
+      .reduce((x, f) => f(x), f(...args))
   )
 };
 
 /**
- * Flips the two arguments in reverse order of the specified function `f`.
+ * Flips arguments in reverse order of the specified function `f`.
  *
  * @example
  * const addl = curry((x, y) => x + y);
@@ -171,17 +163,10 @@ export const pipe = <Fns extends F.Function[]>(
  * @returns {F.Curry<(...args: L.Reverse<F.Parameters<Fn>>) => F.Return<Fn>>}
  * Returns the flipped function.
  */
-export const flip = <Fn extends F.Function>(
-  fn: Fn
-): F.Curry<(...args: L.Reverse<F.Parameters<Fn>>) => F.Return<Fn>> =>
-  curryN(
-    curried in fn
-    // @ts-ignore
-      ? fn[curried]
-      : fn.length,
-    // @ts-ignore
-    (...args) => fn(...args.reverse())
-  )
+export const flip = fn => curryN(
+  fn?.[curried] ?? fn.length,
+  (...args) => fn(...args.reverse())
+)
 
 /**
  * Creates an unary function which evaluates to `x` for all inputs.
@@ -192,11 +177,15 @@ export const flip = <Fn extends F.Function>(
  * // => [42, 42, 42, 42]
  * ```
  *
- * @template A,B
+ * @template A
+ * @template B
  * @param {A} x
- * @returns {(B) => A}
+ * The const value
+ * 
+ * @returns {(_: B) => A}
+ * Returns the constant function.
  */
-export const constant = <A, B>(x: A): ((_: B) => A) => _ => x;
+export const constant = x => _ => x;
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is
@@ -209,18 +198,22 @@ export const constant = <A, B>(x: A): ((_: B) => A) => _ => x;
  *   ['a', 'b', 'c', 'd']
  * )
  * // => ['c', 'd']
- *
+ * 
  * @template A
- * @param {(A) => boolean} p
+ * @type {F.Curry<(p: (x: A) => boolean, f: (x: A) => A, r: A) => A>}
+ * @param {(x: A) => boolean} p
  * The predicate always computed before `f`.
  *
- * @param {(A) => A} f
+ * @param {(x: A) => A} f
  * The function computed after the predicate `p` returned `false`.
  *
  * @param {A} x
  * The value to pass over the to the predicate `p` and the function `f`.
  */
-export const until = curry(<A>(p: (x: A) => boolean, f: (x: A) => A, r: A): A => {
-  while (!p(r)) r = f(r);
-  return r;
+export const until = curry((p, f, x) => {
+  while (!p(x)) x = f(x);
+  return x;
 });
+
+
+const v = until(x => x === 10, x => x + 1, 0);
