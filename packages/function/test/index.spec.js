@@ -1,4 +1,4 @@
-import {curry, compose, identity, flip, constant, until} from "../index.js";
+import {curry, compose, identity, flip, constant, until} from "../";
 import {default as chai} from "chai";
 const {expect} = chai;
 
