@@ -1981,11 +1981,6 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
 
-ts-toolbelt@^6.0.1:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.0.4.tgz#dc7c825840870bac6ddb697a37d931210adde1a2"
-  integrity sha512-5YzbDNwf5ocvPwPoJtjHgICKLCn3DeRDpW/4QTQgOO/+XUm7rOjJjysixD4rOx71lAD5d7c55IKeitcTzOj9lA==
-
 type-detect@^4.0.0, type-detect@^4.0.5:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"

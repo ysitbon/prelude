@@ -1,20 +1,22 @@
 {
   "name": "@prelude/protocol",
   "version": "1.0.0",
-  "description": "Simple combinators working solely on and with functions.",
-  "author": "Yoann Sitbon <yoann@askia.com>",
-  "homepage": "",
+  "description": "First class protocols",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "license": "ISC",
   "main": "index.js",
-  "module": "lib/index.js",
   "directories": {
-    "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "nyc mocha --require esm"
+    "test": "nyc mocha --require ./babel.js"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
   },
   "dependencies": {
     "@prelude/function": "1.0.0"

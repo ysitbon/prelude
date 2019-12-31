@@ -1,8 +1,10 @@
 import {compose, constant, curry} from "@prelude/function";
 import {protocol, extension}      from "@prelude/protocol";
 
+const $map = Symbol("Functor.map");
+
 export const Functor = protocol({
-  map: Symbol("Functor.map")
+  map: $map
 });
 
 /**
@@ -30,7 +32,7 @@ export const constMap = compose(map, constant);
  *
  * @lends {Array.prototype}
  */
-instance(Array.prototype, {
+extension(Array.prototype, {
   [Functor.map](f) {
     const xs = [];
     const l  = this.length;
@@ -44,7 +46,7 @@ instance(Array.prototype, {
  *
  * @lends {String.prototype}
  */
-instance(String.prototype, {
+extension(String.prototype, {
   [Functor.map](f) {
     const xs = [];
     const l  = this.length;

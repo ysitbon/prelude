@@ -57,13 +57,13 @@ export const curryN = (n, fn) => curryF(
  * add(1, 2)(3) // -> 6
  *
  * @template {F.Function} Fn
- * @param {Fn} f
+ * @param {Fn} fn
  * The function to curry.
  *
  * @returns {F.Curry<Fn>}
  * Returns the curried function.
  */
-export const curry = f => curryN(f.length, f);
+export const curry = fn => curryN(fn.length, fn);
 
 /**
  * Identity function.
@@ -101,12 +101,12 @@ export const identity = x => x;
  * Returns the new composed function.
  */
 export const compose = (...fns) => {
-  const f = fns[fns.length - 1];
+  const fn = fns[fns.length - 1];
   return curryN(
-    f?.[curried] ?? f.length,
+    fn[curried] || fn.length,
     (...args) => fns
       .slice(0, -1)
-      .reduceRight((x, f) => f(x), f(...args))
+      .reduceRight((x, fn) => fn(x), fn(...args))
   )
 };
 
@@ -134,12 +134,12 @@ export const compose = (...fns) => {
  * Returns the new composed function.
  */
 export const pipe = (...fns) => {
-  const f = fns[0];
+  const fn = fns[0];
   return curryN(
-    f?.[curried] ?? f.length,
+    fn[curried] || fn.length,
     (...args) => fns
       .slice(1)
-      .reduce((x, f) => f(x), f(...args))
+      .reduce((x, fn) => fn(x), fn(...args))
   )
 };
 
@@ -160,7 +160,7 @@ export const pipe = (...fns) => {
  * Returns the flipped function.
  */
 export const flip = fn => curryN(
-  fn?.[curried] ?? fn.length,
+  fn[curried] || fn.length,
   (...args) => fn(...args.reverse())
 )
 

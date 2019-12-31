@@ -1,25 +1,26 @@
 {
   "name": "@prelude/functor",
   "version": "1.0.0",
-  "description": "Simple combinators working solely on and with functions.",
-  "author": "Yoann Sitbon <yoann@askia.com>",
+  "description": "Functor protocol",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "index.js",
   "directories": {
-    "lib": "lib",
     "test": "test"
   },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "nyc mocha --require esm"
+    "test": "nyc mocha --require @babel/register"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
   },
   "dependencies": {
     "@prelude/function": "1.0.0",

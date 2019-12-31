@@ -2,11 +2,10 @@
   "name": "@prelude/function",
   "version": "1.0.0",
   "description": "Simple combinators working solely on and with functions.",
-  "author": "Yoann Sitbon <yoann@askia.com>",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "index.js",
-  "type": "module",
   "directories": {
     "test": "test"
   },
@@ -14,9 +13,14 @@
     "access": "public"
   },
   "scripts": {
-    "test": "nyc mocha --require esm"
+    "test": "npx babel --root-mode upward ./test/index.spec.js"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
   },
   "dependencies": {
     "ts-toolbelt": "^6.0.1"

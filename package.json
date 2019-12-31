@@ -1,11 +1,14 @@
 {
   "name": "prelude",
   "version": "1.0.0",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "private": true,
   "scripts": {
-    "lerna": "lerna"
+    "test": "lerna run test"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
     "lerna": "^3.18.4"
   }
 }
