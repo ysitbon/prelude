@@ -147,7 +147,7 @@ export function flip<Fn extends F.Function>(
  * @returns {(_: B) => A}
  * Returns the constant function.
  */
-export const constant = <A, B>(x: A) => ((_: B) => A);
+export function constant<A, B>(x: A): ((_: B) => A);
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is

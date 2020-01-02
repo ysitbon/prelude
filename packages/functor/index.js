@@ -1,10 +1,8 @@
 import {compose, constant, curry} from "@prelude/function";
 import {protocol, extension}      from "@prelude/protocol";
 
-const $map = Symbol("Functor.map");
-
 export const Functor = protocol({
-  map: $map
+  map: Symbol("Functor.map")
 });
 
 /**
@@ -12,7 +10,6 @@ export const Functor = protocol({
  * @param {f<r>}
  * @returns {f<a>}
  * @template f, a, b
- * @function Functor f => (a -> b) -> f a -> f b
  */
 export const map = curry((g, x) => x[Functor.map](g));
 
@@ -23,7 +20,6 @@ export const map = curry((g, x) => x[Functor.map](g));
  * @param {f<b>}
  * @returns {f<a>}
  * @template f, a, b
- * @function Functor f => a -> f b -> f a
  */
 export const constMap = compose(map, constant);
 

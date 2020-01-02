@@ -4,7 +4,7 @@
   "description": "Functor protocol",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "",
-  "license": "ISC",
+  "license": "MIT",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -13,11 +13,9 @@
     "access": "public"
   },
   "scripts": {
-    "test": "nyc mocha --require @babel/register"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.7.7",
-    "@babel/register": "^7.7.7",
+    "@prelude/babel": "1.0.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "nyc": "^15.0.0"

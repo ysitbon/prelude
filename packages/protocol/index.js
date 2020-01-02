@@ -44,28 +44,28 @@ export const implement = curry((x, p) => Object
  * @returns {a & b}
  * Returns the extended target object.
  */
-export const extension = (target, source) => Object.defineProperties(
-  target,
-  Object
-    .keys(source)
-    .reduce(
-      (sum$, key) => Object.assign(sum$, {[key]: writable(source[key])}),
-      {}
-    )
-);
+export const extension = (target, source) => Object
+  .keys(source)
+  .reduce(
+    (target, property) => Object.defineProperty(
+      target, 
+      property, 
+      writable(source[property])),
+    (target)
+  );
 
 /**
  * Creates writable property descriptor for object `x`.
  *
  * @template a
- * @param {a} x
+ * @param {a} value
  * The object to used as value.
  *
  * @returns {PropertyDescriptor}
  * Returns the new property descriptor object.
  */
-const writable = x => ({
-  value: x,
+const writable = value => ({
+  value,
   writable: true,
   enumerable: false,
   configurable: true

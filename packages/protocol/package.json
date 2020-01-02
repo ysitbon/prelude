@@ -9,11 +9,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "nyc mocha --require ./babel.js"
+    "test": "nyc mocha --require @prelude/babel"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.7.7",
-    "@babel/register": "^7.7.7",
+    "@prelude/babel": "1.0.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "nyc": "^15.0.0"
