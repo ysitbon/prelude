@@ -80,6 +80,7 @@ describe("@prelude/functor", () => {
           {args:[3],returns:4}
         ]);
       });
+
       it("should returns a new array with the mapped values", () => {
         expect(map(add, [1, 2, 3])).to.deep.equal([2, 3, 4]);
       });
