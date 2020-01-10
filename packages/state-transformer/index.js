@@ -3,34 +3,22 @@ import {Functor}     from "@prelude/functor";
 import {Applicative} from "@prelude/applicative";
 import {Monad}       from "@prelude/monad";
 
+
 /**
  * @template S
  * @template M
  * @template A
  * @param {(state: S) => M<[A, S]>} s 
  */
-function StateT(m, s) {
+export function StateT(s) {
   if (new.target === undefined) {
     return new StateT(s);
   }
   else {
-    // s -> m (a, s)
     this.value = s;
   }
 }
-  
-/**
- * @template S
- * @template M
- * @template A
- * @param {StateT<S, M, A>} mtrans
- * @param {S} state
- * @return {M<[A, S]>}
- */
-const runStateT = curry((ms, s) => ms.value(s));
-  
-const pure = (m, s) => StateT(s => m([x, s]));
-  
+ 
 extension(StateT.prototype, {
   [Functor.map](f) {
     return StateT(compose(
@@ -57,17 +45,24 @@ extension(StateT.prototype, {
   }
 });
 
-// TODO: Invalid implementation. Need to found a way to inject 
-// target monad constructor to pure() without passing it by arg
-const state = (m, f) => StateT(compose(pure(m), f));
+/**
+ * @template S
+ * @template M
+ * @template A
+ * @param {StateT<S, M, A>} mstateT
+ * @param {S} state
+ * @return {M<[A, S]>}
+ */
+export const runStateT = curry((mstateT, state) => mstateT.value(state));
 
-const get = m => state(s => m([s, s]));
-
-const put = (m, s) => state(_ => m([{}, s]));
-
-const modify = (m, f) => state(s => m([{}, f(s)]));
-
-const evalStateT = curry((s, m) => m.value(s)[0]);
-
-const execStateT = curry((s, m) => m.value(s)[1]);
-  
+/**
+ * 
+ * @param {*} M 
+ */
+export const clampStateT = M => ({
+  pure: x => StateT(s => m([x, s])),
+  state: f => StateT(compose(pure(m), f)),
+  get: () => state(s => m([s, s])),
+  put: s => state(_ => m([{}, s])),
+  modify: f => state(s => m([{}, f(s)])),
+})
