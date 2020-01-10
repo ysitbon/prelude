@@ -13,6 +13,7 @@
     "access": "public"
   },
   "scripts": {
+    "test": "nyc mocha --require @prelude/babel"
   },
   "devDependencies": {
     "@prelude/babel": "1.0.0",
