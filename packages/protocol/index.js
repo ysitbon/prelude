@@ -1,7 +1,7 @@
 import {curry} from "@prelude/function";
 
 /** Keys which stored the protocol deriving chain. */
-const deriving = Symbol("Protocol.deriving");
+export const deriving = Symbol("Protocol.deriving");
 
 /**
  * Creates a protocol object.
@@ -45,12 +45,12 @@ export const implement = curry((x, p) => Object
  * Returns the extended target object.
  */
 export const extension = (target, source) => Object
-  .keys(source)
+  .getOwnPropertySymbols(source)
   .reduce(
     (target, property) => Object.defineProperty(
       target, 
       property, 
-      writable(source[property])),
+      readonly(source[property])),
     (target)
   );
 
@@ -64,9 +64,9 @@ export const extension = (target, source) => Object
  * @returns {PropertyDescriptor}
  * Returns the new property descriptor object.
  */
-const writable = value => ({
+const readonly = value => ({
   value,
-  writable: true,
-  enumerable: false,
-  configurable: true
+  writable: false,
+  enumerable: true,
+  configurable: false
 });

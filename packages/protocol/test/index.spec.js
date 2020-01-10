@@ -1,34 +1,46 @@
-import {implement, protocol} from "../index.js";
+import {implement, protocol, extension, deriving} from "../index.js";
 import {expect} from "chai";
 
-const sym1 = Symbol();
-const sym2 = Symbol();
-
-const Kind1 = protocol({sym1});
-const Kind2 = protocol({sym2}, Kind1);
-
-class Impl1 {
-  [sym1]() {}
-}
-
-class Impl2 {
-  [sym2]() {}
-}
-
-class Impl3 {
-  [sym1]() {}
-  [sym2]() {}
-}
-
 describe("@prelude/protocol", () => {
-  it("protocol()", () => {
-    expect(Kind1.sym1).to.equal(sym1);
-    expect(Kind2.sym2).to.equal(sym2);
+  describe("protocol(source: A, ...deriving: Protocol<any>[]): Protocol<A>", () => {
+    const symb1 = Symbol();
+    const symb2 = Symbol();
+    const Kind1 = protocol({symb1});
+    const Kind2 = protocol({symb2}, Kind1);
+
+    it("should copy symbols source", () => 
+      expect(Kind1.symb1).to.equal(symb1));
+    it("should contains deriving informations", () =>
+      expect(Kind2[deriving]).to.deep.equal([Kind1]));
   });
 
-  it("implement()", () => {
-    expect(implement(Impl1.prototype, Kind2)).to.equal(false);
-    expect(implement(Impl2.prototype, Kind2)).to.equal(false);
-    expect(implement(Impl3.prototype, Kind2)).to.equal(true);
+  describe("implement(target: A, source: B): boolean", () => {
+    const symb1 = Symbol();
+    const symb2 = Symbol();
+    const Kind1 = protocol({symb1});
+    const Kind2 = protocol({symb2}, Kind1);
+    class Impl1 { [symb1]() {} }
+    class Impl2 { [symb2]() {} }
+    class Impl3 { [symb1]() {} [symb2]() {} }
+
+    it("should return false if does not implement source protocol", () => 
+      expect(implement(Impl1.prototype, Kind2)).to.equal(false));
+    it("should return false if does not implement deriving source protocol", () => 
+      expect(implement(Impl2.prototype, Kind2)).to.equal(false));
+    it("should return true if implement source protocol", () => 
+      expect(implement(Impl3.prototype, Kind2)).to.equal(true));
+  });
+
+  describe("extension(target: A, source: B): A & B", () => {
+    function Target() {}
+    const symb = Symbol();
+    const impl = extension(Target.prototype, {[symb]: true});
+
+    it("should return the original target", () => 
+      expect(impl).to.equal(Target.prototype));
+    it("should copy symbol key from source to target", () => 
+      expect(symb in impl).to.be.true);
+    it("should copy symbol value from source to target", () => 
+      expect(impl[symb]).to.be.true);
   });
 });
