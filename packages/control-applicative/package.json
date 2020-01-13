@@ -14,7 +14,6 @@
     "url": "git+https://github.com/ysaskia/prelude.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
