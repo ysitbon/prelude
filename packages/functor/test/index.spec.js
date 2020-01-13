@@ -1,27 +1,7 @@
 import {expect}                 from "chai";
+import {Spy}                    from "@prelude/test-spies";
 import {extension}              from "@prelude/protocol";
 import {Functor, map, constMap} from "../index.js";
-
-class Spy {
-  constructor() {
-    this.called = false;
-    this.calls  = [];
-  }
-
-  on(fn) {
-    return (...args) => {
-      const call = {args: args, returns: fn(...args)};
-      this.called = true;
-      this.calls.push(call);
-      return call.returns;
-    };
-  }
-
-  restore() {
-    this.called = false;
-    this.calls.length = 0;
-  }
-}
 
 function Identity(value) {
   if (undefined === new.target)
@@ -87,7 +67,7 @@ describe("@prelude/functor", () => {
     });
 
     describe("constMap(value: B, scope: Array<A>): Array<B>", () => {
-      it("should returns a new array with the const value for each items", () => {
+      it("should returns a new array with the passed value set for each items", () => {
         expect(constMap(4, [1, 2, 3])).to.deep.equal([4, 4, 4]);
       });
     });
