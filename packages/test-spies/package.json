@@ -1,0 +1,19 @@
+{
+  "name": "@prelude/test-spies",
+  "version": "1.0.0",
+  "description": "\"Test tool to spy, mock and stub functions\"",
+  "author": "yoann <yoann@askia.com>",
+  "homepage": "https://github.com/ysaskia/prelude#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  }
+}
