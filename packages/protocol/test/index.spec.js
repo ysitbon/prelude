@@ -6,7 +6,7 @@ describe("@prelude/protocol", () => {
     const symb1 = Symbol();
     const symb2 = Symbol();
     const Kind1 = protocol({symb1});
-    const Kind2 = protocol({symb2}, Kind1);
+    const Kind2 = protocol({[deriving]: [Kind1], symb2});
 
     it("should copy symbols source", () => 
       expect(Kind1.symb1).to.equal(symb1));
@@ -18,7 +18,7 @@ describe("@prelude/protocol", () => {
     const symb1 = Symbol();
     const symb2 = Symbol();
     const Kind1 = protocol({symb1});
-    const Kind2 = protocol({symb2}, Kind1);
+    const Kind2 = protocol({[deriving]: [Kind1], symb2});
     class Impl1 { [symb1]() {} }
     class Impl2 { [symb2]() {} }
     class Impl3 { [symb1]() {} [symb2]() {} }

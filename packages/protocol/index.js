@@ -11,10 +11,10 @@ export const deriving = Symbol("Protocol.deriving");
  * @param {...U} deriving
  * @returns {T};
  */
-export const protocol = curry((descriptor, ...protocols) => Object.freeze({
-  [deriving]: protocols,
+export const protocol = descriptor => Object.freeze({
+  [deriving]: Object.freeze(protocol[deriving] || []),
   ...descriptor
-}));
+});
 
 /**
  * Implements all the specified `protocols` to a give class `C`.
