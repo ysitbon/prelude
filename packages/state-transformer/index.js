@@ -3,7 +3,6 @@ import {Functor}     from "@prelude/functor";
 import {Applicative} from "@prelude/applicative";
 import {Monad}       from "@prelude/monad";
 
-
 /**
  * @template S
  * @template M
@@ -59,10 +58,18 @@ export const runStateT = curry((mstateT, state) => mstateT.value(state));
  * 
  * @param {*} M 
  */
-export const clampStateT = M => ({
-  pure: x => StateT(s => m([x, s])),
-  state: f => StateT(compose(pure(m), f)),
-  get: () => state(s => m([s, s])),
-  put: s => state(_ => m([{}, s])),
-  modify: f => state(s => m([{}, f(s)])),
-})
+export const castStateT = M => {
+  if (!ts.has(M)) {
+    const pure  = x => StateT(s => m([x, s]));
+    const state = f => StateT(compose(M, f));
+    ts.set(M, {
+      pure, state,
+      get: () => state(s => ([s, s])),
+      put: s => state(_ => m([{}, s])),
+      modify: f => state(s => m([{}, f(s)])),
+    });
+  }
+  return ts.get(M);
+};
+
+const ts = new WeakMap();
