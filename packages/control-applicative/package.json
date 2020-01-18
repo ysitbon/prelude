@@ -14,8 +14,22 @@
     "url": "git+https://github.com/ysaskia/prelude.git"
   },
   "scripts": {
+    "test": "nyc mocha --require @prelude/babel"
   },
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "devDependencies": {
+    "@prelude/babel": "1.0.0",
+    "@prelude/test-spies": "1.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0"
+  },
+  "dependencies": {
+    "@prelude/function": "1.0.0",
+    "@prelude/protocol": "1.0.0",
+    "@prelude/functor": "1.0.0",
+    "ts-toolbelt": "^6.1.6"
   }
 }

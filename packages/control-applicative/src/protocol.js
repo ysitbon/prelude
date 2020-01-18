@@ -1,29 +1,30 @@
-import {protocol} from "@prelude/protocol";
+import {protocol, deriving} from "@prelude/protocol";
+import {Functor} from "@prelude/functor";
 
-const pure = Symbol("Applicative.pure");
-const apply = Symbol("Applicative.apply");
+const $pure  = Symbol("Applicative.pure");
+const $apply = Symbol("Applicative.apply");
 
 export const Applicative = protocol({
   [deriving]: [Functor],
-  pure,
-  apply
+  pure: $pure,
+  apply: $apply
 });
 
 /**
  * @template A
- * @param {A} mfn
- * @param {A} mx
+ * @param {A} afn
+ * @param {A} ax
  * @returns {A}
  */
-export const apply = (mfn, mx) => mfn[apply](mx);
+export const apply = (afn, ax) => afn[$apply](ax);
 
 /**
  * @template A
  * @template T
- * @param {new (x: T) => A} Contructor
- * @param {T} x 
+ * @param {new (x: T) => A} Ctor
+ * @param {T} x
  * @returns {A}
  */
-export const pure = (Contructor, x) => 
-  Contructor.prototype[pure](x);
+export const pure = (Ctor, x) => 
+  Ctor.prototype[$pure](x);
 

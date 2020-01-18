@@ -1,3 +1,7 @@
+import {extension}   from "@prelude/protocol";
+import {Functor}     from "@prelude/functor";
+import {Applicative} from "./protocol.js";
+
 /** @lends {Array.prototype} */
 extension(Array.prototype, {
   /**
