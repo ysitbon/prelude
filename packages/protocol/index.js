@@ -68,5 +68,5 @@ const readonly = value => ({
   value,
   writable: false,
   enumerable: true,
-  configurable: false
+  configurable: true
 });
