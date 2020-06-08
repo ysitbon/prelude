@@ -1,6 +1,6 @@
 # WORK IN PROGRESS (DO NOT USE)
 
-Personnal functional programming and base category tools for JavaScript. This intentionnally does not follow FantasyLand spec.
+Personnal functional programming and base category tools for JavaScript. This intentionnally does not follow FantasyLand spec. 
 
 # Install
 
