@@ -20,7 +20,7 @@ extension(Identity.prototype, {
   }
 })
 
-describe("@prelude/control-applicative", () => {
+describe("@prelude/applicative", () => {
   describe("apply(fn: Applicative<((x: A) => B), scope: Applicative<A>): Applicative<B>", () => {
 
   });

@@ -19,11 +19,12 @@
     "@prelude/babel": "1.0.0",
     "@prelude/test-spies": "1.0.0",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
-    "nyc": "^15.0.0"
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1"
   },
   "dependencies": {
     "@prelude/function": "1.0.0",
-    "@prelude/protocol": "1.0.0"
+    "@prelude/protocol": "1.0.0",
+    "ts-toolbelt": "^6.7.7"
   }
 }

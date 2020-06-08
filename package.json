@@ -4,11 +4,13 @@
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "private": true,
   "scripts": {
+    "init": "lerna init",
+    "bootstrap": "lerna bootstrap",
     "test": "lerna run test"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "lerna": "^3.18.4"
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "lerna": "^3.21.0"
   }
 }
