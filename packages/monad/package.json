@@ -1,5 +1,5 @@
 {
-  "name": "monad",
+  "name": "@prelude/monad",
   "version": "1.0.0",
   "description": "Implement monad category",
   "author": "Yoann Sitbon <yoann@askia.com>",
