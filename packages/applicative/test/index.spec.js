@@ -1,5 +1,5 @@
 import {extension}                from "@prelude/protocol";
-import {Applicative, apply, pure} from "../src/protocol.js";
+import {Applicative, apply, pure} from "../";
 
 function Identity(value) {
   if (undefined === new.target)
