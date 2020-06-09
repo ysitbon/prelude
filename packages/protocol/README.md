@@ -5,7 +5,7 @@ This module aims to add a protocol-like patterns to JavaScript like you can foun
 ## Usage
 
 ```
-const function = require('@prelude/function');
+const function = require('@prelude/protocol');
 
 // TODO: DEMONSTRATE API
 ```
