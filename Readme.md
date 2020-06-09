@@ -1,9 +1,11 @@
 # WORK IN PROGRESS (DO NOT USE)
 
-Personal functional programming and base category tools for JavaScript. This
-intentionally does not follow FantasyLand spec. 
+Personal functional programming tools for JavaScript. This intentionally does 
+not follow FantasyLand spec. This is mainly used as a learning tool about basic 
+concepts of FP around JavaScript. So, to be understandable, as much as possible,
+the code favored readability over performance. 
 
-# Install
+### Install
 
 ```
 npm install
