@@ -1,0 +1,32 @@
+{
+  "name": "monad",
+  "version": "1.0.0",
+  "description": "Implement monad category",
+  "author": "Yoann Sitbon <yoann@askia.com>",
+  "homepage": "https://github.com/ysaskia/prelude#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "devDependencies": {
+    "@prelude/babel": "1.0.0",
+    "@prelude/test-spies": "1.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1"
+  },
+  "dependencies": {
+    "@prelude/applicative": "1.0.0",
+    "@prelude/function": "1.0.0",
+    "@prelude/protocol": "1.0.0",
+    "ts-toolbelt": "^6.7.7"
+  }
+}
