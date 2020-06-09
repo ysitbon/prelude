@@ -33,8 +33,8 @@ Deriving from `Functor` to create `Applicative` protocol can be done like this:
 
 ```js
 // applicative.js
-import {protocol} from "@prelude/protocol";
-import {Functor}  from "./functor";
+import {protocol, extension} from "@prelude/protocol";
+import {Functor}             from "./functor";
  
 // Creates the Applicative protocol definition
 export const Applicative = protocol({
