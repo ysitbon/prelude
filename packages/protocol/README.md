@@ -44,9 +44,8 @@ export const Applicative = protocol({
 });
 
 // Applicative protocol usage
-export const apply = curry((arg, fn) => fn[Applicative.apply](arg));
-export const pure = curry((ApplicativeConstructor, x) =>
-  ApplicativeConstructor.prototype[Applicative.pure](x));
+export const apply = (arg, fn) => fn[Applicative.apply](arg);
+export const pure = (ApplicativeConstructor, x) => ApplicativeConstructor.prototype[Applicative.pure](x);
 
 // Applicative protocol implementation for native JS Array
 extension(Array.prototype, {
