@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@prelude/function": "1.0.0",
+    "@prelude/functor": "1.0.0",
     "@prelude/protocol": "1.0.0",
     "ts-toolbelt": "^6.7.7"
   }
