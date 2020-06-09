@@ -1,3 +1,4 @@
+import {curry}                         from "@prelude/function";
 import {protocol, deriving, extension} from "@prelude/protocol";
 import {Functor}                       from "@prelude/functor";
 
@@ -28,8 +29,7 @@ export const Applicative = protocol({
  * @return {A<R>}
  * Returns the results of function application boxed into a new applicative.
  */
-export const apply = (arg, fn) =>
-  fn[Applicative.apply](arg);
+export const apply = curry((arg, fn) => fn[Applicative.apply](arg));
 
 /**
  * Lift a value `x` to a pure .
@@ -43,8 +43,8 @@ export const apply = (arg, fn) =>
  * @return {A<T>}
  * Returns the boxed value.
  */
-export const pure = (ApplicativeConstructor, x) =>
-  ApplicativeConstructor.prototype[Applicative.pure](x);
+export const pure = curry((ApplicativeConstructor, x) =>
+  ApplicativeConstructor.prototype[Applicative.pure](x));
 
 // Native JS types implementation
 /** @lends {Array.prototype} */
