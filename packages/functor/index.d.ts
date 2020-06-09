@@ -4,10 +4,6 @@ interface Functor {
     readonly map: unique symbol;
 }
 
-interface Monad {
-    readonly flatMap: unique symbol;
-}
-
 export var Functor: Functor;
 export function t_constMap<A, B>(value: B, functor: A[]): B[];
 export function t_map<A, B>(fn: (x: A) => B, functor: A[]): B[];
