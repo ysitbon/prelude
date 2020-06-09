@@ -4,8 +4,23 @@ This module aims to add a protocol-like patterns to JavaScript like you can foun
 
 ## Usage
 
-```
-const function = require('@prelude/protocol');
+For example it is how you can implement the `Functor` protocol
 
-// TODO: DEMONSTRATE API
+```
+// functor.js
+import {protocol} from "@prelude/protocol";
+
+/** Creates the Functor protocol definition */
+export const Functor = protocol({
+  map: Symbol("Functor.map")
+});
+
+/**
+ * @template {Functor} F
+ * @template A, B
+ * @param {function(A): B} fn
+ * @param {F<A>} functor
+ * @return {F<B>}
+ */
+export const map = curry((fn, functor) => functor[Functor.map](fn));
 ```
