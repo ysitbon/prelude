@@ -22,5 +22,5 @@ export const Functor = protocol({
  * @param {F<A>} functor
  * @return {F<B>}
  */
-export const map = curry((fn, functor) => functor[Functor.map](fn));
+export const map = (fn, functor) => functor[Functor.map](fn);
 ```
