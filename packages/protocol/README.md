@@ -6,7 +6,7 @@ This module aims to add a protocol-like patterns to JavaScript like you can foun
 
 For example it is how you can implement the `Functor` protocol
 
-```
+```js
 // functor.js
 import {protocol} from "@prelude/protocol";
 
