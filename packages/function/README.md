@@ -1,11 +1,9 @@
 # `@prelude/function`
 
-> TODO: description
+Simple combinators working solely on and with functions.
 
 ## Usage
 
 ```
-const function = require('@prelude/function');
-
-// TODO: DEMONSTRATE API
+import {curry} from "@prelude/function";
 ```
