@@ -17,6 +17,6 @@
     "url": "https://github.com/ysaskia/prelude/issues"
   },
   "devDependencies": {
-    "@babel/register": "^7.7.7"
+    "@babel/register": "^7.9.0"
   }
 }

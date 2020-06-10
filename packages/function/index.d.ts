@@ -9,14 +9,13 @@ import {F, L} from "ts-toolbelt";
  * current `n` value minus the length of the passed `arguments` and the new
  * function reference is the original reference bound to the passed arguments.
  *
- * @template {F.Function} Fn
- * @param {number} n
+ * @param n
  * Arity of the function to curry.
  *
- * @param {Fn} fn
+ * @param fn
  * The function to curry.
  *
- * @returns {F.Curry<Fn>}
+ * @return
  * Returns the curried function.
  */
 export function curryN<Fn extends F.Function>(
@@ -35,11 +34,10 @@ export function curryN<Fn extends F.Function>(
  * add(1)(2)(3) // -> 6
  * add(1, 2)(3) // -> 6
  *
- * @template {F.Function} Fn
- * @param {Fn} f
+ * @param f
  * The function to curry.
  *
- * @returns {F.Curry<Fn>}
+ * @return
  * Returns the curried function.
  */
 export function curry <Fn extends F.Function>(f: Fn): F.Curry<Fn>;
@@ -47,11 +45,10 @@ export function curry <Fn extends F.Function>(f: Fn): F.Curry<Fn>;
 /**
  * Identity function.
  *
- * @template A
- * @param {A} x
+ * @param x
  * The value to return
  *
- * @returns {A}
+ * @return
  * Returns the passed argument.
  */
 export function identity<A>(x: A): A;
@@ -72,11 +69,10 @@ export function identity<A>(x: A): A;
  *   .then(console.log)
  * // => "John Doe"
  *
- * @template {F.Function} Fns
- * @param  {...F.Composer<Fns>} fns
+ * @param  fns
  * The functions to compose from right to left.
  *
- * @returns {F.Curry<F.Composed<Fns>>}
+ * @return
  * Returns the new composed function.
  */
 export function compose<Fns extends F.Function[]>(
@@ -99,11 +95,11 @@ export function compose<Fns extends F.Function[]>(
  *   .then(console.log)
  * // => "John Doe"
  *
- * @template {F.Function[]} Fns
- * @param {...F.Piper<Fns>} fns
+ * @template Fns
+ * @param fns
  * The functions to compose from right to left.
  *
- * @returns {F.Curry<F.Piped<Fns>>}
+ * @return
  * Returns the new composed function.
  */
 export function pipe<Fns extends F.Function[]>(
@@ -119,11 +115,10 @@ export function pipe<Fns extends F.Function[]>(
  * addr("hello", "world");
  * // => "worldhello"
  *
- * @template {F.Function} Fn
- * @param {Fn} fn
+ * @param fn
  * The function to flip.
  *
- * @returns {F.Curry<(...args: L.Reverse<F.Parameters<Fn>>) => F.Return<Fn>>}
+ * @return
  * Returns the flipped function.
  */
 export function flip<Fn extends F.Function>(
@@ -139,12 +134,10 @@ export function flip<Fn extends F.Function>(
  * // => [42, 42, 42, 42]
  * ```
  *
- * @template A
- * @template B
- * @param {A} x
+ * @param x
  * The const value
  * 
- * @returns {(_: B) => A}
+ * @return
  * Returns the constant function.
  */
 export function constant<A, B>(x: A): ((_: B) => A);
@@ -161,14 +154,13 @@ export function constant<A, B>(x: A): ((_: B) => A);
  * )
  * // => ['c', 'd']
  *
- * @template A
- * @param {(x: A) => boolean} p
+ * @param p
  * The predicate always computed before `f`.
  *
- * @param {(x: A) => A} f
+ * @param f
  * The function computed after the predicate `p` returned `false`.
  *
- * @param {A} x
+ * @param x
  * The value to pass over the to the predicate `p` and the function `f`.
  */
 export const until: F.Curry<<A>(p: (x: A) => boolean, f: (x: A) => A, r: A) => A>;

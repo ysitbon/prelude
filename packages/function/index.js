@@ -83,7 +83,7 @@ export const identity = x => x;
  *
  * @example
  * const fullName = compose(
- *   intersperse(" ")
+ *   intersperse(" "),
  *   map(cap),
  *   props("firstName", "lastName")
  * );
@@ -177,7 +177,7 @@ export const flip = fn => curryN(
  * @template B
  * @param {A} x
  * The const value
- * 
+ *
  * @returns {(_: B) => A}
  * Returns the constant function.
  */
@@ -194,7 +194,7 @@ export const constant = x => _ => x;
  *   ['a', 'b', 'c', 'd']
  * )
  * // => ['c', 'd']
- * 
+ *
  * @template A
  * @type {F.Curry<(p: (x: A) => boolean, f: (x: A) => A, r: A) => A>}
  * @param {(x: A) => boolean} p

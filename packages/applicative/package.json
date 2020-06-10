@@ -1,23 +1,31 @@
 {
-  "name": "@prelude/protocol",
+  "name": "@prelude/applicative",
   "version": "1.0.0",
-  "description": "First class protocols",
+  "description": "Functor protocol",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
-  "license": "ISC",
+  "homepage": "",
+  "license": "MIT",
   "main": "index.js",
   "directories": {
     "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "test": "nyc mocha --require @prelude/babel"
   },
   "devDependencies": {
     "@prelude/babel": "1.0.0",
+    "@prelude/test-spies": "1.0.0",
     "chai": "^4.2.0",
     "mocha": "^7.1.2",
     "nyc": "^15.0.1"
   },
   "dependencies": {
-    "@prelude/function": "1.0.0"
+    "@prelude/function": "1.0.0",
+    "@prelude/functor": "1.0.0",
+    "@prelude/protocol": "1.0.0",
+    "ts-toolbelt": "^6.7.7"
   }
 }
