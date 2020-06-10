@@ -14,8 +14,8 @@ import {curry} from "@prelude/function";
 
 const addXYZ = curry((x, y, z) => x + y + z);
 
-add(1, 2, 3) // -> 6
-add(1)(2, 3) // -> 6
-add(1)(2)(3) // -> 6
-add(1, 2)(3) // -> 6
+addXYZ(1, 2, 3) // -> 6
+addXYZ(1)(2, 3) // -> 6
+addXYZ(1)(2)(3) // -> 6
+addXYZ(1, 2)(3) // -> 6
 ```
