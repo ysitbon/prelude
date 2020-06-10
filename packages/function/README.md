@@ -4,6 +4,8 @@ Simple combinators working solely on and with functions.
 
 ## Usage
 
+### curry()
+
 ```js
 import {curry} from "@prelude/function";
 
