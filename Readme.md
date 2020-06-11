@@ -24,11 +24,11 @@ for all packages at the same time:
 npm run test
 ```
 
-### Guidelines
+### About class avoidance
 
-JavaScript `class` is avoided since contructor of algebraic data types should be
-able to return values without using new. For example the `Maybe` functor could've
-been implemented like this:
+In this project, usage of `class` is avoided since contructors for algebraic data 
+types should be able to return values without using `new` keyword and also partially 
+applied. For example the `Maybe` functor could've been implemented like this:
 
 ```js
 class Maybe {
@@ -115,5 +115,5 @@ Nothing.prototype = Object.create(Maybe.prototype);
 
 The usage of `class` make you loose lots of Javascript power. JS constructors 
 implemented with the good old first-class `function` has always been more powerfull. 
-Construction can be validated, optimized, curried etc. It is also less verbose 
+Construction optimized, memoizied, curried etc. It is also less verbose 
 and can be used as simple callback `[1, 2, 3].map(Just)`.
