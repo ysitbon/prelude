@@ -115,5 +115,5 @@ Nothing.prototype = Object.create(Maybe.prototype);
 
 The usage of `class` make you loose lots of Javascript power. JS constructors 
 implemented with the good old first-class `function` has always been more powerfull. 
-Construction optimized, memoizied, curried etc. It is also less verbose 
-and can be used as simple callback `[1, 2, 3].map(Just)`.
+The construction time can be optimized, memoizied, curried etc. It is also less 
+verbose and can be used as simple callback `[1, 2, 3].map(Just)`.
