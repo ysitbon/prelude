@@ -4,7 +4,7 @@ Simple combinators working solely on and with functions.
 
 ## Usage
 
-### curry&lt;Fn extends Function&gt;(fn: Fn): Curry&lt;Fn&gt;
+### curry&lt;F extends Function&gt;(fn: F): Curry&lt;F&gt;
 
 The passed function will be returns as a new function which can be partially 
 applied automatically until all its arguments are consumed.
