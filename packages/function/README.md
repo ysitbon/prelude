@@ -1,8 +1,8 @@
-# `@prelude/function`
+### `@prelude/function`
 
 Simple combinators working solely on and with functions.
 
-## Curry
+### Curry
 
 ```ts
 declare function curry<F extends Function>(fn: F): Curry<F>
