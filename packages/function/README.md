@@ -2,9 +2,11 @@
 
 Simple combinators working solely on and with functions.
 
-## Usage
+## Curry
 
-### curry&lt;F extends Function&gt;(fn: F): Curry&lt;F&gt;
+```ts
+declare function curry<F extends Function>(fn: F): Curry<F>
+```
 
 The passed function will be returns as a new function which can be partially 
 applied automatically until all its arguments are consumed.
