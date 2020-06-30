@@ -1,4 +1,5 @@
 import {extension}                from "@prelude/protocol";
+import {Functor}                  from "@prelude/functor";
 import {Applicative, apply, pure} from "../";
 
 function Identity(value) {
