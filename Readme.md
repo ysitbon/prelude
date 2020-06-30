@@ -45,9 +45,6 @@ class Maybe {
   isJust() {
     return this instanceof Just;
   }
-  isNothing() {
-    return this instanceof Nothing;
-  }
   [Functor.map](fn) {
     return this.isJust()
       ? Maybe.of(fn(this.value))
@@ -57,7 +54,8 @@ class Maybe {
 
 class Just {
   constructor(value) {
-    if (null == value) throw new Error("Just does not allow nullable types");
+    if (null == value) 
+      throw new Error("Just does not allow nullable types");
     super(value);
   }
 }
@@ -74,16 +72,13 @@ But this form is preferred.
 ```js
 function Maybe(value) {
   if (Maybe === new.target) 
-    throw new Error("Data type intantiation is not allowed");    
+    throw new Error("Data type contructor cannot be instantiated");
   this.value = value;
 }
 
 extension(Maybe.prototype, {
   isJust() {
     return this instanceof Just;
-  },
-  isNothing() {
-    return this instanceof Nothing;
   },
   [Functor.map](fn) {
     return this.isJust()
