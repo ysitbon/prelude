@@ -1,13 +1,23 @@
 {
   "name": "@prelude/trait",
   "version": "1.0.0",
-  "description": "First class protocols",
+  "description": "First class trait",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "license": "ISC",
   "main": "index.js",
   "type": "module",
   "directories": {
     "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
   },
   "scripts": {
     "test": "c8 mocha"
