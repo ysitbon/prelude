@@ -1,7 +1,7 @@
 import chai                          from "chai";
 import {resetSpy, restoreSpy, spyFn} from "@prelude/test-spies";
 import {extension}                   from "@prelude/trait";
-import {Functor, map}                from "@prelude/functor";
+import {Functor}                     from "@prelude/functor";
 import {Applicative}                 from "@prelude/applicative";
 import {Monad, flatMap}              from "../index.js";
 const {expect} = chai;
