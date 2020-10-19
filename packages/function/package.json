@@ -4,7 +4,7 @@
   "description": "Simple combinators working solely on and with functions.",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -15,6 +15,13 @@
   },
   "scripts": {
     "test": "c8 mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
   },
   "devDependencies": {
     "c8": "^7.3.4",
