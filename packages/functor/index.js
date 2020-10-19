@@ -1,2 +1,2 @@
-import "./src/impl.js";
-export * from "./src/trait.js"
+import "./lib/trait-impl.js";
+export * from "./lib/trait.js"
