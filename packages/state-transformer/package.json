@@ -6,6 +6,7 @@
   "homepage": "https://github.com/ysaskia/prelude#readme",
   "license": "MIT",
   "main": "index.js",
+  "type": "module",
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
   },
@@ -13,9 +14,20 @@
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "devDependencies": {
+    "c8": "^7.3.4",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.0"
+  },
+  "dependencies": {
+    "@prelude/applicative": "1.0.0",
+    "@prelude/function": "1.0.0",
+    "@prelude/functor": "1.0.0",
+    "@prelude/monad": "1.0.0",
+    "@prelude/trait": "1.0.0"
   }
 }

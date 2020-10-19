@@ -1,7 +1,8 @@
-import {curry}       from "@prelude/function";
-import {Functor}     from "@prelude/functor";
-import {Applicative} from "@prelude/applicative";
-import {Monad}       from "@prelude/monad";
+import {extension}      from "@prelude/trait";
+import {curry, compose} from "@prelude/function";
+import {Functor, map}   from "@prelude/functor";
+import {Applicative}    from "@prelude/applicative";
+import {Monad, flatMap} from "@prelude/monad";
 
 /**
  * @template S
@@ -28,7 +29,7 @@ extension(StateT.prototype, {
 
   [Applicative.apply](sx) {
     return StateT(compose(
-      bind(([f, s]) => map(
+      flatMap(([f, s]) => map(
         ([x, s]) => [f(x), s],
         runStateT(sx, s)
       )),
@@ -36,9 +37,9 @@ extension(StateT.prototype, {
     ));
   },
 
-  [Monad.bind](k) {
+  [Monad.flatMap](k) {
     return StateT(compose(
-      bind(([x, s]) => runStateT(k(x), s)),
+      flatMap(([x, s]) => runStateT(k(x), s)),
       runStateT(this)
     ));
   }
@@ -60,13 +61,14 @@ export const runStateT = curry((mstateT, state) => mstateT.value(state));
  */
 export const castStateT = M => {
   if (!ts.has(M)) {
-    const pure  = x => StateT(s => m([x, s]));
+    const pure  = x => StateT(s => M([x, s]));
     const state = f => StateT(compose(M, f));
     ts.set(M, {
-      pure, state,
+      pure,
+      state,
       get: () => state(s => ([s, s])),
-      put: s => state(_ => m([{}, s])),
-      modify: f => state(s => m([{}, f(s)])),
+      put: s => state(_ => M([{}, s])),
+      modify: f => state(s => M([{}, f(s)])),
     });
   }
   return ts.get(M);
