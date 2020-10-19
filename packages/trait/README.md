@@ -1,6 +1,6 @@
-# `@prelude/protocol`
+# `@prelude/trait`
 
-This module aims to add a protocol-like patterns to JavaScript like you can found in Swift, Rust, Haskell. Here, a protocol is just a set of unique symbols which is supposed to be used later to check that a given protocol is implemented for a JS object. Since symbols are unique it also allow multiple inheritance via the `deriving` symbol.
+This module aims to add a trait-like patterns to JavaScript like you can found in Rust, Swift, Haskell. Here, a trait is just a set of unique symbols which is supposed to be used later to check that a given trait implements these symbols as method members for a specific JS object. Since symbols are unique it allows multiple inheritance via the `deriving` symbol.
 
 ## Usage
 
@@ -8,10 +8,10 @@ For example it is how you can implement the `Functor` protocol
 
 ```js
 // functor.js
-import {protocol, extension} from "@prelude/protocol";
+import {trait, extension} from "@prelude/trait";
 
 // Creates the Functor protocol definition.
-export const Functor = protocol({
+export const Functor = trait({
   map: Symbol("Functor.map")
 });
 
@@ -33,11 +33,11 @@ Deriving from `Functor` to create `Applicative` protocol can be done like this:
 
 ```js
 // applicative.js
-import {protocol, extension} from "@prelude/protocol";
-import {Functor}             from "./functor";
+import {trait, extension} from "@prelude/trait";
+import {Functor}          from "./functor";
  
 // Creates the Applicative protocol definition
-export const Applicative = protocol({
+export const Applicative = trait({
   [deriving]: [Functor],
   pure: Symbol("Applicative.pure"),
   apply: Symbol("Applicative.apply")
@@ -61,6 +61,7 @@ extension(Array.prototype, {
 It is also possible to dynamically checks that an object implements a specified protocol.
 
 ```js
+import {implement}   from "@prelude/trait";
 import {Applicative} from "@prelude/applicative";
 
 const arr = [];
