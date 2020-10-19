@@ -1,6 +1,6 @@
 import chai                          from "chai";
 import {spyFn, resetSpy, restoreSpy} from "@prelude/test-spies";
-import {testLaw}                     from "./_law.js";
+import {testLaw}                     from "./trait-laws.js";
 import {map, constMap}               from "../index.js";
 const {expect} = chai;
 
@@ -32,6 +32,6 @@ describe("@prelude/functor", () => {
       });
     });
 
-    testLaw([1, 2, 3]);
+    describe("laws", () => testLaw([1, 2, 3]));
   })
 });
