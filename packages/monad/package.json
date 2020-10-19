@@ -26,7 +26,6 @@
   },
   "devDependencies": {
     "@prelude/functor": "1.0.0",
-    "@prelude/test-spies": "1.0.0",
     "c8": "^7.3.4",
     "chai": "^4.2.0",
     "mocha": "^8.2.0",
