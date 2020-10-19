@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/prelude-js.iml" filepath="$PROJECT_DIR$/.idea/prelude-js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/prelude.iml" filepath="$PROJECT_DIR$/.idea/prelude.iml" />
     </modules>
   </component>
 </project>
