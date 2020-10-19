@@ -69,7 +69,7 @@ export function identity<A>(x: A): A;
  *   .then(console.log)
  * // => "John Doe"
  *
- * @param  fns
+ * @param fns
  * The functions to compose from right to left.
  *
  * @return
