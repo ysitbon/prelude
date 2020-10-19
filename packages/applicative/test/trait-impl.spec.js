@@ -1,7 +1,7 @@
 import chai                          from "chai";
 import {resetSpy, restoreSpy, spyFn} from "@prelude/test-spies";
 import {apply, pure}                 from "../index.js";
-import {testLaw}                     from "./_law.js";
+import {testLaw}                     from "./trait-laws.js";
 const {expect} = chai;
 
 describe("@prelude/applicative", () => {
