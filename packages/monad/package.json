@@ -4,20 +4,28 @@
   "description": "Implement monad category",
   "author": "Yoann Sitbon <yoann@askia.com>",
   "homepage": "https://github.com/ysaskia/prelude#readme",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "main": "index.js",
   "type": "module",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
   },
+  "scripts": {
+    "test": "c8 mocha"
+  },
   "devDependencies": {
+    "@prelude/functor": "1.0.0",
     "@prelude/test-spies": "1.0.0",
     "c8": "^7.3.4",
     "chai": "^4.2.0",
