@@ -4,7 +4,7 @@
   "description": "> TODO: description",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "https://github.com/ysaskia/prelude#readme",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "main": "index.js",
   "type": "module",
   "publishConfig": {
