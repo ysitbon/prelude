@@ -6,6 +6,7 @@
   "homepage": "https://github.com/ysaskia/prelude#readme",
   "license": "MIT",
   "main": "index.js",
+  "type": "module",
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
   },
@@ -15,5 +16,8 @@
   },
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "devDependencies": {
+    "c8": "^7.3.1"
   }
 }
