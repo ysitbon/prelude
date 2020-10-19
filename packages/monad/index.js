@@ -1,6 +1,6 @@
-import {curry}                         from "@prelude/function";
-import {protocol, deriving, extension} from "@prelude/protocol";
-import {Applicative}                   from "@prelude/applicative";
+import {curry}                      from "@prelude/function";
+import {trait, deriving, extension} from "@prelude/trait";
+import {Applicative}                from "@prelude/applicative";
 
 /**
  * The Monad protocol defines the basic operations over a monad, a concept from
@@ -10,18 +10,18 @@ import {Applicative}                   from "@prelude/applicative";
  *
  * - Left identity
  *   ```
- *   pure(MonadConstructor, a)[Monad.flatMap](k) = k(a)
+ *   x |> pure(M) |> flatMap(k) = k(x)
  *   ```
  * - Right identity
  *   ```
- *   monaInstance[Monad.flatMap](pure) = monadInstance
+ *   m |> flatMap(pure(M)) = m
  *   ```
  * - Associativity
  *   ```
- *   monadInstance[Monad.flatMap](x => k(x)[Monad.flatMap](h)) = (monadInstance[Monad.flatMap](k))[Monad.flatMap](h)
+ *   m |> flatMap(x => k(x) |> flatMap(h)) = m |> flatMap(k) |> flatMap(h)
  *   ```
  */
-export const Monad = protocol({
+export const Monad = trait({
   [deriving]: [Applicative],
   flatMap: Symbol("Monad.flatMap")
 });

@@ -1,4 +1,4 @@
-import {extension}      from "@prelude/protocol";
+import {extension}      from "packages/trait";
 import {Functor}        from "@prelude/functor";
 import {Applicative}    from "@prelude/applicative";
 import {Monad, flatMap} from "../";
