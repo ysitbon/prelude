@@ -4,10 +4,11 @@
   "description": "Functor protocol",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "main": "index.js",
   "type": "module",
   "directories": {
+    "lib": "lib",
     "test": "test"
   },
   "publishConfig": {
@@ -15,6 +16,13 @@
   },
   "scripts": {
     "test": "c8 mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
   },
   "devDependencies": {
     "@prelude/test-spies": "1.0.0",
