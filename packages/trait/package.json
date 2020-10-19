@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "First class trait",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "main": "index.js",
   "type": "module",
   "directories": {
