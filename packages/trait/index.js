@@ -1,18 +1,17 @@
 import {curry} from "@prelude/function";
 
-/** Keys which stored the protocol deriving chain. */
-export const deriving = Symbol("Protocol.deriving");
+/** Keys which stored the trait deriving chain. */
+export const deriving = Symbol("Trait.deriving");
 
 /**
  * Creates a protocol object.
  *
  * @template T,U
  * @param {T} descriptor
- * @param {...U} deriving
  * @returns {T};
  */
-export const protocol = descriptor => Object.freeze({
-  [deriving]: Object.freeze(protocol[deriving] || []),
+export const trait = descriptor => Object.freeze({
+  [deriving]: Object.freeze(descriptor[deriving] || []),
   ...descriptor
 });
 
