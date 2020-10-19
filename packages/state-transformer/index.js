@@ -8,7 +8,7 @@ import {Monad, flatMap} from "@prelude/monad";
  * @template S
  * @template M
  * @template A
- * @param {(state: S) => M<[A, S]>} s 
+ * @param {function(S): M<[A, S]>} s
  */
 export function StateT(s) {
   if (new.target === undefined) {

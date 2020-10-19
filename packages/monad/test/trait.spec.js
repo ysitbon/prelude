@@ -1,10 +1,12 @@
-import chai                          from "chai";
-import {resetSpy, restoreSpy, spyFn} from "@prelude/test-spies";
-import {extension}                   from "@prelude/trait";
-import {Functor}                     from "@prelude/functor";
-import {Applicative}                 from "@prelude/applicative";
-import {Monad, flatMap}              from "../index.js";
+import {extension}      from "@prelude/trait";
+import {Functor}        from "@prelude/functor";
+import {Applicative, apply} from "@prelude/applicative";
+import {Monad, flatMap} from "../index.js";
+import chai             from "chai";
+import sinon            from "sinon";
+import sinonChai        from "sinon-chai";
 const {expect} = chai;
+chai.use(sinonChai);
 
 function Identity(value) {
   if (undefined === new.target)
@@ -29,26 +31,33 @@ extension(Identity.prototype, {
 })
 
 describe("@prelude/monad", () => {
-  describe("flapMap(fn: (x: A) => F<B>, functor: F<A>): F<B>", () => {
-    const [spy, add] = spyFn(x => new Identity(x + 1));
+  const sandbox = sinon.createSandbox();
 
-    beforeEach(() => resetSpy(spy));
+  afterEach(() => sandbox.restore());
+
+  describe("flapMap(fn: (x: A) => F<B>, functor: F<A>): F<B>", () => {
+    const add = sinon.spy(x => Identity(x + 1));
+
+    beforeEach(() => sandbox.spy(Identity.prototype, Monad.flatMap));
+    afterEach(() => add.resetHistory());
 
     it("should call the [Monad.flatMap] symbol", () => {
       flatMap(add, new Identity(1));
-      expect(spy.called).to.be.true;
+      expect(Identity.prototype[Monad.flatMap]).to.have.been.calledOnce;
+    });
+
+    it("should call the specified callback function", () => {
+      flatMap(add, new Identity(1));
+      expect(add).to.have.been.calledOnce;
     });
 
     it("should call the [Monad.flatMap] symbol with the Monad value", () => {
       flatMap(add, new Identity(1));
-      expect(spy.calls[0].args).to.deep.equal([1]);
+      expect(add).to.have.been.calledWith(1);
     });
 
     it("should returns the passed Monad with the mapped value", () => {
-      const value = flatMap(add, new Identity(1));
-      expect(value.value).to.equal(2);
+      expect(flatMap(add, new Identity(1)).value).to.equal(2);
     });
-
-    after(() => restoreSpy(spy));
   });
 });

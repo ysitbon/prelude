@@ -1,8 +1,10 @@
-import chai                          from "chai";
-import {spyFn, resetSpy, restoreSpy} from "@prelude/test-spies";
 import {extension}                   from "@prelude/trait";
 import {Functor, map, constMap}      from "../index.js";
+import chai                          from "chai";
+import sinon                         from "sinon";
+import sinonChai                     from "sinon-chai";
 const {expect} = chai;
+chai.use(sinonChai);
 
 function Identity(value) {
   if (undefined === new.target)
@@ -18,19 +20,28 @@ extension(Identity.prototype, {
 })
 
 describe("@prelude/functor", () => {
-  describe("map(fn: (x: A) => B, functor: F<A>): F<B>", () => {
-    const [spy, add] = spyFn(x => x + 1);
+  const sandbox = sinon.createSandbox();
 
-    beforeEach(() => resetSpy(spy));
+  afterEach(() => sandbox.restore());
+
+  describe("map(fn: (x: A) => B, functor: F<A>): F<B>", () => {
+    const add  = sinon.spy(x => x + 1);
+
+    beforeEach(() => sandbox.spy(Identity.prototype, Functor.map));
 
     it("should call the [Functor.map] symbol", () => {
       map(add, new Identity(1));
-      expect(spy.called).to.be.true;
+      expect(Identity.prototype[Functor.map]).to.have.been.calledOnce;
     });
 
-    it("should call the [Functor.map] symbol with the Functor value", () => {
+    it("should call the specified callback", () => {
       map(add, new Identity(1));
-      expect(spy.calls[0].args).to.deep.equal([1]);
+      expect(add).to.have.been.calledOnce;
+    });
+
+    it("should call the specified callback with the Functor value", () => {
+      map(add, new Identity(1));
+      expect(add).to.have.been.calledOnceWith(1);
     });
 
     it("should returns the passed Functor with mapped value", () => {
@@ -38,12 +49,12 @@ describe("@prelude/functor", () => {
       expect(map(x => x + 1, new Identity(1)).value).to.equal(2);
     });
 
-    after(() => restoreSpy(spy));
+    afterEach(() => add.resetHistory());
   });
 
   describe("constMap(value: B, functor: F<A>): F<B>", () => {
     it("should returns the passed Functor containing the const value", () => {
-      expect(constMap(2, new Identity(1)).value).to.equal(2)
+      expect(constMap(2, new Identity(1)).value).to.equal(2);
     });
   });
 });
