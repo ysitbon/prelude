@@ -32,6 +32,8 @@ describe("@prelude/applicative", () => {
       });
     });
 
-    testLaw(Array, [x => x + 1], [1]);
+    describe("laws", () => {
+      testLaw(Array, [x => x + 1], [1]);
+    });
   })
 });
