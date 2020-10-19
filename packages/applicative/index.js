@@ -1,6 +1,6 @@
-import {curry}                         from "@prelude/function";
-import {protocol, deriving, extension} from "@prelude/protocol";
-import {Functor}                       from "@prelude/functor";
+import {curry}                      from "@prelude/function";
+import {trait, deriving, extension} from "@prelude/trait";
+import {Functor}                    from "@prelude/functor";
 
 /**
  * This module describes a structure intermediate between a functor and a monad
@@ -8,7 +8,7 @@ import {Functor}                       from "@prelude/functor";
  * interface lacks the full power of the binding operation `flatMap` but it has
  * more instances and it is sufficient for many uses.
  */
-export const Applicative = protocol({
+export const Applicative = trait({
   [deriving]: [Functor],
   pure: Symbol("Applicative.pure"),
   apply: Symbol("Applicative.apply")
@@ -72,6 +72,6 @@ extension(Array.prototype, {
    * @return {R[]}
    */
   [Applicative.apply](xs) {
-    return this[Functor.map]((fn, i) => fn(xs[i]));
+    return this.map((fn, i) => fn(xs[i]));
   }
 });

@@ -6,6 +6,7 @@
   "homepage": "",
   "license": "MIT",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "test": "test"
   },
@@ -13,19 +14,18 @@
     "access": "public"
   },
   "scripts": {
-    "test": "nyc mocha --require @prelude/babel"
+    "test": "c8 mocha"
   },
   "devDependencies": {
-    "@prelude/babel": "1.0.0",
     "@prelude/test-spies": "1.0.0",
+    "c8": "^7.3.4",
     "chai": "^4.2.0",
-    "mocha": "^7.1.2",
-    "nyc": "^15.1.0"
+    "mocha": "^8.2.0"
   },
   "dependencies": {
     "@prelude/function": "1.0.0",
     "@prelude/functor": "1.0.0",
-    "@prelude/protocol": "1.0.0",
+    "@prelude/trait": "1.0.0",
     "ts-toolbelt": "^6.13.34"
   }
 }
