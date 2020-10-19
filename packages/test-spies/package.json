@@ -4,7 +4,7 @@
   "description": "\"Test tool to spy, mock and stub functions\"",
   "author": "yoann <yoann@askia.com>",
   "homepage": "https://github.com/ysaskia/prelude#readme",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "index.js",
   "type": "module",
   "publishConfig": {
