@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 import {map, constMap} from "../index.js";
 import {testLaw}       from "./trait-laws.js";
 import chai            from "chai";
@@ -8,27 +9,29 @@ chai.use(sinonChai);
 
 describe("@prelude/functor", () => {
   describe("impl Array.prototype", () => {
-    describe("map(fn: (x: A) => B, scope: Array<A>): Array<B>", () => {
+    describe("map(fn, array)", () => {
       const add  = sinon.spy(x => x + 1);
 
-      it("should call the specified callback for each items", () => {
+      it("should call [fn] for each items of the [array]", () => {
         map(add, [1, 2, 3]);
         expect(add).to.have.been.calledThrice;
       });
 
-      it("should returns a new array with the mapped values", () => {
+      it("should returns a new array containing " +
+         "the results of [fn] calls", () => {
         expect(map(add, [1, 2, 3])).to.deep.equal([2, 3, 4]);
       });
 
       after(() => add.resetHistory());
     });
 
-    describe("constMap(value: B, scope: Array<A>): Array<B>", () => {
-      it("should returns a new array with the passed value set for each items", () => {
+    describe("constMap(value, array): Array<B>", () => {
+      it("should returns a new array containing " +
+         "the input [value] for each items", () => {
         expect(constMap(4, [1, 2, 3])).to.deep.equal([4, 4, 4]);
       });
     });
 
     describe("laws", () => testLaw([1, 2, 3]));
-  })
+  });
 });

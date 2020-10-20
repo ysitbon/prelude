@@ -1,6 +1,6 @@
-import {curry}                      from "@prelude/function";
-import {trait, deriving, extension} from "@prelude/trait";
-import {Applicative}                from "@prelude/applicative";
+import {curry}           from "@prelude/function";
+import {trait, deriving} from "@prelude/trait";
+import {Applicative}     from "@prelude/applicative";
 
 /**
  * The Monad protocol defines the basic operations over a monad, a concept from

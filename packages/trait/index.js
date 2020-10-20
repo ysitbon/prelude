@@ -24,9 +24,9 @@ export const trait = descriptor => Object.freeze({
  * @returns {boolean}
  */
 export const implement = curry((x, p) => Object
-    .keys(p)
-    .every(k => p[k] in x && typeof x[p[k]] === "function")
-  && p[deriving].every(implement(x))
+  .keys(p)
+  .every(k => p[k] in x && typeof x[p[k]] === "function") &&
+  p[deriving].every(implement(x))
 );
 
 /**
@@ -47,8 +47,8 @@ export const extension = (target, source) => Object
   .getOwnPropertySymbols(source)
   .reduce(
     (target, property) => Object.defineProperty(
-      target, 
-      property, 
+      target,
+      property,
       readonly(source[property])),
     (target)
   );

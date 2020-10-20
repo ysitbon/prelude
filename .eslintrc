@@ -7,6 +7,9 @@
       "modules": true
     }
   },
+  "env": {
+    "es6": true
+  },
   "rules": {
     "no-cond-assign": 2,
     "no-console": 0,
@@ -220,19 +223,7 @@
     "max-nested-callbacks": [0, 2],
     "max-params": 0,
     "max-statements": 0,
-    "new-cap": [
-      2,
-      {
-        "capIsNewExceptions":  [
-          "Identity",
-          "Just",
-          "Nothing",
-          "Right",
-          "Left",
-          "NonEmpty"
-        ]
-      }
-    ],
+    "new-cap": 0,
     "new-parens": 2,
     "padding-line-between-statements": 0,
     "no-array-constructor": 2,

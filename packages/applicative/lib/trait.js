@@ -9,9 +9,9 @@ import {Functor}         from "@prelude/functor";
  * more instances and it is sufficient for many uses.
  */
 export const Applicative = trait({
-    [deriving]: [Functor],
-    pure: Symbol("Applicative.pure"),
-    apply: Symbol("Applicative.apply")
+  [deriving]: [Functor],
+  pure: Symbol("Applicative.pure"),
+  apply: Symbol("Applicative.apply")
 });
 
 /**

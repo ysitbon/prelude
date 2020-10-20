@@ -111,7 +111,7 @@ const compose_ = (f, g, ...otherFns) => {
   return curryN(
     lastFn[curried] || lastFn.length,
     (...args) => calls.reduceRight((x, call) => call(x), lastFn(...args))
-  )
+  );
 };
 
 /** @inheritDoc compose_ */
@@ -149,7 +149,7 @@ const pipe_ = (f, g, ...otherFns) => {
   return curryN(
     f[curried] || f.length,
     (...args) => calls.reduce((x, call) => call(x), f(...args))
-  )
+  );
 };
 
 /**@inheritDoc pipe_*/
@@ -175,7 +175,7 @@ export const pipe = curry(pipe_);
 export const flip = fn => curryN(
   fn[curried] || fn.length,
   (...args) => fn(...args.reverse())
-)
+);
 
 /**
  * Creates an unary function which evaluates to `x` for all inputs.
@@ -219,9 +219,10 @@ export const constant = x => _ => x;
  * The value to pass over the to the predicate `p` and the function `f`.
  */
 const until_ = (p, f, x) => {
-  while (!p(x)) x = f(x);
-  return x;
-}
+  let curr = x;
+  while (!p(curr)) curr = f(curr);
+  return curr;
+};
 
 /**@inheritDoc until_*/
 export const until = curry(until_);

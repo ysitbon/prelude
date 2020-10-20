@@ -2,7 +2,7 @@ import {trait}           from "@prelude/trait";
 import {constant, curry} from "@prelude/function";
 
 export const Functor = trait({
-    map: Symbol("Functor.map")
+  map: Symbol("Functor.map")
 });
 
 /**
@@ -15,7 +15,7 @@ export const Functor = trait({
 export const map = curry((fn, functor) => functor[Functor.map](fn));
 
 /**
- * Replace all locations in the input with the same value.
+ * Replace all locations in the input `Functor` with the same `value`.
  *
  * @template {Functor} F
  * @template A, B
@@ -23,5 +23,6 @@ export const map = curry((fn, functor) => functor[Functor.map](fn));
  * @param {F<A>} functor
  * @return {F<B>}
  */
-export const constMap = curry((value, functor) => map(constant(value), functor));
+export const constMap = curry((value, functor) =>
+  map(constant(value), functor));
 

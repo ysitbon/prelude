@@ -18,11 +18,11 @@ export function StateT(s) {
     this.value = s;
   }
 }
- 
+
 extension(StateT.prototype, {
   [Functor.map](f) {
     return StateT(compose(
-      map(([x, s]) => [f(x), s]), 
+      map(([x, s]) => [f(x), s]),
       runStateT(this)
     ));
   },
@@ -56,8 +56,8 @@ extension(StateT.prototype, {
 export const runStateT = curry((mstateT, state) => mstateT.value(state));
 
 /**
- * 
- * @param {*} M 
+ *
+ * @param {*} M
  */
 export const castStateT = M => {
   if (!ts.has(M)) {
@@ -68,7 +68,7 @@ export const castStateT = M => {
       state,
       get: () => state(s => ([s, s])),
       put: s => state(_ => M([{}, s])),
-      modify: f => state(s => M([{}, f(s)])),
+      modify: f => state(s => M([{}, f(s)]))
     });
   }
   return ts.get(M);
