@@ -1,11 +1,11 @@
-# `monad`
+# Monad
 
 > TODO: description
 
 ## Usage
 
 ```
-const monad = require('monad');
+import {flatMap} from "@prelude/monad";
 
 // TODO: DEMONSTRATE API
 ```

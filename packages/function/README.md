@@ -1,8 +1,10 @@
-### `@prelude/function`
+# Function
 
 Simple combinators working solely on and with functions.
 
-#### Identity
+## Usage
+
+#### identity
 
 ```ts
 declare function identity<T>(x: T): T
@@ -10,7 +12,7 @@ declare function identity<T>(x: T): T
 
 Identity function. Returns the passed argument.
 
-#### Constant
+#### constant
 
 ```ts
 declare function constant<A, B>(x: A): ((_: B) => A)
@@ -24,7 +26,7 @@ fill(42)(new Array(4));
 // => [42, 42, 42, 42]
 ```
 
-#### Curry
+#### curry
 
 ```ts
 declare function curry<F extends Function>(fn: F): Curry<F>
@@ -44,7 +46,7 @@ addXYZ(1)(2)(3) // -> 6
 addXYZ(1, 2)(3) // -> 6
 ```
 
-#### Compose
+#### compose
 
 ```ts
 declare function compose<Fns extends Function[]>(...fns: Fns): Curry<Composed<Fns>>
@@ -67,7 +69,7 @@ getUser(1)
 // => "John Doe"
 ```
 
-#### Pipe
+#### pipe
 
 ```ts
 declare function compose<Fns extends Function[]>(...fns: Fns): Curry<Piped<Fns>>
@@ -90,7 +92,7 @@ getUser(1)
 // => "John Doe"
 ```
 
-#### Flip
+#### flip
 
 ```ts
 declare function flip<Fn extends Function>(fn: Fn): F.Curry<(...args) => Return<Fn>>
@@ -106,7 +108,7 @@ addRight("hello", "world");
 // => "world hello"
 ```
 
-#### Until
+#### until
 
 Calls the function `f` until the predicate `p` matches. Each time `f` is
 computed, the returned value is used as the next input of `until` cycle.

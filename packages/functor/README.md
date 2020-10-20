@@ -1,11 +1,11 @@
-# `@prelude/function`
+# Functor
 
 > TODO: description
 
 ## Usage
 
 ```
-const function = require('@prelude/function');
+import {map} from "@prelude/functor";
 
 // TODO: DEMONSTRATE API
 ```

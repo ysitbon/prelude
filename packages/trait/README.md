@@ -1,6 +1,10 @@
-# `@prelude/trait`
+# Trait
 
-This module aims to add a trait-like patterns to JavaScript like you can found in Rust, Swift, Haskell. Here, a trait is just a set of unique symbols which is supposed to be used later to check that a given trait implements these symbols as method members for a specific JS object. Since symbols are unique it allows multiple inheritance via the `deriving` symbol.
+This module aims to add a trait-like patterns to JavaScript like you can found 
+in Rust, Swift, Haskell. Here, a trait is just a set of unique symbols which is 
+supposed to be used later to check that a given trait implements these symbols 
+as method members for a specific JS object. Since symbols are unique it allows 
+multiple inheritance via the `deriving` symbol.
 
 ## Usage
 
@@ -15,10 +19,10 @@ export const Functor = trait({
   map: Symbol("Functor.map")
 });
 
-// Functor protocol usage
+// Functor trait usage
 export const map = (fn, functor) => functor[Functor.map](fn);
 
-// Functor protocol implementation for native JS Array
+// Functor trait implementation for native JS Array
 extension(Array.prototype, {
   [Functor.map](fn) {
     const xs = [];
@@ -29,7 +33,7 @@ extension(Array.prototype, {
 });
 ```
 
-Deriving from `Functor` to create `Applicative` protocol can be done like this:
+Deriving from `Functor` to create `Applicative` trait can be done like this:
 
 ```js
 // applicative.js
@@ -43,11 +47,12 @@ export const Applicative = trait({
   apply: Symbol("Applicative.apply")
 });
 
-// Applicative protocol usage
+// Applicative trait usage
 export const apply = (arg, fn) => fn[Applicative.apply](arg);
-export const pure = (ApplicativeConstructor, x) => ApplicativeConstructor.prototype[Applicative.pure](x);
+export const pure = (ApplicativeConstructor, x) => 
+  ApplicativeConstructor.prototype[Applicative.pure](x);
 
-// Applicative protocol implementation for native JS Array
+// Applicative trait implementation for native JS Array
 extension(Array.prototype, {
   [Applicative.pure](x) {
     return [x];
@@ -58,7 +63,8 @@ extension(Array.prototype, {
 });
 ```
 
-It is also possible to dynamically checks that an object implements a specified protocol.
+It is also possible to dynamically checks that an object implements a specified 
+trait.
 
 ```js
 import {implement}   from "@prelude/trait";

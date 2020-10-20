@@ -1,6 +1,7 @@
-import chai             from "chai";
+/*eslint-env mocha*/
 import {identity, pipe} from "@prelude/function";
 import {apply, pure}    from "../index.js";
+import chai             from "chai";
 const {expect} = chai;
 
 export const testLaw = A => {
@@ -31,4 +32,4 @@ export const testLaw = A => {
     expect(apply(pure(A, x), u))
       .to.be.deep.equal(apply(u, pure(A, f => f(x))));
   });
-}
+};

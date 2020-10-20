@@ -1,37 +1,19 @@
-import {Applicative, apply, pure}    from "../index.js";
-import {extension}                   from "@prelude/trait";
-import {Functor}                     from "@prelude/functor";
-import chai                          from "chai";
-import sinon                         from "sinon";
-import sinonChai                     from "sinon-chai";
+/*eslint-env mocha*/
+import {Applicative, apply, pure} from "../index.js";
+import {extension}                from "@prelude/trait";
+import {Functor}                  from "@prelude/functor";
+import chai                       from "chai";
+import sinon                      from "sinon";
+import sinonChai                  from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
-
-function Identity(value) {
-  if (undefined === new.target)
-    return new Identity(value);
-  else
-    this.value = value;
-}
-
-extension(Identity.prototype, {
-  [Functor.map](fn) {
-    return Identity(fn(this.value));
-  },
-  [Applicative.pure](x) {
-    return Identity(x);
-  },
-  [Applicative.apply](fx) {
-    return this[Applicative.pure](this.value(fx.value));
-  }
-});
 
 describe("@prelude/applicative", () => {
   const sandbox = sinon.createSandbox();
 
   afterEach(() => sandbox.restore());
 
-  describe("apply(fn: Applicative<((x: A) => B), scope: Applicative<A>): Applicative<B>", () => {
+  describe("apply(functor, applicative)", () => {
     const add = sinon.spy(x => x + 1);
 
     beforeEach(() => sandbox.spy(Identity.prototype, Applicative.apply));
@@ -39,26 +21,29 @@ describe("@prelude/applicative", () => {
 
     it("should call the [Applicative.apply] symbol", () => {
       apply(new Identity(1), new Identity(add));
-      expect(Identity.prototype[Applicative.apply]).to.have.been.calledOnce;
+      expect(Identity.prototype[Applicative.apply])
+        .to.have.been.calledOnce;
     });
 
-    it("should call the function contained in the specified [Applicative]", () => {
+    it( "should call the [applicative] inner function", () => {
       apply(new Identity(1), new Identity(add));
       expect(add).to.have.been.calledOnce;
     });
 
-    it("should call the specified callback with the [Functor] value", () => {
+    it( "should call the [applicative] inner function " +
+       "with inner [functor] value", () => {
       apply(new Identity(1), new Identity(add));
       expect(add).to.have.been.calledWith(1);
     });
 
-    it("should returns the passed Functor with mapped value", () => {
+    it( "should returns the computation result " +
+       "wrapped into the input [Functor]", () => {
       expect(apply(new Identity(1), new Identity(add)))
-          .to.deep.equal(new Identity(2));
+        .to.deep.equal(new Identity(2));
     });
   });
 
-  describe("pure(F: Constructor<A>, value: T): Applicative<T>", () => {
+  describe( "pure(FunctorConstructor, value)", () => {
     beforeEach(() => sandbox.spy(Identity.prototype, Applicative.pure));
 
     it("should call the [Applicative.pure] symbol", () => {
@@ -66,8 +51,27 @@ describe("@prelude/applicative", () => {
       expect(Identity.prototype[Applicative.pure]).to.have.been.calledOnce;
     });
 
-    it("should box the passed value", () => {
+    it("should wrap the passed value into the input " +
+       "[FunctorConstructor]", () => {
       expect(pure(Identity, 1)).to.deep.equal(new Identity(1));
     });
+  });
+
+  // eslint-disable-next-line require-jsdoc
+  function Identity(value) {
+    if (undefined === new.target)
+      return new Identity(value);
+    this.value = value;
+  }
+  extension(Identity.prototype, {
+    [Functor.map](fn) {
+      return Identity(fn(this.value));
+    },
+    [Applicative.pure](x) {
+      return Identity(x);
+    },
+    [Applicative.apply](fx) {
+      return this[Applicative.pure](this.value(fx.value));
+    }
   });
 });

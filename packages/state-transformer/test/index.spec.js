@@ -1,5 +1,13 @@
-describe("@prelude/state-transformer", () => {
-   describe("map(fn: (x: A) => B, scope: F<A>): F<B>", () => {
+/*eslint-env mocha*/
+/*
+import chai             from "chai";
+import sinon            from "sinon";
+import sinonChai        from "sinon-chai";
+const {expect} = chai;
+*/
 
-   });
+describe("@prelude/state-transformer", () => {
+  describe("map(fn, functor)", () => {
+
+  });
 });

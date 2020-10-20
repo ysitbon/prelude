@@ -1,3 +1,4 @@
+/*eslint-env mocha*/
 import chai      from "chai";
 import {pure}    from "@prelude/applicative";
 import {flatMap} from "../index.js";
@@ -23,4 +24,4 @@ export const testLaw = M => {
     expect(flatMap(x => flatMap(h, k(x)), m))
       .to.be.deep.equal(flatMap(h, flatMap(k, m)));
   });
-}
+};

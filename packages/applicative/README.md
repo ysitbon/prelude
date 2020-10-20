@@ -1,11 +1,11 @@
-# `@prelude/control-applicative`
+# Applicative
 
 > TODO: description
 
 ## Usage
 
 ```
-const controlApplicative = require('@prelude/control-applicative');
+import {apply} from "@prelude/applicative";
 
 // TODO: DEMONSTRATE API
 ```
