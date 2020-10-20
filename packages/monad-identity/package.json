@@ -1,0 +1,36 @@
+{
+  "name": "@prelude/monad-identity",
+  "version": "1.0.0",
+  "description": "Identity monad implementation",
+  "author": "Yoann Sitbon <yoann@askia.com>",
+  "homepage": "https://github.com/ysaskia/prelude#readme",
+  "license": "Apache 2.0",
+  "main": "index.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "scripts": {
+    "test": "c8 mocha"
+  },
+  "devDependencies": {
+    "c8": "^7.3.4",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.0",
+    "sinon": "^9.2.0",
+    "sinon-chai": "^3.5.0"
+  },
+  "dependencies": {
+    "@prelude/applicative": "1.0.0",
+    "@prelude/functor": "1.0.0",
+    "@prelude/monad": "1.0.0",
+    "@prelude/trait": "1.0.0"
+  }
+}
