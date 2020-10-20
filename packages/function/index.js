@@ -38,7 +38,7 @@ const curryF = (n, f) =>
  * @returns {Curry<Fn>}
  * Returns the curried function.
  */
-export const curryN = (n, fn) => curryF(
+const curryN = (n, fn) => curryF(
   n,
   (...xs) => xs.length >= n
     ? fn.apply(undefined, xs)
@@ -78,8 +78,9 @@ export const curry = fn => curryN(fn.length, fn);
 export const identity = x => x;
 
 /**
- * Composes two functions `f` and `g` to create a new one. The new function
- * first compute `y=g(x)`, and then use `y` to compute `z=f(y)`.
+ * Composes at least two functions from left to right and returns a new
+ * function. The new created function takes the same amount of arguments
+ * than the first composed function to call and is also curried.
  *
  * @example
  * const fullName = compose(
@@ -117,8 +118,9 @@ const compose_ = (f, g, ...otherFns) => {
 export const compose = curry(compose_);
 
 /**
- * Composes two functions `f` and `g` to create a new one. The new function
- * first compute `y=g(x)`, and then use `y` to compute `z=f(y)`.
+ * Composes at least two functions from left to right and returns a new
+ * function. The new created function takes the same amount of arguments
+ * than the first composed function to call and is also curried.
  *
  * @example
  * const fullName = pipe(
@@ -154,13 +156,14 @@ const pipe_ = (f, g, ...otherFns) => {
 export const pipe = curry(pipe_);
 
 /**
- * Flips arguments in reverse order of the specified function `f`.
+ * Flips the arguments in reverse order of the specified function `f`. The
+ * created function is curried.
  *
  * @example
- * const addrL = curry((x, y) => x + y);
- * const addr = flip(addL);
- * addr("hello", "world");
- * // => "worldhello"
+ * const add = curry((x, y) => x + " " + y);
+ * const addRight = flip(add);
+ * addRight("hello", "world");
+ * // => "world hello"
  *
  * @template {import("ts-toolbelt").Function} Fn
  * @param {Fn} fn
@@ -195,7 +198,7 @@ export const constant = x => _ => x;
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is
- * computed the return value is used for the next `until` cycle.
+ * computed the returned value is used as the next input of `until` cycle.
  *
  * @example
  * until(
