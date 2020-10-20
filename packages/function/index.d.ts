@@ -1,29 +1,6 @@
 import {F, L} from "ts-toolbelt";
 
 /**
- * Internal logic of `curry` function. Takes `n` as the length of the function
- * `f` and then returned the curried version of this function. The returned
- * function compares the length of the passed `arguments` with `n`. When greater
- * or equal to `n`, then it calls the original reference with the specified
- * `arguments`. Otherwise it call `curryN()` where the new `n` value equals the
- * current `n` value minus the length of the passed `arguments` and the new
- * function reference is the original reference bound to the passed arguments.
- *
- * @param n
- * Arity of the function to curry.
- *
- * @param fn
- * The function to curry.
- *
- * @return
- * Returns the curried function.
- */
-export function curryN<Fn extends F.Function>(
-  n: number, 
-  fn: Fn
-): F.Curry<Fn>;
-
-/**
  * Curry `f`. The returned function can be partially applied automatically.
  *
  * @example
@@ -110,10 +87,10 @@ export function pipe<Fns extends F.Function[]>(
  * Flips the two arguments in reverse order of the specified function `f`.
  *
  * @example
- * const addl = curry((x, y) => x + y);
- * const addr = flip(addl);
- * addr("hello", "world");
- * // => "worldhello"
+ * const add = curry((x, y) => x + " " + y);
+ * const addRight = flip(add);
+ * addRight("hello", "world");
+ * // => "world hello"
  *
  * @param fn
  * The function to flip.
