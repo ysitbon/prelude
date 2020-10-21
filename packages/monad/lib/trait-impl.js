@@ -1,16 +1,24 @@
 import {extension} from "@prelude/trait";
 import {Monad}     from "./trait.js";
 
-/** @lends {Array.prototype} */
+/**
+ * Implements the {@link Monad} trait for {@link Array}.
+ * @lends {Array.prototype}
+ */
 extension(Array.prototype, {
   /**
-   * Sequentially compose two actions on an Array monad.
+   * Bind an action for each elements of an {@link Array<A>} resulting into a
+   * new {@link Array<B>} .
    *
-   * @template T
-   * @template R
-   * @this {Array<T>}
-   * @param {function(T): R[]} fn
-   * @return {R[]}
+   * @template A
+   * @template B
+   * @this {A[]}
+   * @param {function(A): B[]} fn
+   * The function called for each elements of this array which returns a new
+   * array of values then concatenated to the output {@link Array<B>}.
+   *
+   * @return {B[]}
+   * Returns another {@link Array} being the concatenation of all actions.
    */
   [Monad.flatMap](fn) {
     const ln = this.length;

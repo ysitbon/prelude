@@ -3,20 +3,19 @@ import {trait, deriving} from "@prelude/trait";
 import {Applicative}     from "@prelude/applicative";
 
 /**
- * The Monad protocol defines the basic operations over a monad, a concept from
- * a branch of mathematics known as category theory.
+ * The monad trait defines the basic operations over a monad, a concept from
+ * a branch of mathematics known as category theory. Instances of Monad should
+ * satisfy the following laws:
  *
- * Instances of Monad should satisfy the following:
- *
- * - Left identity
- *   ```
+ * - **Left identity**
+ *   ```js
  *   x |> pure(M) |> flatMap(k) = k(x)
  *   ```
- * - Right identity
+ * - **Right identity**
  *   ```
  *   m |> flatMap(pure(M)) = m
  *   ```
- * - Associativity
+ * - **Associativity**
  *   ```
  *   m |> flatMap(x => k(x) |> flatMap(h)) = m |> flatMap(k) |> flatMap(h)
  *   ```
@@ -27,19 +26,20 @@ export const Monad = trait({
 });
 
 /**
- * Sequentially compose two actions, passing any value produced by the first as
- * an argument to the second.
+ * Bind an action for each elements of a {@link Monad<A>} resulting into a
+ * new {@link Monad<B>} .
  *
- * @template T
- * @template R
  * @template {Monad} M
- * @param {function(T): M<R>} arg
- * The action which returns a new Monad.
+ * @template A
+ * @template B
+ * @param {function(A): M<B>} fn
+ * The function called for each elements of this array which returns a new
+ * array of values then concatenated to the output {@link Monad<B>}.
  *
- * @param {M<T>} fn
- * The monad to compose with.
+ * @param {M<A>} fn
+ * The input monad to compose with.
  *
- * @return {M<R>}
- * Returns the results of the monad composition.
+ * @return {M<B>}
+ * Returns another {@link Monad} being the concatenation of all actions.
  */
 export const flatMap = curry((fn, m) => m[Monad.flatMap](fn));
