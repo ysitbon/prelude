@@ -3,10 +3,29 @@ import {trait, deriving} from "@prelude/trait";
 import {Functor}         from "@prelude/functor";
 
 /**
- * This module describes a structure intermediate between a functor and a monad
- * (technically, a strong lax monoidal functor). Compared with monads, this
- * interface lacks the full power of the binding operation `flatMap` but it has
- * more instances and it is sufficient for many uses.
+ * A {@link Functor} with application. Instances of `Applicative` should satisfy
+ * the following laws:
+ *
+ * - **Identity**
+ *   ```js
+ *   map(identity) ≡ identity
+ *   ```
+ * - **Composition**
+ *   ```js
+ *   pipe
+ *     |> pure(A)
+ *     |> apply(u)
+ *     |> apply(v)
+ *     |> apply(w) ≡ w |> apply(v |> apply(u))
+ *   ```
+ * - **Homomorphism**
+ *   ```js
+ *   f |> pure(A) |> apply(x |> pure(A)) ≡ f(x) |> pure(A)
+ *   ```
+ * - **Interchange**
+ *   ```js
+ *   u |> apply(x |> pure(A)) ≡ (f => f(x)) |> pure(A) |> apply(u)
+ *   ```
  */
 export const Applicative = trait({
   [deriving]: [Functor],
@@ -15,34 +34,38 @@ export const Applicative = trait({
 });
 
 /**
- * Sequential application.
+ * Sequential application over all element of a {@link Functor}.
  *
- * @template T
- * @template R
- * @template {Applicative} A
- * @param {A<T>} arg
- * The boxed value which will be applied to apply to the boxed function.
+ * @template {Applicative & Functor} F
+ * @template A, B
+ * @param {F<A>} functor
+ * A {@link Functor} where each elements will be applied to the function
+ * matching the element of in input `functorFn`.
  *
- * @param {A<function(T): R>} fn
- * The boxed function.
+ * @param {F<function(A): B>} fn
+ * A {@link Functor} where each elements are function which will receive values
+ * from `functorArg` as argument.
  *
- * @return {A<R>}
- * Returns the results of function application boxed into a new applicative.
+ * @returns {F<B>}
+ * Returns the results of function application into a new {@link Functor}.
  */
-export const apply = curry((arg, fn) => fn[Applicative.apply](arg));
+export const apply = curry((functorArg, functorFn) =>
+  functorFn[Applicative.apply](functorArg));
 
 /**
- * Lift a value `x` to a pure .
+ * Lift a `value` into a pure {Applicative} functor.
  *
  * @template {Applicative} A
  * @template T
- * @param {Function} ApplicativeConstructor
- * @param {T} x
- * The value to box.
+ * @param {function(T): A<T>} F
+ * The applicative constructor.
  *
- * @return {A<T>}
+ * @param {T} value
+ * The value wrap into the `Applicative`.
+ *
+ * @returns {A<T>}
  * Returns the boxed value.
  */
-export const pure = curry((ApplicativeConstructor, x) =>
-  ApplicativeConstructor.prototype[Applicative.pure](x));
+export const pure = curry((F, value) =>
+  Object.getPrototypeOf(F)[Applicative.pure](value));
 
