@@ -4,19 +4,11 @@ Simple combinators working solely on and with functions.
 
 ## Usage
 
-#### identity
+#### identity(T) -> T
 
-```ts
-declare function identity<T>(x: T): T
-```
+Identity function which returns the passed argument.
 
-Identity function. Returns the passed argument.
-
-#### constant
-
-```ts
-declare function constant<A, B>(x: A): ((_: B) => A)
-```
+#### constant(A) -> (_) -> A
 
 Creates a unary function which evaluates to `x` for all inputs.
 
@@ -26,11 +18,7 @@ fill(42)(new Array(4));
 // => [42, 42, 42, 42]
 ```
 
-#### curry
-
-```ts
-declare function curry<F extends Function>(fn: F): Curry<F>
-```
+#### curry((...A) -> B) -> Curry<(...A) -> B> 
 
 The passed function will be returns as a new function which can be partially 
 applied automatically until all its arguments are consumed.
@@ -46,11 +34,7 @@ addXYZ(1)(2)(3) // -> 6
 addXYZ(1, 2)(3) // -> 6
 ```
 
-#### compose
-
-```ts
-declare function compose<Fns extends Function[]>(...fns: Fns): Curry<Composed<Fns>>
-```
+#### compose(...Function) -> Curry<Function>
 
 Composes at least two functions from right to left and returns a new function. 
 The new created function takes the same amount of arguments than the first 
@@ -69,11 +53,7 @@ getUser(1)
 // => "John Doe"
 ```
 
-#### pipe
-
-```ts
-declare function compose<Fns extends Function[]>(...fns: Fns): Curry<Piped<Fns>>
-```
+#### pipe(...Function) -> Curry<Function>
 
 Composes at least two functions from left to right and returns a new function. 
 The new created function takes the same amount of arguments than the first 
@@ -92,11 +72,7 @@ getUser(1)
 // => "John Doe"
 ```
 
-#### flip
-
-```ts
-declare function flip<Fn extends Function>(fn: Fn): F.Curry<(...args) => Return<Fn>>
-```
+#### flip((...A) -> B) -> Curry<(A...) -> B>
 
 Flips the arguments in reverse order of a function. The created function's  
 curried.
@@ -108,7 +84,7 @@ addRight("hello", "world");
 // => "world hello"
 ```
 
-#### until
+#### until((A) -> Boolean, (A) -> A, A) -> A
 
 Calls the function `f` until the predicate `p` matches. Each time `f` is
 computed, the returned value is used as the next input of `until` cycle.
