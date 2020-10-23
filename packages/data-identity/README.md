@@ -9,7 +9,7 @@ of that monad.
 #### Usage
 
 ```js
-import {Identity} from "@prelude/monad-identity";
+import {Identity} from "";
 import {map}      from "@prelude/functor";
 
 Identiy(1)
