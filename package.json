@@ -10,7 +10,7 @@
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
     "test": "c8 mocha",
-    "link": "powershell \"./scripts/link.ps1\""
+    "link": "node \"./scripts/link.js\""
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
