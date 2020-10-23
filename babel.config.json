@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    [
+      "@babel/plugin-proposal-pipeline-operator",
+      { "proposal": "minimal" }
+    ],
+    [
+      "@babel/plugin-transform-modules-commonjs"
+    ]
+  ]
+}

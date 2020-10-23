@@ -1,1 +1,4 @@
-spec: "packages/*/test/**/*.spec.js"
+spec:
+  - "./{,!(node_modules)/**}/*.spec.js"
+require:
+  - '@prelude/babel'

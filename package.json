@@ -4,15 +4,22 @@
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "private": true,
   "license": "Apache-2.0",
-  "type": "module",
   "scripts": {
     "install": "npm-run-all clean bootstrap",
     "init": "lerna init",
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
-    "test": "c8 mocha"
+    "test": "c8 mocha",
+    "link": "powershell \"./scripts/link.ps1\""
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1",
+    "@babel/plugin-proposal-pipeline-operator": "^7.12.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "c8": "^7.3.4",
     "eslint": "^7.11.0",
     "lerna": "^3.22.1",
