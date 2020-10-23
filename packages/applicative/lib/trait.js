@@ -67,5 +67,5 @@ export const apply = curry((functorArg, functorFn) =>
  * Returns the boxed value.
  */
 export const pure = curry((F, value) =>
-  Object.getPrototypeOf(F)[Applicative.pure](value));
+  F.prototype[Applicative.pure](value));
 
