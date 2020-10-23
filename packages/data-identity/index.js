@@ -1,7 +1,7 @@
-import {extension}   from "@prelude/trait";
-import {Functor}     from "@prelude/functor";
-import {Applicative} from "@prelude/applicative";
-import {Monad}       from "@prelude/monad";
+import {extension}   from "@prelude/data-trait";
+import {Functor}     from "@prelude/trait-functor";
+import {Applicative} from "@prelude/trait-applicative";
+import {Monad}       from "@prelude/trait-monad";
 
 /**
  * The `Identity` monad is a monad that without any computational strategy.

@@ -1,7 +1,7 @@
 import {extension}   from "@prelude/trait";
-import {Functor}     from "@prelude/functor";
-import {Applicative} from "@prelude/applicative";
-import {Monad}       from "@prelude/monad";
+import {Functor}     from "@prelude/trait-functor";
+import {Applicative} from "@prelude/trait-applicative";
+import {Monad}       from "@prelude/trait-monad";
 
 /**
  * The `Maybe` type encapsulates an optional value. A value of type `Maybe`

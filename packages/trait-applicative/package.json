@@ -1,11 +1,15 @@
 {
-  "name": "@prelude/data-maybe",
+  "name": "@prelude/trait-applicative",
   "version": "1.0.0",
-  "description": "Identity monad implementation",
-  "author": "Yoann Sitbon <yoann@askia.com>",
-  "homepage": "https://github.com/ysaskia/prelude#readme",
+  "description": "Functor protocol",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
+  "homepage": "",
   "license": "Apache 2.0",
   "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -28,9 +32,9 @@
     "sinon-chai": "^3.5.0"
   },
   "dependencies": {
+    "@prelude/data-function": "1.0.0",
     "@prelude/data-trait": "1.0.0",
-    "@prelude/trait-applicative": "1.0.0",
     "@prelude/trait-functor": "1.0.0",
-    "@prelude/trait-monad": "1.0.0"
+    "ts-toolbelt": "^6.13.34"
   }
 }

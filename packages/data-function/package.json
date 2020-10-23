@@ -1,0 +1,34 @@
+{
+  "name": "@prelude/data-function",
+  "version": "1.0.0",
+  "description": "Simple combinators working solely on and with functions.",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
+  "homepage": "",
+  "license": "Apache 2.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "c8 mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "devDependencies": {
+    "@prelude/babel": "^1.0.0",
+    "c8": "^7.3.4",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.0"
+  },
+  "dependencies": {
+    "ts-toolbelt": "^8.0.7"
+  }
+}

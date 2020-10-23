@@ -28,9 +28,9 @@
     "sinon-chai": "^3.5.0"
   },
   "dependencies": {
-    "@prelude/applicative": "1.0.0",
-    "@prelude/functor": "1.0.0",
-    "@prelude/monad": "1.0.0",
-    "@prelude/trait": "1.0.0"
+    "@prelude/data-trait": "1.0.0",
+    "@prelude/trait-applicative": "1.0.0",
+    "@prelude/trait-functor": "1.0.0",
+    "@prelude/trait-monad": "1.0.0"
   }
 }
