@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations*/
 import {extension}      from "@prelude/trait";
 import {curry, compose} from "@prelude/function";
 import {Functor, map}   from "@prelude/functor";
@@ -5,73 +6,99 @@ import {Applicative}    from "@prelude/applicative";
 import {Monad, flatMap} from "@prelude/monad";
 
 /**
- * @template S
- * @template M
- * @template A
- * @param {function(S): M<[A, S]>} s
+ * @template {Monad} M
+ * @template A, S
+ * @param {StateT<S, M, A>} mStateT
+ * @param {S} state
+ * @returns {M<[A, S]>}
  */
-export function StateT(s) {
-  if (new.target === undefined) {
-    return new StateT(s);
-  }
-  else {
-    this.value = s;
-  }
-}
-
-extension(StateT.prototype, {
-  [Functor.map](f) {
-    return StateT(compose(
-      map(([x, s]) => [f(x), s]),
-      runStateT(this)
-    ));
-  },
-
-  [Applicative.apply](sx) {
-    return StateT(compose(
-      flatMap(([f, s]) => map(
-        ([x, s]) => [f(x), s],
-        runStateT(sx, s)
-      )),
-      runStateT(this)
-    ));
-  },
-
-  [Monad.flatMap](k) {
-    return StateT(compose(
-      flatMap(([x, s]) => runStateT(k(x), s)),
-      runStateT(this)
-    ));
-  }
-});
+const runStateT_ = (mStateT, state) => mStateT.value(state);
+export const runStateT = curry(runStateT_);
 
 /**
- * @template S
- * @template M
- * @template A
- * @param {StateT<S, M, A>} mstateT
+ * @template {Monad} M
+ * @template A, S
+ * @param {StateT<S, M, A>} mStateT
  * @param {S} state
- * @return {M<[A, S]>}
+ * @return {M<A>}
  */
-export const runStateT = curry((mstateT, state) => mstateT.value(state));
+const evalStateT_ = (mStateT, state) =>
+  map(([_, s]) => s, runStateT_(mStateT, state));
+export const evalStateT = curry(evalStateT_);
+
+/**
+ * @template {Monad} M
+ * @template A, S
+ * @param {StateT<S, M, A>} mStateT
+ * @param {S} state
+ * @return {M<A>}
+ */
+const execStateT_ = (mStateT, state) =>
+  map(([a, _]) => a, runStateT_(mStateT, state));
+export const execStateT = curry(execStateT_);
 
 /**
  *
  * @param {*} M
  */
-export const castStateT = M => {
+export const getStateT = M => {
   if (!ts.has(M)) {
-    const pure  = x => StateT(s => M([x, s]));
-    const state = f => StateT(compose(M, f));
-    ts.set(M, {
-      pure,
-      state,
-      get: () => state(s => ([s, s])),
-      put: s => state(_ => M([{}, s])),
-      modify: f => state(s => M([{}, f(s)]))
-    });
+    ts.set(M, makeStateT(M));
   }
   return ts.get(M);
+};
+
+const makeStateT = M => {
+  /**
+   * @template {Monad} M
+   * @template A, S
+   * @param {function(S): M<[A, S]>} runner
+   */
+  function StateT(runner) {
+    if (new.target === undefined) {
+      return new StateT(runner);
+    }
+    else {
+      this.value = runner;
+    }
+  }
+
+  extension(StateT.prototype, {
+    [Functor.map](f) {
+      return StateT(compose(
+        map(([x, s]) => [f(x), s]),
+        runStateT(this)
+      ));
+    },
+
+    [Applicative.pure](x) {
+      return StateT(s => M([x, s]));
+    },
+
+    [Applicative.apply](sx) {
+      return StateT(compose(
+        flatMap(([f, s]) => map(
+          ([x, s]) => [f(x), s],
+          runStateT_(sx, s)
+        )),
+        runStateT(this)
+      ));
+    },
+
+    [Monad.flatMap](k) {
+      return StateT(compose(
+        flatMap(([x, s]) => runStateT_(k(x), s)),
+        runStateT(this)
+      ));
+    }
+  });
+
+  const state = f => StateT(compose(M, f));
+  const get = () => state(s => ([s, s]));
+  const put = s => state(_ => ([{}, s]));
+  const modify = f => state(s => ([{}, f(s)]));
+
+  return {StateT, state, get, put, modify};
 };
 
 const ts = new WeakMap();
