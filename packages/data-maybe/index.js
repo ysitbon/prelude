@@ -1,23 +1,23 @@
-import {extension}   from "@prelude/trait";
+import {extension}   from "@prelude/data-trait";
 import {Functor}     from "@prelude/trait-functor";
 import {Applicative} from "@prelude/trait-applicative";
 import {Monad}       from "@prelude/trait-monad";
 
 /**
- * The `Maybe` type encapsulates an optional value. A value of type `Maybe`
- * either contains a value of type `a`, represented as `Just<a>`, or it is
- * empty, represented as `Nothing`. Using `Maybe` is a good way to deal with
- * errors or exceptional cases without resorting to drastic measures such
+ * `Maybe<A>` type encapsulates an optional value. A value of type `Maybe<A>`
+ * either contains a value of type `A`, represented as `Just<A>`, or it is
+ * empty and represented as `Nothing`. Using `Maybe` is a good way to deal
+ * with errors or exceptional cases without resorting to drastic measures such
  * as error.
  *
- * @template a
- * @class Maybe<a>
- * @param {a} x
+ * @template A
+ * @class Maybe<A>
+ * @param {A} value
  * @constructor
  */
-function Maybe(x) {
+function Maybe(value) {
   if (this instanceof Just || this instanceof Nothing) {
-    this.value = x;
+    this.value = value;
   }
   else {
     throw new TypeError("Data type violation.");
@@ -47,11 +47,11 @@ extension(Maybe.prototype,  {
    * @param {A} value
    * The value to convert.
    *
-   * @returns {Maybe<a>}
+   * @returns {Maybe<A>}
    * Returns the converted value to `Maybe`.
    */
   [Applicative.pure](value) {
-    return (value == null)
+    return (value == null || "number" === typeof value && Number.isNaN(value))
       ? NothingSingleton
       : new Just(value);
   },

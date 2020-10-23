@@ -1,19 +1,26 @@
-### `@prelude/monad-identity`
+# Maybe
 
-The `Identity` monad is a monad that without any computational strategy. It just 
-applies functions to its input without any additional modification. It is mainly 
-defined for its fundamental role in the theory of monad transformers. Any monad 
-transformer applied to the `Identity` monad yields to a non-transformer version 
-of that monad.
+The `Maybe<A>` type encapsulates an optional value. A value of type `Maybe<A>`
+either contains a value of type `A`, represented as `Just<A>`, or it is
+empty, represented as `Nothing`. Using `Maybe<A>` is a good way to deal with
+errors or exceptional cases without resorting to drastic measures such
+as error.
  
-#### Usage
+## Usage
 
 ```js
-import {Identity} from "../data-identity";
-import {map}      from "@prelude/functor";
+import {Maybe} from "@prelude/data-maybe";
+import {pure}  from "@prelude/trait-applicative";
+import {map}   from "@prelude/trait-functor";
 
-Identiy(1)
-  |> map(x => x * 2)
-  |> map(x => x + 1)
-// => 3
+const safeDiv = (x, y) => y === 0
+  ? Nothing
+  : (x / y) |> pure(Maybe);
+
+safeDiv(NaN, 2);
+// => Nothing
+safeDiv(4, 0);
+// => Nothing
+safeDiv(4, 2);
+// => Just(2)
 ```
