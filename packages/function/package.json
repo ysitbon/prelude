@@ -6,7 +6,6 @@
   "homepage": "",
   "license": "Apache 2.0",
   "main": "index.js",
-  "type": "module",
   "directories": {
     "test": "test"
   },
@@ -24,6 +23,7 @@
     "url": "https://github.com/ysaskia/prelude/issues"
   },
   "devDependencies": {
+    "@prelude/babel": "^1.0.0",
     "c8": "^7.3.4",
     "chai": "^4.2.0",
     "mocha": "^8.2.0"
