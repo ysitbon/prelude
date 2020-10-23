@@ -5,7 +5,7 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "install": "npm-run-all clean bootstrap",
+    "install": "npm-run-all link clean bootstrap",
     "init": "lerna init",
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
