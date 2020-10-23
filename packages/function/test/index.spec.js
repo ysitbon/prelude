@@ -72,13 +72,14 @@ describe("@prelude/function", () => {
     });
   });
 
-  it("until(p, f, r)", () => {
-    const f = until(
-      cs => cs.charAt(0) === "h",
-      cs => cs.slice(1)
-    );
+  describe("until(p, f, r)", () => {
     it("should call [f] and [p] until [p] is not true", () => {
-      expect(f("goodbye!hello world!")).to.equal("hello world!");
+      const value = until(
+        cs => cs.charAt(0) === "h",
+        cs => cs.slice(1),
+        "goodbye!hello world!"
+      );
+      expect(value).to.equal("hello world!");
     });
   });
 });
