@@ -4,34 +4,47 @@ import {flatMap}              from "@prelude/trait-monad";
 import {Identity}             from "@prelude/data-identity";
 import {getStateT, runStateT} from "../lib/index.js";
 import chai                   from "chai";
-const {expect} = chai;
 
-describe("@prelude/state-transformer", () => {
-  describe("map(fn, functor)", () => {
-    const {put, get, modify} = getStateT(Identity);
+describe("@prelude/data-state-transformer", () => {
+  const {put, get, modify, state} = getStateT(Identity);
 
-    it("get", () => {
-      const state = get()
-        |> map(x => x + 1);
-      expect(runStateT(state, 1).value)
-        .to.be.deep.equal([2, 1]);
+  describe("get()", () => {
+    it("should returns state value for both elements", () => {
+      const state = get();
+      chai.expect(runStateT(state, 1).value)
+        .to.be.deep.equal([1, 1]);
     });
-    it("put", () => {
+  });
+
+  describe("put(state)", () => {
+    it("should returns unit and new [state]", () => {
       const state = put(4);
-      expect(runStateT(state, 1).value)
+      chai.expect(runStateT(state, 1).value)
         .to.be.deep.equal([{}, 4]);
     });
-    it("modify", () => {
+  });
+
+  describe("modify(fn)", () => {
+    it("should returns unit and new computed state", () => {
       const state = modify(x => x + 1);
-      expect(runStateT(state, 1).value)
+      chai.expect(runStateT(state, 1).value)
         .to.be.deep.equal([{}, 2]);
     });
-    it("chain1", () => {
-      const state = get()
-        |> map(x => x + 1)
-        |> flatMap(x => put(4) |> map(_ => x));
-      expect(runStateT(state, 1).value)
-        .to.be.deep.equal([2, 4]);
+  });
+
+  describe("[Functor.map](fn, stateT)", () => {
+    it("should map first element", () => {
+      const s = get() |> map(x => x + 1);
+      chai.expect(runStateT(s, 1).value)
+        .to.be.deep.equal([2, 1]);
+    });
+  });
+
+  describe("[Monad.flatMap](fn, stateT)", () => {
+    it("should bind [fn] to first element", () => {
+      const s = get() |> flatMap(x => state(_ => [x + 1, x]));
+      chai.expect(runStateT(s, 1).value)
+        .to.be.deep.equal([2, 1]);
     });
   });
 });
