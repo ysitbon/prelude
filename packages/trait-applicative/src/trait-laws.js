@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {identity, pipe} from "@prelude/data-function";
-import {apply, pure}    from "../lib/index.js";
+import {apply, pure}    from "./index.js";
 import chai             from "chai";
 const {expect} = chai;
 

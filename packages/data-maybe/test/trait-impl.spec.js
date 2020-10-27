@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
-  mapMaybe}  from "../lib/index.js";
+  mapMaybe, catMaybes}  from "../lib/index.js";
 import * as functor     from "@prelude/trait-functor/lib/trait-laws.js";
 import * as applicative from "@prelude/trait-applicative/lib/trait-laws.js";
 import * as monad       from "@prelude/trait-monad/lib/trait-laws.js";
@@ -51,6 +51,14 @@ describe("@prelude/data-maybe", () => {
         ? Just(x)
         : Nothing();
       expect([1, 2, 3, 4] |> mapMaybe(keepEven))
+        .to.be.deep.equal([2, 4]);
+    });
+  });
+
+  describe("catMaybes(xs)", () => {
+    it("should return an array containing only values " +
+      "from [Just] elements", () => {
+      expect([Nothing(), Just(2), Nothing(), Just(4)] |> catMaybes)
         .to.be.deep.equal([2, 4]);
     });
   });

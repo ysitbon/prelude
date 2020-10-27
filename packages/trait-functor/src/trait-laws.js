@@ -1,7 +1,7 @@
 /*eslint-env mocha*/
-import chai             from "chai";
 import {identity, pipe} from "@prelude/data-function";
-import {map}            from "../lib/index.js";
+import {map}            from "./index.js";
+import chai             from "chai";
 const {expect} = chai;
 
 export const testLaw = functor => {
