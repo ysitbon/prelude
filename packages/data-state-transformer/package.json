@@ -5,7 +5,11 @@
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
   "homepage": "https://github.com/ysaskia/prelude#readme",
   "license": "Apache 2.0",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
   },
@@ -14,12 +18,15 @@
     "url": "git+https://github.com/ysaskia/prelude.git"
   },
   "scripts": {
-    "test": "c8 mocha"
+    "test": "c8 mocha",
+    "build": "babel --root-mode upward src --out-dir lib",
+    "watch": "babel --root-mode upward src --watch --out-dir lib"
   },
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "@prelude/babel": "^1.0.0",
     "@prelude/data-identity": "1.0.0",
     "c8": "^7.3.4",

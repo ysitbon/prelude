@@ -1,11 +1,10 @@
 {
+  "sourceMaps": true,
   "plugins": [
+    "@babel/plugin-transform-modules-commonjs",
     [
       "@babel/plugin-proposal-pipeline-operator",
       { "proposal": "minimal" }
-    ],
-    [
-      "@babel/plugin-transform-modules-commonjs"
     ]
   ]
 }

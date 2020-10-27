@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {extension}              from "@prelude/data-trait";
-import {Functor, map, constMap} from "../index.js";
+import {Functor, map, constMap} from "../lib/index.js";
 import chai                     from "chai";
 import sinon                    from "sinon";
 import sinonChai                from "sinon-chai";

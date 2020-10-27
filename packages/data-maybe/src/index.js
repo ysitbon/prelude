@@ -1,3 +1,4 @@
+import {curry}       from "@prelude/data-function";
 import {extension}   from "@prelude/data-trait";
 import {Functor}     from "@prelude/trait-functor";
 import {Applicative} from "@prelude/trait-applicative";
@@ -25,7 +26,7 @@ function Maybe(value) {
 }
 
 /** @lends {Maybe.prototype} */
-extension(Maybe.prototype,  {
+extension(Maybe.prototype, {
   /**
    * @template A, B
    * @this Maybe<A>
@@ -57,10 +58,16 @@ extension(Maybe.prototype,  {
   },
 
   /**
+   * Sequential application over a {@link Maybe} value.
+   *
    * @template A, B
    * @this Maybe<function(A): B>
    * @param {Maybe<A>} functor
+   * A {@link Functor} where each elements will be applied to the function
+   * matching the element of this array.
+   *
    * @returns {Maybe<B>}
+   * Returns the results of function application into a new {@link Array}.
    */
   [Applicative.apply](functor) {
     return isJust(this)
@@ -151,7 +158,7 @@ export const isNothing = maybe => maybe instanceof Nothing;
  * @returns {A}
  */
 export const fromJust = maybe => {
-  if (isJust(maybe))
+  if (maybe |> isJust)
     return maybe.value;
   else
     throw new TypeError("Nothing cannot be converted to any value");
@@ -167,9 +174,10 @@ export const fromJust = maybe => {
  * @param {Maybe<A>} maybe
  * @returns {A}
  */
-export const fromMaybe = (defaultValue, maybe) => isJust(maybe)
+export const fromMaybe = curry((defaultValue, maybe) => maybe |> isJust
   ? maybe.value
-  : defaultValue;
+  : defaultValue
+);
 
 /**
  * The `mapMaybe()` function is a version of `map()` which can throw out
@@ -182,14 +190,14 @@ export const fromMaybe = (defaultValue, maybe) => isJust(maybe)
  * @param {A[]} xs
  * @returns {B[]}
  */
-export const mapMaybe = (fn, xs) => xs.reduce(
-  (ys, x) => {
-    const my = fn(x);
-    if (isJust(my)) ys.push(my.value);
-    return ys;
+export const mapMaybe = curry((fn, xs) => xs.reduce(
+  (out, x) => {
+    const maybe = fn(x);
+    if (maybe |> isJust) out.push(maybe.value);
+    return out;
   },
   []
-);
+));
 
 /**
  * Takes an array of `Maybe` and returns an array of all the `Just` values.

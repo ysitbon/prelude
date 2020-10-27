@@ -1,5 +1,5 @@
 /*eslint-env mocha*/
-import {Applicative, apply, pure} from "../index.js";
+import {Applicative, apply, pure} from "../lib/index.js";
 import {extension}                from "@prelude/data-trait";
 import {Functor}                  from "@prelude/trait-functor";
 import chai                       from "chai";
@@ -15,31 +15,32 @@ describe("@prelude/applicative", () => {
 
   describe("apply(functor, applicative)", () => {
     const add = sinon.spy(x => x + 1);
+    const val = Identity(1);
 
     beforeEach(() => sandbox.spy(Identity.prototype, Applicative.apply));
     afterEach(() => add.resetHistory());
 
     it("should call the [Applicative.apply] symbol", () => {
-      apply(new Identity(1), new Identity(add));
+      Identity(add) |> apply(val);
       expect(Identity.prototype[Applicative.apply])
         .to.have.been.calledOnce;
     });
 
     it( "should call the [applicative] inner function", () => {
-      apply(new Identity(1), new Identity(add));
+      Identity(add) |> apply(val);
       expect(add).to.have.been.calledOnce;
     });
 
     it( "should call the [applicative] inner function " +
        "with inner [functor] value", () => {
-      apply(new Identity(1), new Identity(add));
+      Identity(add) |> apply(val);
       expect(add).to.have.been.calledWith(1);
     });
 
     it( "should returns the computation result " +
        "wrapped into the input [Functor]", () => {
-      expect(apply(new Identity(1), new Identity(add)))
-        .to.deep.equal(new Identity(2));
+      expect(Identity(add) |> apply(val))
+        .to.deep.equal(Identity(2));
     });
   });
 
@@ -47,13 +48,13 @@ describe("@prelude/applicative", () => {
     beforeEach(() => sandbox.spy(Identity.prototype, Applicative.pure));
 
     it("should call the [Applicative.pure] symbol", () => {
-      pure(Identity, 1);
+      1 |> pure(Identity);
       expect(Identity.prototype[Applicative.pure]).to.have.been.calledOnce;
     });
 
     it("should wrap the passed value into the input " +
        "[FunctorConstructor]", () => {
-      expect(pure(Identity, 1)).to.deep.equal(new Identity(1));
+      expect(1 |> pure(Identity)).to.deep.equal(Identity(1));
     });
   });
 

@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
-import {map, constMap} from "../index.js";
-import {testLaw}       from "./trait-laws.js";
+import {map, constMap} from "../lib/index.js";
+import {testLaw}       from "../lib/trait-laws.js";
 import chai            from "chai";
 import sinon           from "sinon";
 import sinonChai       from "sinon-chai";
@@ -25,7 +25,7 @@ describe("@prelude/functor", () => {
       after(() => add.resetHistory());
     });
 
-    describe("constMap(value, array): Array<B>", () => {
+    describe("constMap(value, array)", () => {
       it("should returns a new array containing " +
          "the input [value] for each items", () => {
         expect(constMap(4, [1, 2, 3])).to.deep.equal([4, 4, 4]);

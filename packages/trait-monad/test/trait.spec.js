@@ -2,7 +2,7 @@
 import {extension}      from "@prelude/data-trait";
 import {Functor}        from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
-import {Monad, flatMap} from "../index.js";
+import {Monad, flatMap} from "../lib/index.js";
 import chai             from "chai";
 import sinon            from "sinon";
 import sinonChai        from "sinon-chai";

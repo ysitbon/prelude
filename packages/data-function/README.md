@@ -13,9 +13,11 @@ Identity function which returns the passed argument.
 Creates a unary function which evaluates to `x` for all inputs.
 
 ```js
-const fill = pipe(constant, map);
-fill(42)(new Array(4));
-// => [42, 42, 42, 42]
+import {constant} from "@prelude/data-function";
+
+const trueFn = constant(true);
+trueFn(false);
+// => true
 ```
 
 #### curry()
@@ -41,16 +43,16 @@ The new created function takes the same amount of arguments than the first
 composed function to call and is also curried.
 
 ```js
-const fullName = compose(
-   intersperse(" "),
-   map(cap),
-   props("firstName", "lastName")
-);
+import {compose, curry} from "@prelude/data-function";
 
-getUser(1)
-  .then(fullName)
-  .then(console.log)
-// => "John Doe"
+const add = curry((x, y) => x + y);
+const tpl = curry((str, val) => `${str}: ${val}`);
+const incr = compose(
+  tpl("Value"),
+  add(1),
+);
+incr(1);
+// => "Value: 2"
 ```
 
 #### pipe()
@@ -60,16 +62,16 @@ The new created function takes the same amount of arguments than the first
 composed function to call and is also curried.
 
 ```js
-const fullName = pipe(
-   props("firstName", "lastName"),
-   map(cap),
-   intersperse(" ")
-);
+import {pipe, curry} from "@prelude/data-function";
 
-getUser(1)
-  .then(fullName)
-  .then(console.log)
-// => "John Doe"
+const add = curry((x, y) => x + y);
+const tpl = curry((str, val) => `${str}: ${val}`);
+const incr = pipe(
+  add(1),
+  tpl("Value")
+);
+incr(1);
+// => "Value: 2"
 ```
 
 #### flip()
@@ -78,9 +80,12 @@ Flips the arguments in reverse order of a function. The created function's
 curried.
 
 ```js
-const add = curry((x, y) => x + " " + y);
-const addRight = flip(add);
-addRight("hello", "world");
+import {flip} from "@prelude/data-function";
+
+const addStr = (x, y) => x + " " + y;
+const addStrRight = addStr |> flip;
+
+addStrRight("hello", "world");
 // => "world hello"
 ```
 
@@ -90,10 +95,9 @@ Calls the function `f` until the predicate `p` matches. Each time `f` is
 computed, the returned value is used as the next input of `until` cycle.
 
 ```js
-until(
-  xs => head(xs) === 'c',
-  xs => tail(xs),
-  ['a', 'b', 'c', 'd']
-)
+import {until} from "@prelude/data-function";
+
+['a', 'b', 'c', 'd']
+  |> until(xs => xs[0] === 'c', ([_, ...xs]) => xs);
 // => ['c', 'd']
 ```

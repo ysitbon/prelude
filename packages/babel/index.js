@@ -1,6 +1,4 @@
+/*eslint-env node*/
 require('@babel/register')({
-  rootMode: "upward",
-  ignore: [
-    /node_modules\/(?:\@prelude)/
-  ]
+  rootMode: "upward"
 });

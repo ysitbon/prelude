@@ -1,17 +1,16 @@
 /*eslint-env mocha*/
 import {identity, pipe} from "@prelude/data-function";
-import {apply, pure}    from "../index.js";
+import {apply, pure}    from "../lib/index.js";
 import chai             from "chai";
 const {expect} = chai;
 
 export const testLaw = A => {
-  it("identity => apply(x, pure(id)) = x", () => {
+  it("Identity", () => {
     const x = pure(A, 1);
     expect(apply(x, pure(A, identity))).to.be.deep.equal(x);
   });
 
-  it("composition: pure(pipe) |> apply(u) |> apply(v) |> apply(w)" +
-    " = w |> apply(v |> apply(u))", () => {
+  it("Composition", () => {
     const u = pure(A, x => x + 1);
     const v = pure(A, x => x * 2);
     const w = pure(A, 1);
@@ -19,14 +18,14 @@ export const testLaw = A => {
       .to.be.deep.equal(apply(apply(w, u), v));
   });
 
-  it("homomorphism: pure(f) |> apply(pure(x)) = pure(f x)", () => {
+  it("Homomorphism", () => {
     const f = x => x + 1;
     const x = 1;
     expect(apply(pure(A, x), pure(A, f)))
       .to.be.deep.equal(pure(A, f(x)));
   });
 
-  it("interchange: u |> apply(pure(x)) = pure(f => f(x)) |> apply(u)", () => {
+  it("Interchange", () => {
     const u = pure(A, x => x + 1);
     const x = 1;
     expect(apply(pure(A, x), u))

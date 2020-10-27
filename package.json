@@ -5,10 +5,12 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "install": "npm-run-all link clean bootstrap",
+    "install": "npm-run-all link clean bootstrap build",
     "init": "lerna init",
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean --yes",
+    "build": "lerna run --parallel build",
+    "watch": "lerna run --parallel watch",
     "test": "c8 mocha",
     "link": "node \"./scripts/link.js\""
   },

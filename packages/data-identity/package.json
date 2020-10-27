@@ -5,7 +5,7 @@
   "author": "Yoann Sitbon <yoann@askia.com>",
   "homepage": "https://github.com/ysaskia/prelude#readme",
   "license": "Apache 2.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -17,9 +17,12 @@
     "url": "https://github.com/ysaskia/prelude/issues"
   },
   "scripts": {
-    "test": "c8 mocha"
+    "test": "c8 mocha",
+    "build": "babel --root-mode upward src --out-dir lib",
+    "watch": "babel --root-mode upward src --watch --out-dir lib"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "@prelude/babel": "^1.0.0",
     "c8": "^7.3.4",
     "chai": "^4.2.0",

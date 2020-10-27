@@ -2,7 +2,7 @@
 import {map}                  from "@prelude/trait-functor";
 import {flatMap}              from "@prelude/trait-monad";
 import {Identity}             from "@prelude/data-identity";
-import {getStateT, runStateT} from "../index.js";
+import {getStateT, runStateT} from "../lib/index.js";
 import chai                   from "chai";
 import sinon                  from "sinon";
 import sinonChai              from "sinon-chai";

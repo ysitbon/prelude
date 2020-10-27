@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
-import {flatMap} from "../index.js";
-import {testLaw} from "./trait-laws.js";
+import {flatMap} from "../lib/index.js";
+import {testLaw} from "../lib/trait-laws.js";
 import chai      from "chai";
 import sinon     from "sinon";
 import sinonChai from "sinon-chai";

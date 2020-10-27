@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {curry, compose, identity,
-  flip, constant, until, pipe} from "../index.js";
+  flip, constant, until, pipe} from "../lib/index.js";
 import chai from "chai";
 const {expect} = chai;
 
@@ -26,8 +26,8 @@ describe("@prelude/function", () => {
   });
 
   describe("compose(...fns)", () => {
-    const f = x => `${x  }!`;
-    const g = y => `${y  } world`;
+    const f = x => `${x}!`;
+    const g = y => `${y} world`;
 
     it("should call composed [fns] from right to left", () => {
       const h = compose(f, g);
@@ -59,7 +59,7 @@ describe("@prelude/function", () => {
 
   describe("flip(fn)", () => {
     it("should copy the input [fn] with its arguments reversed", () => {
-      const f = (x, y) => `${x  } ${  y}`;
+      const f = (x, y) => `${x} ${y}`;
       const g = flip(f);
       expect(g("world", "hello")).to.equal("hello world");
     });
