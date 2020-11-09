@@ -21,23 +21,24 @@ describe("@prelude/monad", () => {
     afterEach(() => add.resetHistory());
 
     it("should call the [Monad.flatMap] symbol", () => {
-      flatMap(add, new Identity(1));
+      Identity(1) |> flatMap(add);
       expect(Identity.prototype[Monad.flatMap]).to.have.been.calledOnce;
     });
 
     it("should call [fn]", () => {
-      flatMap(add, new Identity(1));
+      Identity(1) |> flatMap(add);
       expect(add).to.have.been.calledOnce;
     });
 
     it("should call [fn] with inner [monad] value", () => {
-      flatMap(add, new Identity(1));
+      Identity(1) |> flatMap(add);
       expect(add).to.have.been.calledWith(1);
     });
 
     it("should returns the computation result " +
        "wrapped into the input [Monad]", () => {
-      expect(flatMap(add, new Identity(1)).value).to.equal(2);
+      const result = Identity(1) |> flatMap(add);
+      expect(result.value).to.equal(2);
     });
   });
 
