@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {compose, identity,
-  flip, constant, until, pipe} from "../src";
+  flip, constant, until, pipe} from "../src/index.js";
 import chai from "chai";
 const {expect} = chai;
 
@@ -33,13 +33,13 @@ describe("@prelude/function", () => {
      * @param {A} x
      * @return {string}
      */
-    const f = <A>(x: A): string => `${x}!`;
+    const f = x => `${x}!`;
     /**
      * @template A
      * @param {*} y
      * @return {string}
      */
-    const g = (y: string): string => `${y} world`;
+    const g = y => `${y} world`;
 
     it("should call piped [fns] from left to right", () => {
       const h = pipe(g)(f);

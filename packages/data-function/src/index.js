@@ -8,9 +8,9 @@
  * @returns {A}
  * Returns the passed argument.
  */
-export const identity = <A>(x: A): A => x;
+export const identity = x => x;
 
-export const compose = <A, B, C>(f: (x: B) => C) => (g: (x: A) => B) => (x: A): C => f(g(x));
+export const compose = f => g => x => f(g(x));
 
 /**
  * Composes at least two functions from left to right and returns a new
@@ -45,7 +45,7 @@ export const composeAll = (...fns) => x => fns
  * @template A, B, C
  * @type {function(function(B): C): function(function(A): B): function(A): C}
  */
-export const pipe = <A, B, C>(f: (x: A) => B) => (g: (x: B) => C) => (x: A): C => g(f(x));
+export const pipe = f => g => x => g(f(x));
 
 /**
  * Composes at least two functions from left to right and returns a new
@@ -95,7 +95,7 @@ export const pipeAll = (...fns) => x => fns
  * @returns {function(B): function(A): C}
  * Returns the flipped function.
  */
-export const flip = <A, B, C>(fn: (x: A) => (y: B) => C) => (y: B) => (x: A): C => fn(x)(y);
+export const flip = fn => y => x => fn(x)(y);
 
 /**
  * Creates an unary function which evaluates to `x` for all inputs.
@@ -114,7 +114,7 @@ export const flip = <A, B, C>(fn: (x: A) => (y: B) => C) => (y: B) => (x: A): C 
  * @returns {function(B): A}
  * Returns the constant function.
  */
-export const constant = <A, B>(x: A) => (_: B): A => x;
+export const constant = x => _ => x;
 
 /**
  * Calls the function `f` until the predicate `p` matches. Each times `f` is
@@ -136,7 +136,7 @@ export const constant = <A, B>(x: A) => (_: B): A => x;
  * - The function computed after the predicate `p` returned `false`.
  * - The value to pass over the to the predicate `p` and the function `f`.
  */
-export let until = <A>(p: (x: A) => boolean) => (f: (x: A) => A) => (x: A): A => {
+export const until = p => f => x => {
   let curr = x;
   while (!p(curr)) curr = f(curr);
   return curr;
