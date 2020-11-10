@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="@prelude/trait-monad" type="mocha-javascript-test-runner" nameIsGenerated="true">
+    <node-interpreter>project</node-interpreter>
+    <node-options />
+    <mocha-package>$PROJECT_DIR$/packages/trait-monad/node_modules/mocha</mocha-package>
+    <working-directory>$PROJECT_DIR$/packages/trait-monad</working-directory>
+    <pass-parent-env>true</pass-parent-env>
+    <ui>bdd</ui>
+    <extra-mocha-options />
+    <test-kind>SUITE</test-kind>
+    <test-file>$PROJECT_DIR$/packages/trait-monad/test/trait.spec.js</test-file>
+    <test-names>
+      <name value="@prelude/trait-monad" />
+    </test-names>
+    <method v="2" />
+  </configuration>
+</component>

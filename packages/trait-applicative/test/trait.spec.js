@@ -8,7 +8,7 @@ import sinonChai                  from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
 
-describe("@prelude/applicative", () => {
+describe("@prelude/trait-applicative", () => {
   const sandbox = sinon.createSandbox();
 
   afterEach(() => sandbox.restore());

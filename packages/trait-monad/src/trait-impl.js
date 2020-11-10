@@ -23,7 +23,7 @@ extension(Array.prototype, {
   [Monad.flatMap](fn) {
     const ln = this.length;
     const ys = [];
-    for (let i = 0; i < ln; ++i) ys.push(...fn(this[i]));
+    for (let i = 0; i < ln; ++i) ys.push(...fn.call(this, this[i]));
     return ys;
   }
 });

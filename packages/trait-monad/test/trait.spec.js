@@ -9,7 +9,7 @@ import sinonChai        from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
 
-describe("@prelude/monad", () => {
+describe("@prelude/trait-monad", () => {
   const sandbox = sinon.createSandbox();
 
   afterEach(() => sandbox.restore());

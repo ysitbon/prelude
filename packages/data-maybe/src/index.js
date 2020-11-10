@@ -35,7 +35,7 @@ extension(Maybe.prototype, {
    */
   [Functor.map](fn) {
     return isJust(this)
-      ? this[Applicative.pure](fn(this.value))
+      ? this[Applicative.pure](fn.call(this, this.value))
       : this;
   },
 
@@ -83,7 +83,7 @@ extension(Maybe.prototype, {
    */
   [Monad.flatMap](fn) {
     return isJust(this)
-      ? fn(this.value)
+      ? fn.call(this, this.value)
       : this;
   }
 });
@@ -174,10 +174,9 @@ export const fromJust = maybe => {
  * @param {Maybe<A>} maybe
  * @returns {A}
  */
-export const fromMaybe = curry((defaultValue, maybe) => maybe |> isJust
+export const fromMaybe = defaultValue => maybe => maybe |> isJust
   ? maybe.value
-  : defaultValue
-);
+  : defaultValue;
 
 /**
  * The `mapMaybe()` function is a version of `map()` which can throw out
@@ -190,14 +189,14 @@ export const fromMaybe = curry((defaultValue, maybe) => maybe |> isJust
  * @param {A[]} xs
  * @returns {B[]}
  */
-export const mapMaybe = curry((fn, xs) => xs.reduce(
+export const mapMaybe = fn => xs => xs.reduce(
   (out, x) => {
     const maybe = fn(x);
     if (maybe |> isJust) out.push(maybe.value);
     return out;
   },
   []
-));
+);
 
 /**
  * Takes an array of `Maybe` and returns an array of all the `Just` values.

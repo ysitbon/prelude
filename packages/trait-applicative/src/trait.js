@@ -38,19 +38,19 @@ export const Applicative = trait({
  *
  * @template {Applicative & Functor} F
  * @template A, B
- * @param {F<A>} functor
+ * @param {F<A>} functorArg
  * A {@link Functor} where each elements will be applied to the function
  * matching the element of in input `functorFn`.
  *
- * @param {F<function(A): B>} fn
+ * @param {F<function(A): B>} functorFn
  * A {@link Functor} where each elements are function which will receive values
  * from `functorArg` as argument.
  *
  * @returns {F<B>}
  * Returns the results of function application into a new {@link Functor}.
  */
-export const apply = curry((functorArg, functorFn) =>
-  functorFn[Applicative.apply](functorArg));
+export const apply = functorArg => functorFn =>
+  functorFn[Applicative.apply](functorArg);
 
 /**
  * Lift a `value` into a pure {Applicative} functor.
@@ -66,6 +66,6 @@ export const apply = curry((functorArg, functorFn) =>
  * @returns {A<T>}
  * Returns the boxed value.
  */
-export const pure = curry((F, value) =>
-  F.prototype[Applicative.pure](value));
+export const pure = F => value =>
+  F.prototype[Applicative.pure](value);
 

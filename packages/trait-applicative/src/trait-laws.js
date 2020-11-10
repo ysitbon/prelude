@@ -8,37 +8,37 @@ export const testLaw = A => {
 
   it("Identity", () => {
     const x = 1 |> pure(A);
-    assert.ok(eq(
+    assert.deepStrictEqual(
       identity |> pure(A) |> apply(x),
       x
-    ));
+    );
   });
 
   it("Composition", () => {
     const u = (x => x + 1) |> pure(A);
     const v = (x => x * 2) |> pure(A);
     const w = 1 |> pure(A);
-    assert.ok(eq(
+    assert.deepStrictEqual(
       pipe |> pure(A) |> apply(u) |> apply(v) |> apply(w),
-      u |> apply(w) |> apply(v)
-    ));
+      v |> apply(u |> apply(w))
+    );
   });
 
   it("Homomorphism", () => {
     const f = x => x + 1;
     const x = 1;
-    assert.ok(eq(
+    assert.deepStrictEqual(
       f |> pure(A) |> apply(x |> pure(A)),
       f(x) |> pure(A)
-    ));
+    );
   });
 
   it("Interchange", () => {
-    const u = pure(A, x => x + 1);
+    const u = (x => x + 1) |> pure(A);
     const x = 1;
-    assert.ok(eq(
+    assert.deepStrictEqual(
       u |> apply(x |> pure(A)),
       (f => f(x)) |> pure(A) |> apply(u)
-    ));
+    );
   });
 };

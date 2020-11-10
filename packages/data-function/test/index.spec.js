@@ -4,7 +4,7 @@ import {compose, identity,
 import chai from "chai";
 const {expect} = chai;
 
-describe("@prelude/function", () => {
+describe("@prelude/data-function", () => {
   describe("identity(value)", () => {
     it("should returns the passed [value]", () => {
       expect(identity("hello world!")).to.equal("hello world!");

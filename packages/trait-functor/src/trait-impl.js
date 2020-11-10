@@ -21,7 +21,7 @@ extension(Array.prototype, {
   [Functor.map](fn) {
     const xs = [];
     const l  = this.length;
-    for (let i = 0; i < l; ++i) xs.push(fn(this[i]));
+    for (let i = 0; i < l; ++i) xs.push(fn.call(this, this[i]));
     return xs;
   }
 });

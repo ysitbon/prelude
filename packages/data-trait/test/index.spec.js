@@ -1,9 +1,9 @@
 /*eslint-env mocha,es6*/
-import {implement, trait, extension, deriving} from "../lib/index.js";
+import {implement, trait, extension, deriving} from "../src/index.js";
 import chai                                    from "chai";
 const {expect} = chai;
 
-describe("@prelude/trait", () => {
+describe("@prelude/data-trait", () => {
   describe("trait(source, ...deriving)", () => {
     const key1 = Symbol();
     const key2 = Symbol();
