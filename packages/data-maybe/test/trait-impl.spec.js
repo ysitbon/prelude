@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
-  mapMaybe, catMaybes}  from "../lib/index.js";
+  mapMaybe, catMaybes}  from "../src/index.js";
 import * as functor     from "@prelude/trait-functor/lib/trait-laws.js";
 import * as applicative from "@prelude/trait-applicative/lib/trait-laws.js";
 import * as monad       from "@prelude/trait-monad/lib/trait-laws.js";
@@ -16,7 +16,6 @@ describe("@prelude/data-maybe", () => {
       expect(Nothing() |> isJust).to.be.false;
     });
   });
-
   describe("isNothing()", () => {
     it("should return [true] when [Nothing]", () => {
       expect(Just(1) |> isNothing).to.be.false;
@@ -25,7 +24,6 @@ describe("@prelude/data-maybe", () => {
       expect(Nothing() |> isNothing).to.be.true;
     });
   });
-
   describe("fromJust()", () => {
     it("should return inner [value] when [Just]", () => {
       expect(Just(1) |> fromJust).to.be.equal(1);
@@ -34,7 +32,6 @@ describe("@prelude/data-maybe", () => {
       expect(() => Nothing() |> fromJust).to.throw();
     });
   });
-
   describe("fromMaybe(defaultValue)", () => {
     it("should return inner [value] when [Just]", () => {
       expect(Just(1) |> fromMaybe(0)).to.be.equal(1);
@@ -43,7 +40,6 @@ describe("@prelude/data-maybe", () => {
       expect(Nothing() |> fromMaybe(0)).to.be.equal(0);
     });
   });
-
   describe("mapMaybes(fn, xs)", () => {
     it("should return an array containing only values " +
        "where [fn] returned [Just]", () => {
@@ -54,7 +50,6 @@ describe("@prelude/data-maybe", () => {
         .to.be.deep.equal([2, 4]);
     });
   });
-
   describe("catMaybes(xs)", () => {
     it("should return an array containing only values " +
       "from [Just] elements", () => {
@@ -62,10 +57,16 @@ describe("@prelude/data-maybe", () => {
         .to.be.deep.equal([2, 4]);
     });
   });
-
-  describe("impl Maybe.prototype", () => {
-    describe("Functor laws", () => functor.testLaw(Just(1)));
-    describe("Applicative laws", () => applicative.testLaw(Just));
-    describe("Monad laws", () => monad.testLaw(Just));
-  });
+  describe(
+    "impl Maybe.prototype for @prelude/functor",
+    () => functor.testLaw(Just(1))
+  );
+  describe(
+    "impl Maybe.prototype for @prelude/applicative",
+    () => applicative.testLaw(Just)
+  );
+  describe(
+    "impl Maybe.prototype for @prelude/monad",
+    () => monad.testLaw(Just)
+  );
 });

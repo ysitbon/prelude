@@ -1,34 +1,44 @@
 /*eslint-env mocha*/
 import {identity, pipe} from "@prelude/data-function";
 import {apply, pure}    from "./index.js";
-import chai             from "chai";
-const {expect} = chai;
+import assert           from "assert";
 
 export const testLaw = A => {
+  const eq = (x, y) => x === y;
+
   it("Identity", () => {
-    const x = pure(A, 1);
-    expect(apply(x, pure(A, identity))).to.be.deep.equal(x);
+    const x = 1 |> pure(A);
+    assert.deepStrictEqual(
+      identity |> pure(A) |> apply(x),
+      x
+    );
   });
 
   it("Composition", () => {
-    const u = pure(A, x => x + 1);
-    const v = pure(A, x => x * 2);
-    const w = pure(A, 1);
-    expect(pipe(apply(u), apply(v), apply(w))(pure(A, pipe)))
-      .to.be.deep.equal(apply(apply(w, u), v));
+    const u = (x => x + 1) |> pure(A);
+    const v = (x => x * 2) |> pure(A);
+    const w = 1 |> pure(A);
+    assert.deepStrictEqual(
+      pipe |> pure(A) |> apply(u) |> apply(v) |> apply(w),
+      v |> apply(u |> apply(w))
+    );
   });
 
   it("Homomorphism", () => {
     const f = x => x + 1;
     const x = 1;
-    expect(apply(pure(A, x), pure(A, f)))
-      .to.be.deep.equal(pure(A, f(x)));
+    assert.deepStrictEqual(
+      f |> pure(A) |> apply(x |> pure(A)),
+      f(x) |> pure(A)
+    );
   });
 
   it("Interchange", () => {
-    const u = pure(A, x => x + 1);
+    const u = (x => x + 1) |> pure(A);
     const x = 1;
-    expect(apply(pure(A, x), u))
-      .to.be.deep.equal(apply(u, pure(A, f => f(x))));
+    assert.deepStrictEqual(
+      u |> apply(x |> pure(A)),
+      (f => f(x)) |> pure(A) |> apply(u)
+    );
   });
 };

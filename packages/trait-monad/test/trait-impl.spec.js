@@ -7,25 +7,23 @@ import sinonChai from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
 
-describe("@prelude/monad", () => {
-  describe("impl Array.prototype", () => {
-    describe("flatMap(fn, array)", () => {
-      const add = sinon.spy(x => [x + 1, x + 2, x + 3]);
+describe("impl Array.prototype for @prelude/trait-monad", () => {
+  describe("flatMap(fn, array)", () => {
+    const add = sinon.spy(x => [x + 1, x + 2, x + 3]);
 
-      afterEach(() => add.resetHistory());
+    afterEach(() => add.resetHistory());
 
-      it("should call [fn] for each items of [array]", () => {
-        flatMap(add, [1, 2, 3]);
-        expect(add).to.been.calledThrice;
-      });
-
-      it("should returns all computation results concatenated " +
-         "into a new [Array]", () => {
-        expect(flatMap(add, [1, 2, 3]))
-          .to.deep.equal([2, 3, 4, 3, 4, 5, 4, 5, 6]);
-      });
+    it("should call [fn] for each items of [array]", () => {
+      [1, 2, 3] |> flatMap(add);
+      expect(add).to.been.calledThrice;
     });
 
-    describe("laws", () => testLaw(Array));
+    it("should returns all computation results concatenated " +
+       "into a new [Array]", () => {
+      expect([1, 2, 3] |> flatMap(add))
+        .to.deep.equal([2, 3, 4, 3, 4, 5, 4, 5, 6]);
+    });
   });
+
+  describe("laws", () => testLaw(Array));
 });

@@ -1,4 +1,3 @@
-import {curry}           from "@prelude/data-function";
 import {trait, deriving} from "@prelude/data-trait";
 import {Applicative}     from "@prelude/trait-applicative";
 
@@ -42,4 +41,4 @@ export const Monad = trait({
  * @return {M<B>}
  * Returns another {@link Monad} being the concatenation of all actions.
  */
-export const flatMap = curry((fn, m) => m[Monad.flatMap](fn));
+export const flatMap = fn => m => m[Monad.flatMap](fn);

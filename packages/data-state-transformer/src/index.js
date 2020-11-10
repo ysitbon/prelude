@@ -1,5 +1,5 @@
 /* eslint-disable no-inner-declarations*/
-import {curry, compose} from "@prelude/data-function";
+import {compose} from "@prelude/data-function";
 import {extension}      from "@prelude/data-trait";
 import {Functor, map}   from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
@@ -12,8 +12,7 @@ import {Monad, flatMap} from "@prelude/trait-monad";
  * @param {S} state
  * @returns {M<[A, S]>}
  */
-const runStateT_ = (mStateT, state) => mStateT.value(state);
-export const runStateT = curry(runStateT_);
+export const runStateT = mStateT => state => mStateT.value(state);
 
 /**
  * @template {Monad} M
@@ -22,9 +21,9 @@ export const runStateT = curry(runStateT_);
  * @param {S} state
  * @return {M<A>}
  */
-const evalStateT_ = (mStateT, state) =>
-  map(([_, s]) => s, runStateT_(mStateT, state));
-export const evalStateT = curry(evalStateT_);
+export const evalStateT = mStateT => state => state
+  |> runStateT(mStateT)
+  |> map(([_, s]) => s);
 
 /**
  * @template {Monad} M
@@ -33,9 +32,10 @@ export const evalStateT = curry(evalStateT_);
  * @param {S} state
  * @return {M<A>}
  */
-const execStateT_ = (mStateT, state) =>
-  map(([a, _]) => a, runStateT_(mStateT, state));
-export const execStateT = curry(execStateT_);
+export const execStateT = mStateT => state => state
+  |> runStateT(mStateT)
+  |> map(([a, _]) => a);
+
 
 /**
  *
@@ -64,39 +64,38 @@ const makeStateT = M => {
   }
 
   extension(StateT.prototype, {
-    [Functor.map](f) {
-      return StateT(compose(
-        map(([x, s]) => [f(x), s]),
-        runStateT(this)
-      ));
+    [Functor.map](fn) {
+      return StateT(runStateT(this)
+        |> compose(map(([value, state]) => [fn.call(this, value), state]))
+      );
     },
 
-    [Applicative.pure](x) {
-      return StateT(s => M([x, s]));
+    [Applicative.pure](value) {
+      return StateT(state => M([value, state]));
     },
 
-    [Applicative.apply](sx) {
-      return StateT(compose(
-        flatMap(([f, s]) => map(
-          ([x, s]) => [f(x), s],
-          runStateT_(sx, s)
-        )),
-        runStateT(this)
-      ));
+    [Applicative.apply](valueArg) {
+      return StateT(runStateT(this)
+        |> compose(flatMap(([fn, state]) => state
+          |> runStateT(valueArg)
+          |> map(([value, state]) => [fn(value), state])
+        ))
+      );
     },
 
-    [Monad.flatMap](k) {
-      return StateT(compose(
-        flatMap(([x, s]) => runStateT_(k(x), s)),
-        runStateT(this)
-      ));
+    [Monad.flatMap](fn) {
+      return StateT(runStateT(this)
+        |> compose(flatMap(([value, state]) => state
+          |> runStateT(fn.call(this, value))
+        ))
+      );
     }
   });
 
-  const state = f => StateT(compose(M, f));
+  const state = fn => StateT(fn |> compose(M));
   const get = () => state(s => ([s, s]));
   const put = s => state(_ => ([{}, s]));
-  const modify = f => state(s => ([{}, f(s)]));
+  const modify = fn => state(s => ([{}, fn(s)]));
 
   return {StateT, state, get, put, modify};
 };

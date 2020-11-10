@@ -33,7 +33,7 @@ export const Functor = trait({
  * @returns {F<B>}
  * Returns another `functor` containing the resulting values.
  */
-export const map = curry((fn, functor) => functor[Functor.map](fn));
+export const map = fn => functor => functor[Functor.map](fn);
 
 /**
  * Replace all locations in the input `Functor` with the same `value`.
@@ -49,6 +49,5 @@ export const map = curry((fn, functor) => functor[Functor.map](fn));
  * @returns {F<B>}
  * Returns another `functor` containing the same `value` for each elements.
  */
-export const constMap = curry((value, functor) =>
-  map(constant(value), functor));
+export const constMap = value => functor => functor |> map(constant(value));
 

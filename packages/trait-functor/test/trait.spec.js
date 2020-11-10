@@ -1,13 +1,13 @@
 /*eslint-env mocha*/
 import {extension}              from "@prelude/data-trait";
-import {Functor, map, constMap} from "../lib/index.js";
+import {Functor, map, constMap} from "../src/index.js";
 import chai                     from "chai";
 import sinon                    from "sinon";
 import sinonChai                from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
 
-describe("@prelude/functor", () => {
+describe("@prelude/trait-functor", () => {
   const sandbox = sinon.createSandbox();
 
   afterEach(() => sandbox.restore());
@@ -18,24 +18,23 @@ describe("@prelude/functor", () => {
     beforeEach(() => sandbox.spy(Identity.prototype, Functor.map));
 
     it("should call the [Functor.map] symbol", () => {
-      map(add, new Identity(1));
+      new Identity(1) |> map(add);
       expect(Identity.prototype[Functor.map]).to.have.been.calledOnce;
     });
 
     it("should call [fn]", () => {
-      map(add, new Identity(1));
+      new Identity(1) |> map(add);
       expect(add).to.have.been.calledOnce;
     });
 
     it("should call [fn] with inner [functor] value", () => {
-      map(add, new Identity(1));
+      new Identity(1) |> map(add);
       expect(add).to.have.been.calledOnceWith(1);
     });
 
     it( "should returns the computation result " +
        "wrapped into a [Functor]", () => {
-      map(add, new Identity(1));
-      expect(map(x => x + 1, new Identity(1)).value).to.equal(2);
+      expect((new Identity(1) |> map(x => x + 1)).value).to.equal(2);
     });
 
     afterEach(() => add.resetHistory());
@@ -43,7 +42,7 @@ describe("@prelude/functor", () => {
 
   describe("constMap(value, functor)", () => {
     it("should returns a [Functor] containing the input [value]", () => {
-      expect(constMap(2, new Identity(1)).value).to.equal(2);
+      expect((new Identity(1) |> constMap(2)).value).to.equal(2);
     });
   });
 

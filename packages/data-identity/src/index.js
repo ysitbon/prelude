@@ -44,7 +44,7 @@ extension(Identity.prototype, {
    * Returns the new created {@link Identity} reference.
    */
   [Functor.map](fn) {
-    return Identity(fn(this.value));
+    return Identity(fn.call(this, this.value));
   },
 
   /**
@@ -90,6 +90,6 @@ extension(Identity.prototype, {
    * Returns the created {@link Identity} monad.
    */
   [Monad.flatMap](fn) {
-    return fn(this.value);
+    return fn.call(this, this.value);
   }
 });

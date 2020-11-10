@@ -7,31 +7,29 @@ import sinonChai       from "sinon-chai";
 const {expect} = chai;
 chai.use(sinonChai);
 
-describe("@prelude/functor", () => {
-  describe("impl Array.prototype", () => {
-    describe("map(fn, array)", () => {
-      const add  = sinon.spy(x => x + 1);
+describe("impl Array.prototype for @prelude/trait-functor", () => {
+  describe("map(fn, array)", () => {
+    const add  = sinon.spy(x => x + 1);
 
-      it("should call [fn] for each items of the [array]", () => {
-        map(add, [1, 2, 3]);
-        expect(add).to.have.been.calledThrice;
-      });
-
-      it("should returns a new array containing " +
-         "the results of [fn] calls", () => {
-        expect(map(add, [1, 2, 3])).to.deep.equal([2, 3, 4]);
-      });
-
-      after(() => add.resetHistory());
+    it("should call [fn] for each items of the [array]", () => {
+      [1, 2, 3] |> map(add);
+      expect(add).to.have.been.calledThrice;
     });
 
-    describe("constMap(value, array)", () => {
-      it("should returns a new array containing " +
-         "the input [value] for each items", () => {
-        expect(constMap(4, [1, 2, 3])).to.deep.equal([4, 4, 4]);
-      });
+    it("should returns a new array containing " +
+       "the results of [fn] calls", () => {
+      expect([1, 2, 3] |> map(add)).to.deep.equal([2, 3, 4]);
     });
 
-    describe("laws", () => testLaw([1, 2, 3]));
+    after(() => add.resetHistory());
   });
+
+  describe("constMap(value, array)", () => {
+    it("should returns a new array containing " +
+       "the input [value] for each items", () => {
+      expect([1, 2, 3] |> constMap(4)).to.deep.equal([4, 4, 4]);
+    });
+  });
+
+  describe("laws", () => testLaw([1, 2, 3]));
 });

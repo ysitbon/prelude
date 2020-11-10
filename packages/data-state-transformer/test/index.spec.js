@@ -10,24 +10,24 @@ describe("@prelude/data-state-transformer", () => {
 
   describe("get()", () => {
     it("should returns state value for both elements", () => {
-      const state = get();
-      chai.expect(runStateT(state, 1).value)
+      const s = get();
+      chai.expect((1 |> runStateT(s)).value)
         .to.be.deep.equal([1, 1]);
     });
   });
 
   describe("put(state)", () => {
     it("should returns unit and new [state]", () => {
-      const state = put(4);
-      chai.expect(runStateT(state, 1).value)
+      const s = put(4);
+      chai.expect((1 |> runStateT(s)).value)
         .to.be.deep.equal([{}, 4]);
     });
   });
 
   describe("modify(fn)", () => {
     it("should returns unit and new computed state", () => {
-      const state = modify(x => x + 1);
-      chai.expect(runStateT(state, 1).value)
+      const s = modify(x => x + 1);
+      chai.expect((1 |> runStateT(s)).value)
         .to.be.deep.equal([{}, 2]);
     });
   });
@@ -35,7 +35,7 @@ describe("@prelude/data-state-transformer", () => {
   describe("[Functor.map](fn, stateT)", () => {
     it("should map first element", () => {
       const s = get() |> map(x => x + 1);
-      chai.expect(runStateT(s, 1).value)
+      chai.expect((1 |> runStateT(s)).value)
         .to.be.deep.equal([2, 1]);
     });
   });
@@ -43,7 +43,7 @@ describe("@prelude/data-state-transformer", () => {
   describe("[Monad.flatMap](fn, stateT)", () => {
     it("should bind [fn] to first element", () => {
       const s = get() |> flatMap(x => state(_ => [x + 1, x]));
-      chai.expect(runStateT(s, 1).value)
+      chai.expect((1 |> runStateT(s)).value)
         .to.be.deep.equal([2, 1]);
     });
   });

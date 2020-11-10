@@ -1,9 +1,9 @@
 /*eslint-env mocha,es6*/
-import {implement, trait, extension, deriving} from "../lib/index.js";
+import {implement, trait, extension, deriving} from "../src/index.js";
 import chai                                    from "chai";
 const {expect} = chai;
 
-describe("@prelude/trait", () => {
+describe("@prelude/data-trait", () => {
   describe("trait(source, ...deriving)", () => {
     const key1 = Symbol();
     const key2 = Symbol();
@@ -33,16 +33,16 @@ describe("@prelude/trait", () => {
 
     it("should return [false] if it does not implement " +
        "the [source] trait", () => {
-      expect(implement(Impl1.prototype, Kind2)).to.equal(false);
+      expect(Kind2 |> implement(Impl1.prototype)).to.equal(false);
     });
 
     it("should return [false] if it does not implement " +
        "the deriving [source] trait", () => {
-      expect(implement(Impl2.prototype, Kind2)).to.equal(false);
+      expect(Kind2 |> implement(Impl2.prototype)).to.equal(false);
     });
 
     it("should return [true] if it implements the [source] trait", () => {
-      expect(implement(Impl3.prototype, Kind2)).to.equal(true);
+      expect(Kind2 |> implement(Impl3.prototype)).to.equal(true);
     });
   });
 

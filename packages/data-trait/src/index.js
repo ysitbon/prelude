@@ -1,5 +1,3 @@
-import {curry} from "@prelude/data-function";
-
 /** Keys which stored the trait deriving chain. */
 export const deriving = Symbol("Trait.deriving");
 
@@ -18,16 +16,14 @@ export const trait = descriptor => Object.freeze({
 /**
  * Implements all the specified `protocols` to a give class `C`.
  *
- * @template a
- * @param {a} x
- * @param {b} p
- * @returns {boolean}
+ * @template A, B
+ * @param {A} x
+ * @returns {function(B): boolean}
  */
-export const implement = curry((x, p) => Object
+export const implement = x => p => Object
   .keys(p)
   .every(k => p[k] in x && typeof x[p[k]] === "function") &&
-  p[deriving].every(implement(x))
-);
+  p[deriving].every(implement(x));
 
 /**
  * Extension enable to add members to an existing type without creating
