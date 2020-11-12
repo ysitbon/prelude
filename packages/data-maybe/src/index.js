@@ -1,4 +1,3 @@
-import {curry}       from "@prelude/data-function";
 import {extension}   from "@prelude/data-trait";
 import {Functor}     from "@prelude/trait-functor";
 import {Applicative} from "@prelude/trait-applicative";
@@ -16,7 +15,7 @@ import {Monad}       from "@prelude/trait-monad";
  * @param {A} value
  * @constructor
  */
-function Maybe(value) {
+export function Maybe(value) {
   if (this instanceof Just || this instanceof Nothing) {
     this.value = value;
   }
