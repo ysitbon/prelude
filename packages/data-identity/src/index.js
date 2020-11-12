@@ -4,22 +4,20 @@ import {Applicative} from "@prelude/trait-applicative";
 import {Monad}       from "@prelude/trait-monad";
 
 /**
- * The `Identity` monad is a monad that without any computational strategy.
- * It just applies functions to its input without any additional modification.
- * It is mainly defined for its fundamental role in the theory of monad
- * transformers. Any monad transformer applied to the `Identity` monad yields
- * to a non-transformer version of that monad.
+ * The `Identity` monad is a monad without any computational strategy.
+ * It just applies functions to its input as is. It is mainly defined for its
+ * fundamental role with monad transformers. Any monad transformer applied to
+ * the `Identity` monad yields to a non-transformer version of that monad.
  *
  * @template A
  * @param {A} value
- * @returns {Identity<A>}
  * @constructor
  */
 export function Identity(value) {
-  if (undefined === new.target) {
+  if (undefined === new.target)
     return new Identity(value);
-  }
-  this.value = value;
+  else
+    this.value = value;
 }
 
 /**
@@ -33,37 +31,38 @@ export function Identity(value) {
  */
 extension(Identity.prototype, {
   /**
-   * Maps the this {@link Identity} value into a new one.
+   * Maps {@link Identity} element value into a new one.
    *
    * @template A, B
-   * @this Identity<A>
+   * @this A[]
    * @param {function(A): B} fn
-   * The function to apply to this {@link Identity} value
+   * The function which will be called the element of this `Identity` and which
+   * returns the new value to map to the output `Identity`.
    *
-   * @returns {Identity<B>}
-   * Returns the new created {@link Identity} reference.
+   * @returns {B[]}
+   * Returns another {@link Identity} reference containing the resulting value.
    */
   [Functor.map](fn) {
-    return Identity(fn.call(this, this.value));
+    return Identity(fn(this.value));
   },
 
   /**
-   * Wraps the specified value into a new {@link Identity} monad.
+   * Lift a `value` into an {@link Identity} reference.
    *
    * @template A
-   * @param {A} x
-   * The value to wrap into.
+   * @param {A} value
+   * The value to wrap.
    *
    * @returns {Identity<A>}
-   * Returns the created {@link Identity} reference.
+   * Returns the specified value wrapped into an {@link Identity} reference.
    */
-  [Applicative.pure](x) {
-    return Identity(x);
+  [Applicative.pure](value) {
+    return Identity(value);
   },
 
   /**
    * Applies the specified {@link Identity} value to this {@link Identity}
-   * function and wrap its result into a new {@link Identity} reference.
+   * function and wrap its result into a new {@link Identity} value.
    *
    * @template A, B
    * @this Identity<function(A): B>
@@ -71,7 +70,7 @@ extension(Identity.prototype, {
    * The value to pass to the function argument.
    *
    * @returns {Identity<B>}
-   * Returns the created {@link Identity} reference.
+   * Returns the new {@link Identity} value.
    */
   [Applicative.apply](fx) {
     return this[Applicative.pure](this.value(fx.value));
@@ -90,6 +89,6 @@ extension(Identity.prototype, {
    * Returns the created {@link Identity} monad.
    */
   [Monad.flatMap](fn) {
-    return fn.call(this, this.value);
+    return fn(this.value);
   }
 });
