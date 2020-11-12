@@ -6,16 +6,16 @@ import {Monad}       from "@prelude/trait-monad";
 /** @lends {Array.prototype} */
 extension(Array.prototype, {
   /**
-   * Maps all {@link Array} element values into new ones.
+   * Maps all {@link Array} elements values into new ones.
    *
    * @template A, B
    * @this A[]
    * @param {function(A): B} fn
-   * The function called for each elements of this array which returns a new
-   * value to map to the output array.
+   * The function which will be called for each elements of this `array` and
+   * which returns the new values to map to the output `Array`.
    *
    * @returns {B[]}
-   * Returns another {@link Array} containing the resulting values.
+   * Returns another {@link Array} reference containing the resulting values.
    */
   [Functor.map](fn) {
     const xs = [];
@@ -25,30 +25,31 @@ extension(Array.prototype, {
   },
 
   /**
-   * Lift a `value` into an {@link Array} functor.
+   * Lift a `value` into an {@link Array} reference.
    *
    * @template A
    * @param {A} value
    * The value to wrap.
    *
    * @returns {A[]}
-   * Returns the specified value wrapped into {@link Array} functor.
+   * Returns the specified value wrapped into an {@link Array} reference.
    */
   [Applicative.pure](value) {
     return [value];
   },
 
   /**
-   * Sequential application over all elements of a {@link Array} functor.
+   * Sequential application over all elements of an {@link Array} reference.
    *
    * @template A, B
    * @this {(function(A): B)[]}
    * @param {A[]} xs
-   * A {@link Functor} where each elements will be applied to the function
-   * matching the element of this array.
+   * An {@link Array} reference where each elements will be applied to the
+   * function matching the element of this array.
    *
    * @returns {B[]}
-   * Returns the results of function application into a new {@link Array}.
+   * Returns the results of each applications into a another {@link Array}
+   * reference.
    */
   [Applicative.apply](xs) {
     const ln = this.length;
@@ -58,18 +59,20 @@ extension(Array.prototype, {
   },
 
   /**
-   * Bind an action for each elements of an {@link Array<A>} resulting into a
+   * Binds an action for each elements of an {@link Array<A>} resulting into a
    * new {@link Array<B>} .
    *
    * @template A
    * @template B
    * @this {A[]}
    * @param {function(A): B[]} fn
-   * The function called for each elements of this array which returns a new
-   * array of values then concatenated to the output {@link Array<B>}.
+   * The function which will be called for each elements of this `Array` and
+   * which returns a new `Array` of `B` values which will be concatenated to
+   * the output {@link Array<B>}.
    *
    * @return {B[]}
-   * Returns another {@link Array} being the concatenation of all actions.
+   * Returns another {@link Array} being the concatenation of all actions
+   * results.
    */
   [Monad.flatMap](fn) {
     const ln = this.length;
