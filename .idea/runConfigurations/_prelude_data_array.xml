@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="@prelude/data-function" type="mocha-javascript-test-runner" nameIsGenerated="true">
+  <configuration default="false" name="@prelude/data-array" type="mocha-javascript-test-runner" nameIsGenerated="true">
     <node-interpreter>project</node-interpreter>
     <node-options />
-    <mocha-package>$PROJECT_DIR$/packages/data-function/node_modules/mocha</mocha-package>
-    <working-directory>$PROJECT_DIR$/packages/data-function</working-directory>
+    <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+    <working-directory>$PROJECT_DIR$/packages/data-array</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <ui>bdd</ui>
     <extra-mocha-options />
