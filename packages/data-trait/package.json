@@ -3,15 +3,7 @@
   "version": "1.0.0",
   "description": "First class trait",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
-  "license": "Apache 2.0",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/data-trait#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
@@ -19,6 +11,8 @@
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
   },
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
   "scripts": {
     "test": "c8 mocha",
     "build": "babel --root-mode upward src --out-dir lib",

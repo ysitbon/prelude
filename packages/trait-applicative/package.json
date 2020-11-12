@@ -3,16 +3,7 @@
   "version": "1.0.0",
   "description": "Applicative functor trait",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
-  "homepage": "",
-  "license": "Apache 2.0",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/trait-applicative#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
@@ -20,6 +11,8 @@
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
   },
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
   "scripts": {
     "test": "c8 mocha",
     "build": "babel --root-mode upward src --out-dir lib",

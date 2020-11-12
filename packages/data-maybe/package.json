@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "description": "Maybe monad implementation",
   "author": "Yoann Sitbon <yoann@askia.com>",
-  "homepage": "https://github.com/ysaskia/prelude#readme",
-  "license": "Apache 2.0",
-  "main": "index.js",
-  "publishConfig": {
-    "access": "public"
-  },
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/data-maybe#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
@@ -16,6 +11,8 @@
   "bugs": {
     "url": "https://github.com/ysaskia/prelude/issues"
   },
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
   "scripts": {
     "test": "c8 mocha",
     "build": "babel --root-mode upward src --out-dir lib",
@@ -31,7 +28,6 @@
     "sinon-chai": "^3.5.0"
   },
   "dependencies": {
-    "@prelude/data-function": "1.0.0",
     "@prelude/data-trait": "1.0.0",
     "@prelude/trait-applicative": "1.0.0",
     "@prelude/trait-functor": "1.0.0",
