@@ -48,9 +48,8 @@ export const composeAll = (...fns) => x => fns
 export const pipe = f => g => x => g(f(x));
 
 /**
- * Composes at least two functions from left to right and returns a new
- * function. The new created function takes the same amount of arguments
- * than the first composed function to call and is also curried.
+ * Composes two functions from left to right and returns a new
+ * function.
  *
  * @example
  * const fullName = pipe(
@@ -69,7 +68,7 @@ export const pipe = f => g => x => g(f(x));
  * @param {...Fn} fns
  * The functions to compose from right to left.
  *
- * @returns {Curry<Piped<Fns>>}
+ * @returns {Piped<Fns>}
  * Returns the new composed function.
  */
 export const pipeAll = (...fns) => x => fns
@@ -81,7 +80,7 @@ export const pipeAll = (...fns) => x => fns
  * created function is curried.
  *
  * @example
- * const add = curry((x, y) => x + " " + y);
+ * const add = x => y => x + " " + y;
  * const addRight = flip(add);
  * addRight("hello", "world");
  * // => "world hello"
