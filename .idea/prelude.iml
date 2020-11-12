@@ -19,6 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-pure/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-pure/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-array/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
