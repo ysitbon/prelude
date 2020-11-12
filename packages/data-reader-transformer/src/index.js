@@ -1,9 +1,9 @@
 /* eslint-disable no-inner-declarations*/
-import {compose}            from "@prelude/data-function";
-import {extension}          from "@prelude/data-trait";
-import {Functor, map}       from "@prelude/trait-functor";
-import {Applicative, apply} from "@prelude/trait-applicative";
-import {Monad, flatMap}     from "@prelude/trait-monad";
+import {compose}                  from "@prelude/data-function";
+import {extension}                from "@prelude/data-trait";
+import {Functor, map}             from "@prelude/trait-functor";
+import {Applicative, apply, pure} from "@prelude/trait-applicative";
+import {Monad, flatMap}           from "@prelude/trait-monad";
 
 /**
  * @template {Monad} M
@@ -11,17 +11,35 @@ import {Monad, flatMap}     from "@prelude/trait-monad";
  * @param {ReaderT<R, M, E>} mReaderT
  * @returns {function(E): M<E>}
  */
-export const runReaderT = mReaderT => env => mReaderT.value(env);
+export const runReaderT = mReaderT => env => {
+  // return mReaderT.value(env);
+  const readerEntry = readerCache.get(mReaderT);
+  if (undefined === readerEntry) {
+    const result = mReaderT.value(env);
+    readerCache.set(mReaderT, new Map([[env, result]]));
+    return result;
+  }
+  const resultCache = readerEntry.get(env);
+  if (undefined === resultCache) {
+    const result = mReaderT.value(env);
+    readerEntry.set(env, result);
+    return result;
+  }
+  return resultCache;
+};
 
 /**
  *
  * @param {*} M
  */
 export const getReaderT = M => {
-  if (!ts.has(M)) {
-    ts.set(M, makeReaderT(M));
+  const readerTEntry = readerTCache.get(M);
+  if (!readerTEntry) {
+    const result = makeReaderT(M);
+    readerTCache.set(M, result);
+    return result;
   }
-  return ts.get(M);
+  return readerTEntry;
 };
 
 const makeReaderT = M => {
@@ -41,13 +59,14 @@ const makeReaderT = M => {
 
   extension(ReaderT.prototype, {
     [Functor.map](fn) {
-      return ReaderT(runReaderT(this)
-        |> compose(map(fn))
+      return ReaderT(env => env
+        |> runReaderT(this)
+        |> map(fn)
       );
     },
 
     [Applicative.pure](env) {
-      return ReaderT(_ => M[Applicative.pure](env));
+      return ReaderT(_ => env |> pure(M));
     },
 
     [Applicative.apply](readerArg) {
@@ -58,18 +77,31 @@ const makeReaderT = M => {
     },
 
     [Monad.flatMap](fn) {
-      return ReaderT(runStateT(this)
-        |> compose(flatMap(([value, state]) => state
-          |> runStateT(fn.call(this, value))
-        ))
+      return ReaderT(env => env
+        |> runReaderT(env
+          |> runReaderT(this)
+          |> flatMap(fn)
+        )
       );
     }
   });
 
+  const reader = f => ReaderT(f |> compose(pure(M)));
+
+  // const runReader = reader => runReaderT(reader) |> compose(m => m.value);
+
   const mapReaderT = (F, fn) => mReaderT =>
     getReaderT(F).ReaderT(runReaderT(mReaderT) |> compose(fn));
 
-  return {ReaderT, mapReaderT};
+  const withReaderT = fn => readerT =>
+    ReaderT(runReaderT(fn |> compose(readerT.value)));
+
+  const ask = ReaderT(pure(M));
+
+  const local = withReaderT;
+
+  return {ReaderT, mapReaderT, withReaderT, ask, local};
 };
 
-const ts = new WeakMap();
+const readerTCache = new WeakMap();
+const readerCache = new WeakMap();
