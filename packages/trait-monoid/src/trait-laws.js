@@ -1,14 +1,13 @@
 /*eslint-env mocha*/
-import {identity, pipe} from "@prelude/data-function";
-import {map}            from "./index.js";
-import assert           from "assert";
-import {append} from "../../trait-semigroup/src";
+import assert   from "assert";
+import {append} from "@prelude/trait-semigroup";
+import {empty}  from "./index.js";
 
-export const testLaw = (x, y, z) => {
-  it("Associativity", () => {
-    assert.deepStrictEqual(
-      x |> append(y |> append(z)),
-      x |> append(y) |> append(z)
-    );
+export const testLaw = (M, x) => {
+  it("Right identity", () => {
+    assert.deepStrictEqual(x |> append(M |> empty), x);
+  });
+  it("Left identity", () => {
+    assert.deepStrictEqual(M |> empty |> append(x), x);
   });
 };
