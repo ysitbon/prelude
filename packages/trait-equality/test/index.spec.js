@@ -55,8 +55,8 @@ describe("@prelude/trait-equality", () => {
   }
 
   extension(Identity.prototype, {
-    [Equality.eq](value) {
-      return this.value === value;
+    [Equality.eq](other) {
+      return this.value === other.value;
     }
   });
 });
