@@ -14,10 +14,8 @@ import {getReaderT, runReaderT} from "../src/index.js";
 const {ask} = getReaderT(Identity);
 
 /** @typedef {string} Email */
-let Email;
-
 /** @typedef {string} Html */
-let Html;
+/** @typedef {ReaderT<>}
 
 /**
  * Writes a `div` html element.

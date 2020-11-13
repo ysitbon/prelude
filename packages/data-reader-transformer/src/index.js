@@ -8,7 +8,7 @@ import {Monad, flatMap}           from "@prelude/trait-monad";
 /**
  * @template {Monad} M
  * @template R, E
- * @param {ReaderT<R, M, E>} mReaderT
+ * @param {ReaderT<M, E>} mReaderT
  * @returns {function(E): M<E>}
  */
 export const runReaderT = mReaderT => env => {
@@ -100,7 +100,7 @@ const makeReaderT = M => {
 
   const local = withReaderT;
 
-  return {ReaderT, mapReaderT, withReaderT, ask, local};
+  return {ReaderT, mapReaderT, withReaderT, reader, ask, local};
 };
 
 const readerTCache = new WeakMap();

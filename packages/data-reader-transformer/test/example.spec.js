@@ -1,4 +1,5 @@
 /*eslint-env node,mocha*/
+/*eslint-disable no-unused-vars*/
 import {map}                    from "@prelude/trait-functor";
 import {flatMap}                from "@prelude/trait-monad";
 import {Identity}               from "@prelude/data-identity";
@@ -11,6 +12,7 @@ describe("@prelude/data-reader-transformer (example)", () => {
   it("example", () => {
     /** @typedef {string} Email */
     /** @typedef {string} Html */
+
     /**
      * Writes a `div` html element.
      *
