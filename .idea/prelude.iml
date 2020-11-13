@@ -4,10 +4,14 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-functor/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-functor/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-array/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-array/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-function/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-function/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-maybe/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-maybe/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-state-transformer/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-state-transformer/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-trait/src" isTestSource="false" />
@@ -18,8 +22,9 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-monad/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-pure/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-pure/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-array/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/trait-semigroup/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/trait-monoid/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/trait-equality/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
