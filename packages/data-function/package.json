@@ -13,6 +13,10 @@
   },
   "license": "Apache-2.0",
   "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
   "dependencies": {
     "ts-toolbelt": "^8.0.7"
   }
