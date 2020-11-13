@@ -1,5 +1,5 @@
 {
-  "name": "data-array",
+  "name": "@prelude/data-array",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
@@ -13,18 +13,6 @@
   },
   "license": "Apache-2.0",
   "main": "lib/index.js",
-  "scripts": {
-    "test": "c8 mocha",
-    "build": "babel --root-mode upward src --out-dir lib",
-    "watch": "babel --root-mode upward src --watch --out-dir lib"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@prelude/babel": "^1.0.0",
-    "c8": "^7.3.4",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.0"
-  },
   "dependencies": {
     "@prelude/data-trait": "1.0.0",
     "@prelude/trait-applicative": "1.0.0",

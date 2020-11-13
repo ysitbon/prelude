@@ -1,5 +1,5 @@
 /*eslint-env node*/
-const {run} = require('./run.js');
+const {run} = require('./util.js');
 
 run("npm unlink @prelude/babel")
   .then(_ => run("npm link", "./packages/babel"))
