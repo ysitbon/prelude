@@ -1,5 +1,5 @@
-import {trait, deriving} from "@prelude/data-trait";
-import {Functor}         from "@prelude/trait-functor";
+import {trait, deriving, extension} from "@prelude/data-trait";
+import {Functor}                    from "@prelude/trait-functor";
 
 /**
  * A {@link Functor} with application. Instances of `Applicative` should satisfy
@@ -7,23 +7,19 @@ import {Functor}         from "@prelude/trait-functor";
  *
  * - **Identity**
  *   ```js
- *   map(identity) ≡ identity
+ *   map(identity) === identity
  *   ```
  * - **Composition**
  *   ```js
- *   pipe
- *     |> pure(A)
- *     |> apply(u)
- *     |> apply(v)
- *     |> apply(w) ≡ w |> apply(v |> apply(u))
+ *   pipe |> pure(A) |> apply(u) |> apply(v) |> apply(w) === w |> apply(v |> apply(u))
  *   ```
  * - **Homomorphism**
  *   ```js
- *   f |> pure(A) |> apply(x |> pure(A)) ≡ f(x) |> pure(A)
+ *   f |> pure(A) |> apply(x |> pure(A)) === f(x) |> pure(A)
  *   ```
  * - **Interchange**
  *   ```js
- *   u |> apply(x |> pure(A)) ≡ (f => f(x)) |> pure(A) |> apply(u)
+ *   u |> apply(x |> pure(A)) === (f => f(x)) |> pure(A) |> apply(u)
  *   ```
  */
 export const Applicative = trait({
@@ -39,13 +35,9 @@ export const Applicative = trait({
  * @template A, B
  * @param {F<A>} functorArg
  * A {@link Functor} where each elements will be applied to the function
- * matching the element of in input `functorFn`.
+ * their supplied `functorFn`.
  *
- * @param {F<function(A): B>} functorFn
- * A {@link Functor} where each elements are function which will receive values
- * from `functorArg` as argument.
- *
- * @returns {F<B>}
+ * @returns {function(F<(function(A): B)>): F<B>}
  * Returns the results of function application into a new {@link Functor}.
  */
 export const apply = functorArg => functorFn =>
@@ -57,10 +49,7 @@ export const apply = functorArg => functorFn =>
  * @template {Applicative} A
  * @template T
  * @param {function(T): A<T>} F
- * The applicative constructor.
- *
- * @param {T} value
- * The value wrap into the `Applicative`.
+ * The applicative functor constructor.
  *
  * @returns {A<T>}
  * Returns the boxed value.
@@ -68,3 +57,39 @@ export const apply = functorArg => functorFn =>
 export const pure = F => value =>
   F.prototype[Applicative.pure](value);
 
+/** @lends {Array.prototype} */
+extension(Array.prototype, {
+  /**
+   * Lift a `value` into an {@link Array} reference.
+   *
+   * @template A
+   * @param {A} value
+   * The value to wrap.
+   *
+   * @returns {A[]}
+   * Returns the specified value wrapped into an {@link Array} reference.
+   */
+  [Applicative.pure](value) {
+    return [value];
+  },
+
+  /**
+   * Sequential application over all elements of an {@link Array} reference.
+   *
+   * @template A, B
+   * @this {(function(A): B)[]}
+   * @param {A[]} xs
+   * An {@link Array} reference where each elements will be applied to the
+   * function matching the element of this array.
+   *
+   * @returns {B[]}
+   * Returns the results of each applications into a another {@link Array}
+   * reference.
+   */
+  [Applicative.apply](xs) {
+    const ln = this.length;
+    const ys = new Array(ln);
+    for (let i = 0; i < ln; ++i) ys[i] = this[i](xs[i]);
+    return ys;
+  }
+});
