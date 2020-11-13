@@ -1,6 +1,7 @@
 /*eslint-env mocha*/
 import {extension}              from "@prelude/data-trait";
 import {Functor, map, constMap} from "../src/index.js";
+import {testLaw}                from "../src/trait-laws.js";
 import chai                     from "chai";
 import sinon                    from "sinon";
 import sinonChai                from "sinon-chai";
@@ -45,6 +46,11 @@ describe("@prelude/trait-functor", () => {
       expect((new Identity(1) |> constMap(2)).value).to.equal(2);
     });
   });
+
+  describe(
+    "impl Array.prototype for @prelude/trait-functor",
+    () => testLaw([1])
+  );
 
   // eslint-disable-next-line require-jsdoc
   function Identity(value) {

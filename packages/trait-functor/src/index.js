@@ -1,5 +1,5 @@
-import {trait}    from "@prelude/data-trait";
-import {constant} from "@prelude/data-function";
+import {trait, extension} from "@prelude/data-trait";
+import {constant}         from "@prelude/data-function";
 
 /**
  * Represents a type that can be mapped over. Instances of `Functor` should
@@ -27,10 +27,7 @@ export const Functor = trait({
  * The function called for each elements of the input `functor` which returns
  * a new value to map to the output {@link Functor}.
  *
- * @param {F<A>} functor
- * The input functor to process.
- *
- * @returns {F<B>}
+ * @returns {function(F<A>): F<B>}
  * Returns another `functor` containing the resulting values.
  */
 export const map = fn => functor => functor[Functor.map](fn);
@@ -43,11 +40,29 @@ export const map = fn => functor => functor[Functor.map](fn);
  * @param {B} value
  * The value to map over each elements of the input `functor`.
  *
- * @param {F<A>} functor
- * The input functor to process.
- *
- * @returns {F<B>}
+ * @returns {function(F<A>): F<B>}
  * Returns another `functor` containing the same `value` for each elements.
  */
 export const constMap = value => functor => functor |> map(constant(value));
 
+/** @lends {Array.prototype} */
+extension(Array.prototype, {
+  /**
+   * Maps all {@link Array} elements values into new ones.
+   *
+   * @template A, B
+   * @this A[]
+   * @param {function(A): B} fn
+   * The function which will be called for each elements of this `array` and
+   * which returns the new values to map to the output `Array`.
+   *
+   * @returns {B[]}
+   * Returns another {@link Array} reference containing the resulting values.
+   */
+  [Functor.map](fn) {
+    const xs = [];
+    const l  = this.length;
+    for (let i = 0; i < l; ++i) xs.push(fn.call(this, this[i]));
+    return xs;
+  }
+});
