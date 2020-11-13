@@ -1,5 +1,5 @@
-import {trait, deriving} from "@prelude/data-trait";
-import {Applicative}     from "@prelude/trait-applicative";
+import {trait, deriving, extension} from "@prelude/data-trait";
+import {Applicative}                from "@prelude/trait-applicative";
 
 /**
  * The monad trait defines the basic operations over a monad, a concept from
@@ -42,3 +42,29 @@ export const Monad = trait({
  * Returns another {@link Monad} being the concatenation of all actions.
  */
 export const flatMap = fn => m => m[Monad.flatMap](fn);
+
+/** @lends {Array.prototype} */
+extension(Array.prototype, {
+  /**
+   * Binds an action for each elements of an {@link Array<A>} resulting into a
+   * new {@link Array<B>} .
+   *
+   * @template A
+   * @template B
+   * @this {A[]}
+   * @param {function(A): B[]} fn
+   * The function which will be called for each elements of this `Array` and
+   * which returns a new `Array` of `B` values which will be concatenated to
+   * the output {@link Array<B>}.
+   *
+   * @return {B[]}
+   * Returns another {@link Array} being the concatenation of all actions
+   * results.
+   */
+  [Monad.flatMap](fn) {
+    const ln = this.length;
+    const ys = [];
+    for (let i = 0; i < ln; ++i) ys.push(...fn.call(this, this[i]));
+    return ys;
+  }
+});

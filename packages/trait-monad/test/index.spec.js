@@ -2,7 +2,8 @@
 import {extension}      from "@prelude/data-trait";
 import {Functor}        from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
-import {Monad, flatMap} from "../lib/index.js";
+import {Monad, flatMap} from "../src/index.js";
+import {testLaw}        from "../src/trait-laws.js";
 import chai             from "chai";
 import sinon            from "sinon";
 import sinonChai        from "sinon-chai";
@@ -41,6 +42,11 @@ describe("@prelude/trait-monad", () => {
       expect(result.value).to.equal(2);
     });
   });
+
+  describe(
+    "impl Array.prototype for @prelude/trait-monad",
+    () => testLaw(Array)
+  );
 
   // eslint-disable-next-line require-jsdoc
   function Identity(value) {
