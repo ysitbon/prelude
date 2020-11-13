@@ -1,4 +1,4 @@
 spec:
   - "./{,!(node_modules)/**}/*.spec.js"
 require:
-  - "@prelude/babel"
+  - "@babel/register"
