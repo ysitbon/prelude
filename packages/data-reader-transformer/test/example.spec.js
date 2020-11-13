@@ -83,7 +83,7 @@ describe("@prelude/data-reader-transformer (example)", () => {
      * @type {ReaderT<Email, Identity<Html>>}
      */
     const content = ask |> flatMap(email => right
-        |> map(rightHtml => div([
+      |> map(rightHtml => div([
         h1([`Custom Content for ${email}`]),
         left,
         rightHtml
