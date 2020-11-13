@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {compose, identity,
-  flip, constant, until, pipe} from "../src/index.js";
+  flip, constant, until, pipe} from "../lib/index.js";
 import chai from "chai";
 const {expect} = chai;
 

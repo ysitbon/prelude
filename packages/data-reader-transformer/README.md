@@ -8,7 +8,7 @@
 import {map}                    from "@prelude/trait-functor";
 import {flatMap}                from "@prelude/trait-monad";
 import {Identity}               from "@prelude/data-identity";
-import {getReaderT, runReaderT} from "../src/index.js";
+import {getReaderT, runReaderT} from "../lib/index.js";
 
 // Initialize your reader transformer monad
 const {ask} = getReaderT(Identity);

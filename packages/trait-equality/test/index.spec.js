@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {extension}           from "@prelude/data-trait";
-import {Equality, eq, notEq} from "../src/index.js";
+import {Equality, eq, notEq} from "../lib/index.js";
 import chai                  from "chai";
 import sinon                 from "sinon";
 import sinonChai             from "sinon-chai";

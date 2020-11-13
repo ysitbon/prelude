@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
-  mapMaybe, catMaybes}  from "../src/index.js";
+  mapMaybe, catMaybes}  from "../lib/index.js";
 import * as functor     from "@prelude/trait-functor/lib/trait-laws.js";
 import * as applicative from "@prelude/trait-applicative/lib/trait-laws.js";
 import * as monad       from "@prelude/trait-monad/lib/trait-laws.js";

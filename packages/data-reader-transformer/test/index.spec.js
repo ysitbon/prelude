@@ -4,7 +4,7 @@ import {apply, pure}            from "@prelude/trait-applicative";
 import {flatMap}                from "@prelude/trait-monad";
 import {Identity}               from "@prelude/data-identity";
 import {Maybe, Just}            from "@prelude/data-maybe";
-import {getReaderT, runReaderT} from "../src/index.js";
+import {getReaderT, runReaderT} from "../lib/index.js";
 import assert                   from "assert";
 
 describe("@prelude/data-reader-transformer", () => {

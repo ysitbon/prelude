@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 import {extension}         from "@prelude/data-trait";
-import {Semigroup, append} from "../src/index.js";
+import {Semigroup, append} from "../lib/index.js";
 import chai                from "chai";
 import sinon               from "sinon";
 import sinonChai           from "sinon-chai";

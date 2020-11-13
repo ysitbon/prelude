@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
-import {Applicative, apply, pure} from "../src/index.js";
-import {testLaw}                  from "../src/trait-laws.js";
+import {Applicative, apply, pure} from "../lib/index.js";
+import {testLaw}                  from "../lib/trait-laws.js";
 import {extension}                from "@prelude/data-trait";
 import {Functor}                  from "@prelude/trait-functor";
 import chai                       from "chai";

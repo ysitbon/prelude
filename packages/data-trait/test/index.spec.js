@@ -1,5 +1,5 @@
 /*eslint-env mocha,es6*/
-import {implement, trait, extension, deriving} from "../src/index.js";
+import {implement, trait, extension, deriving} from "../lib/index.js";
 import chai                                    from "chai";
 const {expect} = chai;
 

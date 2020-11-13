@@ -1,7 +1,7 @@
 /*eslint-env mocha*/
 import {extension}              from "@prelude/data-trait";
-import {Functor, map, constMap} from "../src/index.js";
-import {testLaw}                from "../src/trait-laws.js";
+import {Functor, map, constMap} from "../lib/index.js";
+import {testLaw}                from "../lib/trait-laws.js";
 import chai                     from "chai";
 import sinon                    from "sinon";
 import sinonChai                from "sinon-chai";
