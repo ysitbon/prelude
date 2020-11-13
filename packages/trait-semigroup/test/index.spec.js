@@ -37,7 +37,7 @@ describe("@prelude/trait-semigroup", () => {
 
   extension(List.prototype, {
     [Semigroup.append](list) {
-      return List(...this.values, ...list);
+      return List(...this.values, ...list.values);
     }
   });
 });
