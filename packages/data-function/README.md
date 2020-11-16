@@ -4,11 +4,18 @@ Simple combinators working solely on and with functions.
 
 ## Usage
 
-#### identity()
+#### identity :: a
 
 Identity function which returns the passed argument.
 
-#### constant()
+```js
+import {constant} from "@prelude/data-function";
+
+identity(1) === 1;
+// => true
+```
+
+#### constant :: a -> _ -> a
 
 Creates a unary function which evaluates to `x` for all inputs.
 
@@ -20,32 +27,30 @@ trueFn(false);
 // => true
 ```
 
-#### compose()
+#### compose :: () -> () -> c
 
-Composes at two functions from right to left and returns a new function. 
+Composes two functions from right to left.
 
 ```js
-import {compose} from "@prelude/data-function";
+const greet = str => `Hello, ${str}`;
+const exclaim = str => `${str}!`;
+const greetings = exclaim |> compose(greet);
 
-const add = x => y => x + y;
-const tpl = str => val => `${str}: ${val}`;
-const incr = add(1) |> compose(tpl("Value"));
-incr(1);
-// => "Value: 2"
+greetings("Yoann");
+// -> Hello, Yoann!
 ```
 
 #### pipe()
 
-Composes two functions from left to right and returns a new function. 
+Composes two functions from left to right.
 
 ```js
-import {pipe} from "@prelude/data-function";
+const greet = str => `Hello, ${str}`;
+const exclaim = str => `${str}!`;
+const greetings = greet |> compose(exclaim);
 
-const add = x => y => x + y;
-const tpl = str => val => `${str}: ${val}`;
-const incr = tpl("Value") |> pipe(add(1));
-incr(1);
-// => "Value: 2"
+greetings("Yoann");
+// -> Hello, Yoann!
 ```
 
 #### flip()

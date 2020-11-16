@@ -1,5 +1,5 @@
 /*eslint-env mocha*/
-import {Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
+import {Maybe, Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
   mapMaybe, catMaybes}  from "../lib/index.js";
 import * as functor     from "@prelude/trait-functor/lib/trait-laws.js";
 import * as applicative from "@prelude/trait-applicative/lib/trait-laws.js";
@@ -63,10 +63,10 @@ describe("@prelude/data-maybe", () => {
   );
   describe(
     "impl Maybe.prototype for @prelude/applicative",
-    () => applicative.testLaw(Just)
+    () => applicative.testLaw(Maybe)
   );
   describe(
     "impl Maybe.prototype for @prelude/monad",
-    () => monad.testLaw(Just)
+    () => monad.testLaw(Maybe)
   );
 });

@@ -1,5 +1,5 @@
 /* eslint-disable no-inner-declarations*/
-import {compose}                  from "@prelude/data-function";
+import {pipe}                     from "@prelude/data-function";
 import {extension}                from "@prelude/data-trait";
 import {Functor, map}             from "@prelude/trait-functor";
 import {Applicative, apply, pure} from "@prelude/trait-applicative";
@@ -86,15 +86,15 @@ const makeReaderT = M => {
     }
   });
 
-  const reader = f => ReaderT(f |> compose(pure(M)));
+  const reader = f => ReaderT(f |> pipe(pure(M)));
 
-  // const runReader = reader => runReaderT(reader) |> compose(m => m.value);
+  // const runReader = reader => runReaderT(reader) |> pipe(m => m.value);
 
   const mapReaderT = (F, fn) => mReaderT =>
-    getReaderT(F).ReaderT(runReaderT(mReaderT) |> compose(fn));
+    getReaderT(F).ReaderT(runReaderT(mReaderT) |> pipe(fn));
 
   const withReaderT = fn => readerT =>
-    ReaderT(runReaderT(fn |> compose(readerT.value)));
+    ReaderT(runReaderT(fn |> pipe(readerT.value)));
 
   const ask = ReaderT(pure(M));
 

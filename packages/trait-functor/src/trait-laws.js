@@ -15,7 +15,7 @@ export const testLaw = functor => {
     const add1 = x => x + 1;
     const mul2 = x => x * 2;
     assert.deepStrictEqual(
-      functor |> map(mul2 |> pipe(add1)),
+      functor |> map(add1 |> pipe(mul2)),
       functor |> map(add1) |> map(mul2)
     );
   });

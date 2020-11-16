@@ -1,11 +1,9 @@
 /*eslint-env mocha*/
-import {identity, pipe} from "@prelude/data-function";
-import {apply, pure}    from "./index.js";
-import assert           from "assert";
+import {identity, compose} from "@prelude/data-function";
+import {apply, pure}       from "./index.js";
+import assert              from "assert";
 
 export const testLaw = A => {
-  const eq = (x, y) => x === y;
-
   it("Identity", () => {
     const x = 1 |> pure(A);
     assert.deepStrictEqual(
@@ -19,7 +17,7 @@ export const testLaw = A => {
     const v = (x => x * 2) |> pure(A);
     const w = 1 |> pure(A);
     assert.deepStrictEqual(
-      pipe |> pure(A) |> apply(u) |> apply(v) |> apply(w),
+      compose |> pure(A) |> apply(u) |> apply(v) |> apply(w),
       v |> apply(u |> apply(w))
     );
   });

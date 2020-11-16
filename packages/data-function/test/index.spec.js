@@ -11,45 +11,23 @@ describe("@prelude/data-function", () => {
     });
   });
 
-  describe("compose(...fns)", () => {
-    const f = x => `${x}!`;
-    const g = y => `${y} world`;
+  describe("compose :: () -> () -> ", () => {
+    const f = y => `${y} world`;
+    const g = x => `${x}!`;
 
     it("should call composed [fns] from right to left", () => {
-      const h = compose(f)(g);
+      const h = g |> compose(f);
       expect(h('hello')).to.equal("hello world!");
-    });
-
-    it("should be curried for the 2 first [fns] arguments", () => {
-      const h = compose(f);
-      const i = h(g);
-      expect(i('hello')).to.equal("hello world!");
     });
   });
 
   describe("pipe(...fns)", () => {
-    /**
-     * @template A
-     * @param {A} x
-     * @return {string}
-     */
-    const f = x => `${x}!`;
-    /**
-     * @template A
-     * @param {*} y
-     * @return {string}
-     */
     const g = y => `${y} world`;
+    const f = x => `${x}!`;
 
     it("should call piped [fns] from left to right", () => {
-      const h = pipe(g)(f);
+      const h = g |> pipe(f);
       expect(h('hello')).to.equal("hello world!");
-    });
-
-    it("should be curried for the 2 first [fns] arguments", () => {
-      const h = pipe(g);
-      const i = h(f);
-      expect(i('hello')).to.equal("hello world!");
     });
   });
 

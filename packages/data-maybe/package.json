@@ -13,11 +13,6 @@
   },
   "license": "Apache-2.0",
   "main": "lib/index.js",
-  "scripts": {
-    "test": "c8 mocha",
-    "build": "babel --root-mode upward src --out-dir lib",
-    "watch": "babel --root-mode upward src --watch --out-dir lib"
-  },
   "dependencies": {
     "@prelude/data-trait": "1.0.0",
     "@prelude/trait-applicative": "1.0.0",

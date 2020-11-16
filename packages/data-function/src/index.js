@@ -10,70 +10,41 @@
  */
 export const identity = x => x;
 
-export const compose = f => g => x => f(g(x));
-
 /**
- * Composes at least two functions from left to right and returns a new
- * function. The new created function takes the same amount of arguments
- * than the first composed function to call and is also curried.
+ * Composes two functions from right to left.
  *
- * @example
- * const fullName = compose(
- *   intersperse(" "),
- *   map(cap),
- *   props("firstName", "lastName")
- * );
+ * ```js
+ * const greet = str => `Hello, ${str}`;
+ * const exclaim = str => `${str}!`;
+ * const greetings = exclaim |> compose(greet);
  *
- * getUser(1)
- *   .then(fullName)
- *   .then(console.log)
- * // => "John Doe"
+ * greetings("Yoann");
+ * // -> Hello, Yoann!
+ * ```
  *
- * @template {Function} Fn
- * @template {Fn[]} Fns
- * @param {...Fn} fns
- * The functions to compose from right to left.
- *
- * @returns {Function}
- * Returns the new composed function.
- */
-export const composeAll = (...fns) => x => fns
-  .slice(0, -1)
-  .reduceRight((x, fn) => fn(x), fns[fns.length - 1](x));
-
-/**
  * @template A, B, C
- * @type {function(function(B): C): function(function(A): B): function(A): C}
+ * @param {function(B): C} f
+ * @returns {function(function(A): B): C}
  */
-export const pipe = f => g => x => g(f(x));
+export const compose = g => f => x => f(g(x));
 
 /**
- * Composes two functions from left to right and returns a new
- * function.
+ * Composes two functions from left to right.
  *
- * @example
- * const fullName = pipe(
- *   props("firstName", "lastName"),
- *   map(cap),
- *   intersperse(" ")
- * );
+ * ```js
+ * const greet = str => `Hello, ${str}`;
+ * const exclaim = str => `${str}!`;
+ * const greetings = greet |> compose(exclaim);
  *
- * getUser(1)
- *   .then(fullName)
- *   .then(console.log)
- * // => "John Doe"
+ * greetings("Yoann");
+ * // -> Hello, Yoann!
+ * ```
  *
- * @template {Function} Fn
- * @template {Fn[]} Fns
- * @param {...Fn} fns
- * The functions to compose from right to left.
- *
- * @returns {Piped<Fns>}
- * Returns the new composed function.
+ * @template A, B, C
+ * @param {function(A): B} g
+ * @returns {function(function(B): C): C}
  */
-export const pipeAll = (...fns) => x => fns
-  .slice(1)
-  .reduce((x, fn) => fn(x), fns[0](x));
+export const pipe = f => g => x => f(g(x));
 
 /**
  * Flips the arguments in reverse order of the specified function `f`. The

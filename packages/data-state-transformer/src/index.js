@@ -1,5 +1,5 @@
 /* eslint-disable no-inner-declarations*/
-import {compose} from "@prelude/data-function";
+import {pipe}           from "@prelude/data-function";
 import {extension}      from "@prelude/data-trait";
 import {Functor, map}   from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
@@ -66,7 +66,7 @@ const makeStateT = M => {
   extension(StateT.prototype, {
     [Functor.map](fn) {
       return StateT(runStateT(this)
-        |> compose(map(([value, state]) => [fn.call(this, value), state]))
+        |> pipe(map(([value, state]) => [fn.call(this, value), state]))
       );
     },
 
@@ -76,7 +76,7 @@ const makeStateT = M => {
 
     [Applicative.apply](valueArg) {
       return StateT(runStateT(this)
-        |> compose(flatMap(([fn, state]) => state
+        |> pipe(flatMap(([fn, state]) => state
           |> runStateT(valueArg)
           |> map(([value, state]) => [fn(value), state])
         ))
@@ -85,14 +85,14 @@ const makeStateT = M => {
 
     [Monad.flatMap](fn) {
       return StateT(runStateT(this)
-        |> compose(flatMap(([value, state]) => state
+        |> pipe(flatMap(([value, state]) => state
           |> runStateT(fn.call(this, value))
         ))
       );
     }
   });
 
-  const state = fn => StateT(fn |> compose(M));
+  const state = fn => StateT(fn |> pipe(M));
   const get = () => state(s => ([s, s]));
   const put = s => state(_ => ([{}, s]));
   const modify = fn => state(s => ([{}, fn(s)]));
