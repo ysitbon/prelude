@@ -1,6 +1,4 @@
-Functional programming tools for JavaScript. This intentionally does not follow 
-FantasyLand spec. Used as a learning tool about basic concepts of FP around 
-JavaScript. Favor readability over performance. 
+Experiments around functional programming concept with JavaScript.
 
 ### Install
 
@@ -8,15 +6,16 @@ JavaScript. Favor readability over performance.
 npm install
 ```
 
-This is a mono-repository project managed with [lerna](https://lerna.js.org/).
-The `lerna bootstrap` command automatically runs during `npm install`.
+This is a mono-repository project managed with [npm workspace].
 
 ### Unit test
 
-Unit-tests and code-coverages are done with `mocha`, `chai`, `c8` and custom 
-`test-spies` impl contained in `packages` folder. To unit-tests all packages 
-at the same time:
+Unit-tests are executed with [mocha] and coverage with [c8]. To run all tests:
  
 ```
 npm run test
 ```
+
+[npm workspace]: https://docs.npmjs.com/cli/v7/using-npm/workspaces
+[mocha]: https://mochajs.org/ 
+[c8]: https://github.com/bcoe/c8
