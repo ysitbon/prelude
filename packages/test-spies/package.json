@@ -1,0 +1,16 @@
+{
+  "name": "@prelude/test-spies",
+  "version": "1.0.0",
+  "description": "Test tool to spy functions",
+  "author": "Yoann Sitbon <yoann@askia.com>",
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/test-spies#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "license": "Apache 2.0",
+  "main": "lib/index.js"
+}
