@@ -1,6 +1,6 @@
 /* eslint-disable no-inner-declarations*/
 import {pipe}           from "@prelude/data-function";
-import {extension}      from "@prelude/data-trait";
+import {impl}           from "@prelude/data-trait";
 import {Functor, map}   from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
 import {Monad, flatMap} from "@prelude/trait-monad";
@@ -9,8 +9,7 @@ import {Monad, flatMap} from "@prelude/trait-monad";
  * @template {Monad} M
  * @template A, S
  * @param {StateT<S, M, A>} mStateT
- * @param {S} state
- * @returns {M<[A, S]>}
+ * @returns {function(S): M<[A, S]>}
  */
 export const runStateT = mStateT => state => mStateT.value(state);
 
@@ -18,8 +17,7 @@ export const runStateT = mStateT => state => mStateT.value(state);
  * @template {Monad} M
  * @template A, S
  * @param {StateT<S, M, A>} mStateT
- * @param {S} state
- * @return {M<A>}
+ * @returns {function(S): M<A>}
  */
 export const evalStateT = mStateT => state => state
   |> runStateT(mStateT)
@@ -29,13 +27,11 @@ export const evalStateT = mStateT => state => state
  * @template {Monad} M
  * @template A, S
  * @param {StateT<S, M, A>} mStateT
- * @param {S} state
- * @return {M<A>}
+ * @return {function(S): M<A>}
  */
 export const execStateT = mStateT => state => state
   |> runStateT(mStateT)
   |> map(([a, _]) => a);
-
 
 /**
  *
@@ -63,13 +59,24 @@ const makeStateT = M => {
     }
   }
 
-  extension(StateT.prototype, {
+  const state = fn => StateT(fn |> pipe(M));
+  const get = () => state(s => ([s, s]));
+  const put = s => state(_ => ([{}, s]));
+  const modify = fn => state(s => ([{}, fn(s)]));
+
+  //////////////////////////////////////////////////////////////////////////////
+  /// Implementations
+  //////////////////////////////////////////////////////////////////////////////
+
+  StateT |> impl(Functor, {
     [Functor.map](fn) {
       return StateT(runStateT(this)
-        |> pipe(map(([value, state]) => [fn.call(this, value), state]))
+        |> pipe(map(([value, state]) => [fn(value), state]))
       );
-    },
+    }
+  });
 
+  StateT |> impl(Applicative, {
     [Applicative.pure](value) {
       return StateT(state => M([value, state]));
     },
@@ -81,23 +88,27 @@ const makeStateT = M => {
           |> map(([value, state]) => [fn(value), state])
         ))
       );
-    },
+    }
+  });
 
+  StateT |> impl(Monad, {
     [Monad.flatMap](fn) {
       return StateT(runStateT(this)
         |> pipe(flatMap(([value, state]) => state
-          |> runStateT(fn.call(this, value))
+          |> runStateT(fn(value))
         ))
       );
     }
   });
 
-  const state = fn => StateT(fn |> pipe(M));
-  const get = () => state(s => ([s, s]));
-  const put = s => state(_ => ([{}, s]));
-  const modify = fn => state(s => ([{}, fn(s)]));
-
   return {StateT, state, get, put, modify};
 };
 
+/**
+ * Internal cache to constructed StateT.
+ *
+ * @template T
+ * @template {StateT} ST
+ * @type {WeakMap<T, ST>}
+ */
 const ts = new WeakMap();
