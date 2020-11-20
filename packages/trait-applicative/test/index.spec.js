@@ -1,61 +1,64 @@
 /*eslint-env mocha*/
 import {Applicative, apply, pure} from "../lib/index.js";
-import {testLaw}                  from "../lib/trait-laws.js";
-import {extension}                from "@prelude/data-trait";
+import {testLaw}                  from "../lib/laws.js";
+import {impl}                     from "@prelude/data-trait";
 import {Functor}                  from "@prelude/trait-functor";
-import chai                       from "chai";
-import sinon                      from "sinon";
-import sinonChai                  from "sinon-chai";
-const {expect} = chai;
-chai.use(sinonChai);
+import {spies}                    from "@prelude/test-spies";
+import assert                     from "assert";
 
 describe("@prelude/trait-applicative", () => {
-  const sandbox = sinon.createSandbox();
-
-  afterEach(() => sandbox.restore());
+  const spy = spies();
 
   describe("apply(functor, applicative)", () => {
-    const add = sinon.spy(x => x + 1);
+    const add = spy.on(x => x + 1);
     const val = Identity(1);
 
-    beforeEach(() => sandbox.spy(Identity.prototype, Applicative.apply));
-    afterEach(() => add.resetHistory());
+    beforeEach(() => spy.onMethod(Identity.prototype, Applicative.apply));
+    afterEach(() => {
+      spy.restoreMethod(Identity.prototype, Applicative.apply);
+      spy.resetHistory(add);
+    });
 
     it("should call the [Applicative.apply] symbol", () => {
       Identity(add) |> apply(val);
-      expect(Identity.prototype[Applicative.apply])
-        .to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(Identity.prototype[Applicative.apply]));
     });
 
     it( "should call the [applicative] inner function", () => {
       Identity(add) |> apply(val);
-      expect(add).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(add));
     });
 
-    it( "should call the [applicative] inner function " +
-       "with inner [functor] value", () => {
+    it( "should call the [applicative] inner function "
+      + "with inner [functor] value", () => {
       Identity(add) |> apply(val);
-      expect(add).to.have.been.calledWith(1);
+      assert.ok(spy.calledWith(add, 1));
     });
 
-    it( "should returns the computation result " +
-       "wrapped into the input [Functor]", () => {
-      expect(Identity(add) |> apply(val))
-        .to.deep.equal(Identity(2));
+    it( "should returns the computation result "
+      + "wrapped into the input [Functor]", () => {
+      assert.deepStrictEqual(
+        Identity(add) |> apply(val),
+        Identity(2)
+      );
     });
   });
 
   describe( "pure(FunctorConstructor, value)", () => {
-    beforeEach(() => sandbox.spy(Identity.prototype, Applicative.pure));
+    beforeEach(() => spy.onMethod(Identity.prototype, Applicative.pure));
+    afterEach(() => spy.restoreMethod(Identity.prototype, Applicative.pure));
 
     it("should call the [Applicative.pure] symbol", () => {
       1 |> pure(Identity);
-      expect(Identity.prototype[Applicative.pure]).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(Identity.prototype[Applicative.pure]));
     });
 
-    it("should wrap the passed value into the input " +
-       "[FunctorConstructor]", () => {
-      expect(1 |> pure(Identity)).to.deep.equal(Identity(1));
+    it("should wrap the passed value into the input "
+      + "[FunctorConstructor]", () => {
+      assert.deepStrictEqual(
+        1 |> pure(Identity),
+        Identity(1)
+      );
     });
   });
 
@@ -70,10 +73,12 @@ describe("@prelude/trait-applicative", () => {
       return new Identity(value);
     this.value = value;
   }
-  extension(Identity.prototype, {
+  Identity |> impl(Functor, {
     [Functor.map](fn) {
       return Identity(fn(this.value));
-    },
+    }
+  });
+  Identity |> impl(Applicative, {
     [Applicative.pure](x) {
       return Identity(x);
     },
