@@ -1,13 +1,15 @@
 /*eslint-env mocha*/
 import {compose, identity,
   flip, constant, until, pipe} from "../lib/index.js";
-import chai from "chai";
-const {expect} = chai;
+import assert                  from "assert";
 
 describe("@prelude/data-function", () => {
   describe("identity(value)", () => {
     it("should returns the passed [value]", () => {
-      expect(identity("hello world!")).to.equal("hello world!");
+      assert.strictEqual(
+        identity("hello world!"),
+       "hello world!"
+      );
     });
   });
 
@@ -17,7 +19,10 @@ describe("@prelude/data-function", () => {
 
     it("should call composed [fns] from right to left", () => {
       const h = g |> compose(f);
-      expect(h('hello')).to.equal("hello world!");
+      assert.strictEqual(
+        h('hello'),
+        "hello world!"
+      );
     });
   });
 
@@ -27,7 +32,10 @@ describe("@prelude/data-function", () => {
 
     it("should call piped [fns] from left to right", () => {
       const h = g |> pipe(f);
-      expect(h('hello')).to.equal("hello world!");
+      assert.strictEqual(
+        h('hello'),
+        "hello world!"
+      );
     });
   });
 
@@ -35,14 +43,20 @@ describe("@prelude/data-function", () => {
     it("should copy the input [fn] with its arguments reversed", () => {
       const f = x => y => `${x} ${y}`;
       const g = flip(f);
-      expect(g("world")("hello")).to.equal("hello world");
+      assert.strictEqual(
+        g("world")("hello"),
+        "hello world"
+      );
     });
   });
 
   describe("constant(x)", () => {
     it("should returns a function returning the input value", () => {
       const f = constant("hello world!");
-      expect(f("goodbye!")).to.equal("hello world!");
+      assert.strictEqual(
+        f("goodbye!"),
+        "hello world!"
+      );
     });
   });
 
@@ -51,7 +65,7 @@ describe("@prelude/data-function", () => {
       const value = until(cs => cs.charAt(0) === "h")
                          (cs => cs.slice(1))
                          ("goodbye!hello world!");
-      expect(value).to.equal("hello world!");
+      assert.strictEqual(value, "hello world!");
     });
   });
 });
