@@ -1,5 +1,5 @@
-import {trait, extension} from "@prelude/data-trait";
-import {constant}         from "@prelude/data-function";
+import {trait, impl} from "@prelude/data-trait";
+import {constant}    from "@prelude/data-function";
 
 /**
  * Represents a type that can be mapped over. Instances of `Functor` should
@@ -45,16 +45,22 @@ export const map = fn => functor => functor[Functor.map](fn);
  */
 export const constMap = value => functor => functor |> map(constant(value));
 
-/** @lends {Array.prototype} */
-extension(Array.prototype, {
+////////////////////////////////////////////////////////////////////////////////
+/// Array implementation
+////////////////////////////////////////////////////////////////////////////////
+
+Array |> impl(Functor, {
   /**
-   * Maps all {@link Array} elements values into new ones.
+   * Maps all elements values of this {@link Array} reference into new ones.
+   *
+   * @example
+   * [1, 2, 3] |> map(x => x + 1)
+   * // => [2, 3, 4]
    *
    * @template A, B
    * @this A[]
    * @param {function(A): B} fn
-   * The function which will be called for each elements of this `array` and
-   * which returns the new values to map to the output `Array`.
+   * The function which will be called for each elements of this {@link Array}.
    *
    * @returns {B[]}
    * Returns another {@link Array} reference containing the resulting values.
