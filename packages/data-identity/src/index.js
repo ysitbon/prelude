@@ -1,4 +1,4 @@
-import {extension}   from "@prelude/data-trait";
+import {impl}        from "@prelude/data-trait";
 import {Functor}     from "@prelude/trait-functor";
 import {Applicative} from "@prelude/trait-applicative";
 import {Monad}       from "@prelude/trait-monad";
@@ -20,32 +20,29 @@ export function Identity(value) {
     this.value = value;
 }
 
-/**
- * Implements trait:
- *
- * - {@link Functor}
- * - {@link Applicative}
- * - {@link Monad}
- *
- * @lends {Identity.prototype}
- */
-extension(Identity.prototype, {
+////////////////////////////////////////////////////////////////////////////////
+/// Implementations
+////////////////////////////////////////////////////////////////////////////////
+
+Identity |> impl(Functor, {
   /**
-   * Maps {@link Identity} element value into a new one.
+   * Maps the element value of this {@link Identity} reference into a new one.
    *
    * @template A, B
-   * @this A[]
+   * @this Identity<A>
    * @param {function(A): B} fn
-   * The function which will be called the element of this `Identity` and which
-   * returns the new value to map to the output `Identity`.
+   * The function which will be called for the element of this {@link Identity}
+   * reference.
    *
-   * @returns {B[]}
+   * @returns {Identity<B>}
    * Returns another {@link Identity} reference containing the resulting value.
    */
   [Functor.map](fn) {
     return Identity(fn(this.value));
-  },
+  }
+});
 
+Identity |> impl(Applicative, {
   /**
    * Lift a `value` into an {@link Identity} reference.
    *
@@ -61,21 +58,24 @@ extension(Identity.prototype, {
   },
 
   /**
-   * Applies the specified {@link Identity} value to this {@link Identity}
-   * function and wrap its result into a new {@link Identity} value.
+   * Applies the specified {@link Identity} value as argument of the function
+   * from this {@link Identity} reference and then wrap its results into a new
+   * {@link Identity} value.
    *
    * @template A, B
    * @this Identity<function(A): B>
    * @param {Identity<A>} fx
-   * The value to pass to the function argument.
+   * The argument value to apply to this {@link Identity} reference.
    *
    * @returns {Identity<B>}
    * Returns the new {@link Identity} value.
    */
   [Applicative.apply](fx) {
     return this[Applicative.pure](this.value(fx.value));
-  },
+  }
+});
 
+Identity |> impl(Monad, {
   /**
    * Applies the action `fn` to this {@link Identity} monad and returns its
    * resulting {@link Identity}.
