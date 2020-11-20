@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="@prelude/data-array" type="mocha-javascript-test-runner" nameIsGenerated="true">
+  <configuration default="false" name="@prelude/data-identity" type="mocha-javascript-test-runner">
     <node-interpreter>project</node-interpreter>
     <node-options />
     <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -7,8 +7,9 @@
     <pass-parent-env>true</pass-parent-env>
     <ui>bdd</ui>
     <extra-mocha-options />
-    <test-kind>PATTERN</test-kind>
-    <test-pattern />
+    <test-kind>DIRECTORY</test-kind>
+    <test-directory>$PROJECT_DIR$/packages/data-identity/test</test-directory>
+    <recursive>false</recursive>
     <method v="2" />
   </configuration>
 </component>

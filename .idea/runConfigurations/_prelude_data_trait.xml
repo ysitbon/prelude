@@ -3,12 +3,13 @@
     <node-interpreter>project</node-interpreter>
     <node-options />
     <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-    <working-directory>$PROJECT_DIR$/packages/data-trait</working-directory>
+    <working-directory>$PROJECT_DIR$</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <ui>bdd</ui>
     <extra-mocha-options />
-    <test-kind>PATTERN</test-kind>
-    <test-pattern />
+    <test-kind>DIRECTORY</test-kind>
+    <test-directory>$PROJECT_DIR$/packages/data-trait/test</test-directory>
+    <recursive>false</recursive>
     <method v="2" />
   </configuration>
 </component>

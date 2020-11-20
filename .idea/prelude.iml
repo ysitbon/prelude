@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/data-array/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-function/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-function/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-identity/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-identity/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-maybe/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-maybe/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/src" isTestSource="false" />
@@ -28,6 +30,9 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-pure/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-semigroup/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-semigroup/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/trait-species/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/trait-species/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
