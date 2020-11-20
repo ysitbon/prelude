@@ -1,4 +1,4 @@
-import {extension}   from "@prelude/data-trait";
+import {impl}        from "@prelude/data-trait";
 import {Functor}     from "@prelude/trait-functor";
 import {Applicative} from "@prelude/trait-applicative";
 import {Monad}       from "@prelude/trait-monad";
@@ -24,77 +24,14 @@ export function Maybe(value) {
   }
 }
 
-/** @lends {Maybe.prototype} */
-extension(Maybe.prototype, {
-  /**
-   * @template A, B
-   * @this Maybe<A>
-   * @param {function(A): B} fn
-   * @returns {Maybe<B>}
-   */
-  [Functor.map](fn) {
-    return isJust(this)
-      ? this[Applicative.pure](fn.call(this, this.value))
-      : this;
-  },
-
-  /**
-   * Converts a `a` value to a `Maybe a` object. If the value is `null` or
-   * `undefined` then it returns `Nothing`. Otherwise, it returns the `Just<a>`
-   * which contains the `a` value.
-   *
-   * @template A
-   * @param {A} value
-   * The value to convert.
-   *
-   * @returns {Maybe<A>}
-   * Returns the converted value to `Maybe`.
-   */
-  [Applicative.pure](value) {
-    return (value == null || "number" === typeof value && Number.isNaN(value))
-      ? NothingSingleton
-      : new Just(value);
-  },
-
-  /**
-   * Sequential application over a {@link Maybe} value.
-   *
-   * @template A, B
-   * @this Maybe<function(A): B>
-   * @param {Maybe<A>} functor
-   * A {@link Functor} where each elements will be applied to the function
-   * matching the element of this array.
-   *
-   * @returns {Maybe<B>}
-   * Returns the results of function application into a new {@link Array}.
-   */
-  [Applicative.apply](functor) {
-    return isJust(this)
-      ? this[Applicative.pure](this.value(functor.value))
-      : this;
-  },
-
-  /**
-   * @template A, B
-   * @this Maybe<A>
-   * @param {function(A): Maybe<B>} fn
-   * @returns {Maybe<B>}
-   */
-  [Monad.flatMap](fn) {
-    return isJust(this)
-      ? fn.call(this, this.value)
-      : this;
-  }
-});
-
 /**
  * Representation of a `Maybe` type which contains a value of type `a`.
  *
  * @template A
- * @class Just<A>
+ * @constructor
  * @extends Maybe<A>
  * @param {A} value
- * @constructor
+ * The value to wrap into a Just value.
  */
 export function Just(value) {
   if (!(this instanceof Just)) {
@@ -107,35 +44,32 @@ export function Just(value) {
     throw new TypeError("Just value cannot be null");
   }
 }
-
 Just.prototype = Object.create(Maybe.prototype);
 
 /**
  * Representation of a `Maybe` which contains a finite value.
  *
- * @template A
- * @class Nothing
- * @extends Maybe<null>
+ * @template T
  * @constructor
+ * @extends Maybe<T>
  */
 export function Nothing() {
-  if (!(this instanceof Nothing)) {
-    return NothingSingleton || (NothingSingleton = new Nothing());
-  }
-  else {
-    Maybe.call(this, null);
-  }
+  return NothingSingleton;
 }
-
 Nothing.prototype = Object.create(Maybe.prototype);
-let NothingSingleton = new Nothing();
+
+/** Internal instance singleton for {@link Nothing}. */
+const NothingSingleton = Object.freeze(Object.create(Nothing.prototype));
 
 /**
  * Checks whether the specified {@link Maybe} value is {@link Just}.
  *
  * @template A
  * @param {Maybe<A>} maybe
+ * The {@link Maybe} reference to check.
+ *
  * @returns {boolean}
+ * Returns `true` if `maybe` is {@link Just}, otherwise `false`.
  */
 export const isJust = maybe => maybe instanceof Just;
 
@@ -144,7 +78,10 @@ export const isJust = maybe => maybe instanceof Just;
  *
  * @template A
  * @param {Maybe<A>} maybe
+ * The {@link Maybe} reference to check.
+ *
  * @returns {boolean}
+ * Returns `true` if `maybe` is {@link Nothing}, otherwise `false`.
  */
 export const isNothing = maybe => maybe instanceof Nothing;
 
@@ -163,15 +100,16 @@ export const fromJust = maybe => {
     throw new TypeError("Nothing cannot be converted to any value");
 };
 
-
 /**
- * Extracts the element `a` out of a `Just a` and returns the default value
- * `x` if `m` is `Nothing`.
+ * Extracts the element out of a {@link Maybe} reference. Returns the
+ * `defaultValue` if `maybe` is {@link Nothing}.
  *
  * @template A
  * @param {A} defaultValue
- * @param {Maybe<A>} maybe
- * @returns {A}
+ * The default value to return if `maybe` is {@link Nothing}.
+ *
+ * @returns {function(Maybe<A>): A}
+ * Returns the extracted value.
  */
 export const fromMaybe = defaultValue => maybe => maybe |> isJust
   ? maybe.value
@@ -185,8 +123,7 @@ export const fromMaybe = defaultValue => maybe => maybe |> isJust
  *
  * @template A,B
  * @param {function(A): Maybe<B>} fn
- * @param {A[]} xs
- * @returns {B[]}
+ * @returns {function(A[]): B[]}
  */
 export const mapMaybe = fn => xs => xs.reduce(
   (out, x) => {
@@ -198,7 +135,8 @@ export const mapMaybe = fn => xs => xs.reduce(
 );
 
 /**
- * Takes an array of `Maybe` and returns an array of all the `Just` values.
+ * Takes an array of {@link Maybe} references and returns an array of all the
+ * {@link Just} values.
  *
  * @template A
  * @param {Maybe<A>[]} xs
@@ -214,3 +152,111 @@ export const catMaybes = xs => xs.reduce(
   },
   []
 );
+
+////////////////////////////////////////////////////////////////////////////////
+/// Functor implementation
+////////////////////////////////////////////////////////////////////////////////
+
+Maybe |> impl(Functor, {
+  /**
+   * Maps the element value of this {@link Maybe} reference, into a new one.
+   *
+   * - If this {@link Maybe} reference is {@link Nothing} then the function
+   *   `fn` is skipped and this reference is returned.
+   * - If the resulting value returned by the function `fn` is `NaN`, `null`,
+   *   or `undefined` then it returns {@link Nothing} otherwise {@link Just}.
+   *
+   * @example
+   * Just(1) |> map(x => x + 1)
+   * // => Just(2)
+   * Just(1) |> map(x => x / undefined);
+   * // => Nothing
+   *
+   * @template A, B
+   * @this Maybe<A>
+   * @param {function(A): B} fn
+   * The function which will be called for the element of this {@link Maybe}
+   * reference. Only if this reference is {@link Just}.
+   *
+   * @returns {Maybe<B>}
+   * Returns another {@link Maybe} reference containing the resulting value.
+   */
+  [Functor.map](fn) {
+    return isJust(this)
+      ? this[Applicative.pure](fn(this.value))
+      : this;
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+/// Applicative implementation
+////////////////////////////////////////////////////////////////////////////////
+
+Maybe |> impl(Applicative, {
+  /**
+   * Lift a `value` into a {@link Maybe} reference. If the `value` is `NaN`,
+   * `null` or `undefined`, it returns {@link Nothing} otherwise {@link Just}.
+   *
+   * @example
+   * 1 |> pure(Maybe)
+   * // => Just(1)
+   * NaN |> pure(Maybe)
+   * // => Nothing
+   * null |> pure(Maybe)
+   * // => Nothing
+   * undefined |> pure(Maybe)
+   * // => Nothing
+   *
+   * @template A
+   * @param {A} value
+   * The value to wrap.
+   *
+   * @returns {Maybe<A>}
+   * Returns the specified value wrapped into an {@link Maybe} reference.
+   */
+  [Applicative.pure](value) {
+    return (value == null || "number" === typeof value && Number.isNaN(value))
+      ? NothingSingleton
+      : new Just(value);
+  },
+
+  /**
+   * Applies the specified {@link Maybe} value as argument of the function
+   * from this {@link Maybe} reference and then wrap its result into a new
+   * {@link Maybe} value.
+   *
+   * - If this or the supplied `functor` are {@link Nothing} then no operation
+   *   is processed and {@link Nothing} is returned.
+   *
+   * @template A, B
+   * @this Maybe<function(A): B>
+   * @param {Maybe<A>} functor
+   * The argument value to apply to this {@link Maybe} reference.
+   *
+   * @returns {Maybe<B>}
+   * Returns the new {@link Maybe} value.
+   */
+  [Applicative.apply](functor) {
+    return isJust(this)
+      ? this[Applicative.pure](this.value(functor.value))
+      : this;
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+/// Monad implementation
+////////////////////////////////////////////////////////////////////////////////
+
+Maybe |> impl(Monad, {
+  /**
+   * @template A, B
+   * @this Maybe<A>
+   * @param {function(A): Maybe<B>} fn
+   * @returns {Maybe<B>}
+   */
+  [Monad.flatMap](fn) {
+    return isJust(this)
+      ? fn(this.value)
+      : this;
+  }
+});
