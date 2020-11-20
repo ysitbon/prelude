@@ -246,7 +246,7 @@
     "operator-assignment": [0, "always"],
     "operator-linebreak": [
       2,
-      "after",
+      "before",
       {
         "overrides": {
           "|>": "before",
