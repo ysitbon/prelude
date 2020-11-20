@@ -1,49 +1,50 @@
 /*eslint-env mocha*/
-import {extension}              from "@prelude/data-trait";
+import {impl}                   from "@prelude/data-trait";
 import {Functor, map, constMap} from "../lib/index.js";
-import {testLaw}                from "../lib/trait-laws.js";
-import chai                     from "chai";
-import sinon                    from "sinon";
-import sinonChai                from "sinon-chai";
-const {expect} = chai;
-chai.use(sinonChai);
+import {testLaw}                from "../lib/laws.js";
+import {spies}                  from "@prelude/test-spies";
+import assert                   from "assert";
 
 describe("@prelude/trait-functor", () => {
-  const sandbox = sinon.createSandbox();
-
-  afterEach(() => sandbox.restore());
+  const spy = spies();
 
   describe("map(fn, functor)", () => {
-    const add  = sinon.spy(x => x + 1);
+    const add  = spy.on(x => x + 1);
 
-    beforeEach(() => sandbox.spy(Identity.prototype, Functor.map));
+    beforeEach(() => spy.onMethod(Identity.prototype, Functor.map));
+    afterEach(() => spy.restore(Identity.prototype, Functor.map));
+    afterEach(() => spy.resetHistory(add));
 
     it("should call the [Functor.map] symbol", () => {
-      new Identity(1) |> map(add);
-      expect(Identity.prototype[Functor.map]).to.have.been.calledOnce;
+      Identity(1) |> map(add);
+      assert.ok(spy.calledOnce(Identity.prototype[Functor.map]));
     });
 
     it("should call [fn]", () => {
-      new Identity(1) |> map(add);
-      expect(add).to.have.been.calledOnce;
+      Identity(1) |> map(add);
+      assert.ok(spy.calledOnce(add));
     });
 
     it("should call [fn] with inner [functor] value", () => {
-      new Identity(1) |> map(add);
-      expect(add).to.have.been.calledOnceWith(1);
+      Identity(1) |> map(add);
+      assert.ok(spy.calledWith(add, 1));
     });
 
-    it( "should returns the computation result " +
-       "wrapped into a [Functor]", () => {
-      expect((new Identity(1) |> map(x => x + 1)).value).to.equal(2);
+    it( "should returns the computation result "
+      + "wrapped into a [Functor]", () => {
+      assert.deepStrictEqual(
+        Identity(1) |> map(add),
+        Identity(2)
+      );
     });
-
-    afterEach(() => add.resetHistory());
   });
 
   describe("constMap(value, functor)", () => {
     it("should returns a [Functor] containing the input [value]", () => {
-      expect((new Identity(1) |> constMap(2)).value).to.equal(2);
+      assert.deepStrictEqual(
+        Identity(1) |> constMap(2),
+        Identity(2)
+      );
     });
   });
 
@@ -60,7 +61,7 @@ describe("@prelude/trait-functor", () => {
       this.value = value;
   }
 
-  extension(Identity.prototype, {
+  Identity |> impl(Functor, {
     [Functor.map](fn) {
       return Identity(fn(this.value));
     }
