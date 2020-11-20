@@ -1,14 +1,14 @@
-import {trait, deriving, extension} from "@prelude/data-trait";
-import {Applicative}                from "@prelude/trait-applicative";
+import {trait, deriving, impl} from "@prelude/data-trait";
+import {Applicative}           from "@prelude/trait-applicative";
 
 /**
- * The monad trait defines the basic operations over a monad, a concept from
- * a branch of mathematics known as category theory. Instances of Monad should
+ * The monad trait defines the basic operations over a monad, a concept from a
+ * branch of mathematics known as category theory. Instances of Monad should
  * satisfy the following laws:
  *
  * - **Left identity**
  *   ```js
- *   x |> pure(M) |> flatMap(k) = k(x)
+ *   x |> pure(M) |> flatMap(f) = f(x)
  *   ```
  * - **Right identity**
  *   ```
@@ -16,7 +16,7 @@ import {Applicative}                from "@prelude/trait-applicative";
  *   ```
  * - **Associativity**
  *   ```
- *   m |> flatMap(x => k(x) |> flatMap(h)) = m |> flatMap(k) |> flatMap(h)
+ *   m |> flatMap(x => f(x) |> flatMap(g)) = m |> flatMap(f) |> flatMap(g)
  *   ```
  */
 export const Monad = trait({
@@ -43,11 +43,27 @@ export const Monad = trait({
  */
 export const flatMap = fn => m => m[Monad.flatMap](fn);
 
-/** @lends {Array.prototype} */
-extension(Array.prototype, {
+////////////////////////////////////////////////////////////////////////////////
+/// Implementations
+////////////////////////////////////////////////////////////////////////////////
+
+Array |> impl(Monad, {
   /**
-   * Binds an action for each elements of an {@link Array<A>} resulting into a
-   * new {@link Array<B>} .
+   * Binds an action for each elements of an {@link Array} resulting into a
+   * new {@link Array}.
+   *
+   * @example
+   * const take = n => xs => xs.slice(0, n);
+   * const skip = n => xs => xs.slice(n);
+   *
+   * assert.deepStrictEqual(
+   *   [[1, "a"], [2, "b"], [3, "c"]] |> flatMap(take(1)),
+   *   [1, 2, 3]
+   * );
+   * assert.deepStrictEqual(
+   *   [[1, "a"], [2, "b"], [3, "c"]] |> flatMap(skip(1)),
+   *   ["a", "b", "c"]
+   * );
    *
    * @template A
    * @template B
@@ -64,7 +80,7 @@ extension(Array.prototype, {
   [Monad.flatMap](fn) {
     const ln = this.length;
     const ys = [];
-    for (let i = 0; i < ln; ++i) ys.push(...fn.call(this, this[i]));
+    for (let i = 0; i < ln; ++i) ys.push(...fn(this[i]));
     return ys;
   }
 });
