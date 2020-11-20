@@ -1,27 +1,27 @@
 /*eslint-env mocha*/
-import {extension}     from "@prelude/data-trait";
+import assert          from "assert";
+import {spies}         from "@prelude/test-spies";
+import {impl}          from "@prelude/data-trait";
+import {Semigroup}     from "@prelude/trait-semigroup";
 import {Monoid, empty} from "../lib/index.js";
-import chai            from "chai";
-import sinon           from "sinon";
-import sinonChai       from "sinon-chai";
-const {expect} = chai;
-chai.use(sinonChai);
 
 describe("@prelude/trait-monoid", () => {
-  const sandbox = sinon.createSandbox();
-
-  afterEach(() => sandbox.restore());
+  const spy = spies();
 
   describe("empty()", () => {
-    beforeEach(() => sandbox.spy(List.prototype, Monoid.empty));
+    beforeEach(() => spy.onMethod(List.prototype, Monoid.empty));
+    afterEach(() => spy.restore(List.prototype, Monoid.empty));
 
     it("should call the [Monoid.empty] symbol", () => {
       List |> empty;
-      expect(List.prototype[Monoid.empty]).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(List.prototype[Monoid.empty]));
     });
 
     it("should returns the empty representation", () => {
-      expect(List |> empty).to.deep.equal(List());
+      assert.deepStrictEqual(
+        List |> empty,
+        List()
+      );
     });
   });
 
@@ -33,8 +33,12 @@ describe("@prelude/trait-monoid", () => {
       this.values = [...values];
     }
   }
-
-  extension(List.prototype, {
+  List |> impl(Semigroup, {
+    [Semigroup.append](values) {
+      return List(...this.values, ...values);
+    }
+  });
+  List |> impl(Monoid, {
     [Monoid.empty]() {
       return List();
     }
