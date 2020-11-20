@@ -2,52 +2,107 @@
 export const deriving = Symbol("Trait.deriving");
 
 /**
- * Creates a protocol object.
+ * Creates a trait object.
  *
- * @template T,U
- * @param {T} descriptor
- * @returns {T};
+ * @template {Object} TObject
+ * @param {TObject} descriptor
+ * The trait descriptor.
+ *
+ * @returns {Trait<TObject>}
+ * Returns the trait definition.
  */
-export const trait = descriptor => Object.freeze({
-  [deriving]: Object.freeze(descriptor[deriving] || []),
+export const trait = descriptor => ({
+  [deriving]: (descriptor[deriving] || []) |> Object.freeze,
   ...descriptor
-});
+}) |> Object.freeze;
 
 /**
  * Implements all the specified `protocols` to a give class `C`.
  *
- * @template A, B
- * @param {A} x
- * @returns {function(B): boolean}
+ * @template TPrototype, TDesc
+ * @param {Readonly<Object>} trait
+ * The trait to implement.
+ *
+ * @param {TDesc} desc
+ * The implementation descriptor.
+ *
+ * @returns {function(Constructor<TPrototype>): Constructor<TPrototype, TDesc>}
+ * Returns the implemented constructor reference.
  */
-export const implement = x => p => Object
-  .keys(p)
-  .every(k => p[k] in x && typeof x[p[k]] === "function") &&
-  p[deriving].every(implement(x));
+export const impl = (trait, desc) => constructor =>
+  trait[deriving].every(isImplFor(constructor.prototype))
+  && Object
+    .keys(trait)
+    .reduce(
+      (prototype, key) => desc |> isSymImpl(trait[key])
+        ? implSymbol(desc, prototype, trait[key])
+        : throwImplError(constructor, key),
+      constructor.prototype
+    );
 
 /**
- * Extension enable to add members to an existing type without creating
- * a new derived type.
+ * Checks that a given function `prototype` is implemented for the specified
+ * `trait`, including all deriving.
  *
- * @template a, b
- * @param {a} target
- * The target object to extend.
+ * @template TPrototype, TObject
+ * @param {TPrototype} prototype
+ * The function prototype reference to validate.
  *
- * @param {b} source
- * The source object which extend the target.
- *
- * @returns {a & b}
- * Returns the extended target object.
+ * @returns {function(TObject): boolean}
+ * Returns `true` if implemented, otherwise `false`.
  */
-export const extension = (target, source) => Object
-  .getOwnPropertySymbols(source)
-  .reduce(
-    (target, property) => Object.defineProperty(
-      target,
-      property,
-      readonly(source[property])),
-    (target)
-  );
+const isImplFor = prototype => trait => Object
+  .keys(trait)
+  .every(key => (prototype |> isSymImpl(trait[key]))
+    || throwImplError(prototype.constructor, key)
+  ) && trait[deriving].every(isImplFor(prototype));
+
+/**
+ * Checks that a `symbol` is implemented to the supplied `prototype` reference.
+ *
+ * @template TPrototype
+ * @param {symbol} symbol
+ * The symbol to check for implementation.
+ *
+ * @returns {function(TPrototype): boolean}
+ * Returns `true` if the supplied symbol is implemented, otherwise `false`.
+ */
+const isSymImpl = symbol => prototype =>
+  symbol in prototype && "function" === typeof prototype[symbol];
+
+/**
+ * Copies the definition of a trait symbol from a `desc` reference into the
+ * supplied prototype reference.
+ *
+ * @template TPrototype, TDesc
+ * @param {TDesc} desc
+ * The descriptor object which contains the implementation definition.
+ *
+ * @param {TPrototype} prototype
+ * The prototype object which receive the implementation.
+ *
+ * @param {symbol} symbol
+ * The symbol to implement.
+ *
+ * @returns {Constructor<TPrototype & TDesc>}
+ * Returns the updated `target` reference.
+ */
+const implSymbol = (desc, prototype, symbol) =>
+  Object.defineProperty(prototype, symbol, readonly(desc[symbol]));
+
+/**
+ * Throws a trait implementation error.
+ *
+ * @throws
+ * @param {Constructor<*>} target
+ * The constructor which misses the trait implementation.
+ *
+ * @param {string} key
+ * The unimplemented trait key.
+ */
+const throwImplError = (target, key) => {
+  throw new Error(`Missing implementation of ${key} for ${target.name}`);
+};
 
 /**
  * Creates writable property descriptor for object `x`.
@@ -65,3 +120,9 @@ const readonly = value => ({
   enumerable: true,
   configurable: true
 });
+
+/**
+ * @template T
+ * @typedef {function(...*): T} Constructor
+ * Generic definition for function constructors
+ */
