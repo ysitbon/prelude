@@ -1,5 +1,5 @@
-import {trait, deriving, extension} from "@prelude/data-trait";
-import {Functor}                    from "@prelude/trait-functor";
+import {trait, deriving, impl} from "@prelude/data-trait";
+import {Functor}               from "@prelude/trait-functor";
 
 /**
  * A {@link Functor} with application. Instances of `Applicative` should satisfy
@@ -57,8 +57,11 @@ export const apply = functorArg => functorFn =>
 export const pure = F => value =>
   F.prototype[Applicative.pure](value);
 
-/** @lends {Array.prototype} */
-extension(Array.prototype, {
+////////////////////////////////////////////////////////////////////////////////
+/// Implementations
+////////////////////////////////////////////////////////////////////////////////
+
+Array |> impl(Applicative, {
   /**
    * Lift a `value` into an {@link Array} reference.
    *
