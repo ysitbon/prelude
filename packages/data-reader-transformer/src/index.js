@@ -1,6 +1,6 @@
 /* eslint-disable no-inner-declarations*/
 import {pipe}                     from "@prelude/data-function";
-import {extension}                from "@prelude/data-trait";
+import {impl}                     from "@prelude/data-trait";
 import {Functor, map}             from "@prelude/trait-functor";
 import {Applicative, apply, pure} from "@prelude/trait-applicative";
 import {Monad, flatMap}           from "@prelude/trait-monad";
@@ -57,14 +57,16 @@ const makeReaderT = M => {
     }
   }
 
-  extension(ReaderT.prototype, {
+  ReaderT |> impl(Functor, {
     [Functor.map](fn) {
       return ReaderT(env => env
         |> runReaderT(this)
         |> map(fn)
       );
-    },
+    }
+  });
 
+  ReaderT |> impl(Applicative, {
     [Applicative.pure](env) {
       return ReaderT(_ => env |> pure(M));
     },
@@ -74,8 +76,10 @@ const makeReaderT = M => {
         |> runReaderT(this)
         |> apply(env |> runReaderT(readerArg))
       );
-    },
+    }
+  });
 
+  ReaderT |> impl(Monad, {
     [Monad.flatMap](fn) {
       return ReaderT(env => env
         |> runReaderT(env
