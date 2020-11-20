@@ -1,15 +1,15 @@
 /*eslint-env node,mocha*/
 /*eslint-disable no-unused-vars*/
+import assert                   from "assert";
 import {map}                    from "@prelude/trait-functor";
 import {flatMap}                from "@prelude/trait-monad";
 import {Identity}               from "@prelude/data-identity";
 import {getReaderT, runReaderT} from "../lib/index.js";
-import assert                   from "assert";
 
 describe("@prelude/data-reader-transformer (example)", () => {
   const {ask} = getReaderT(Identity);
 
-  it("example", () => {
+  it("Readme.md", () => {
     /** @typedef {string} Email */
     /** @typedef {string} Html */
 
