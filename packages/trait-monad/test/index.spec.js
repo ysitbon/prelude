@@ -1,45 +1,43 @@
 /*eslint-env mocha*/
-import {extension}      from "@prelude/data-trait";
+import {impl}           from "@prelude/data-trait";
 import {Functor}        from "@prelude/trait-functor";
 import {Applicative}    from "@prelude/trait-applicative";
 import {Monad, flatMap} from "../lib/index.js";
-import {testLaw}        from "../lib/trait-laws.js";
-import chai             from "chai";
-import sinon            from "sinon";
-import sinonChai        from "sinon-chai";
-const {expect} = chai;
-chai.use(sinonChai);
+import {testLaw}        from "../lib/laws.js";
+import {spies}          from "@prelude/test-spies";
+import assert           from "assert";
 
 describe("@prelude/trait-monad", () => {
-  const sandbox = sinon.createSandbox();
-
-  afterEach(() => sandbox.restore());
+  const spy = spies();
 
   describe("flapMap(fn, monad)", () => {
-    const add = sinon.spy(x => Identity(x + 1));
+    const add  = spy.on(x => Identity(x + 1));
 
-    beforeEach(() => sandbox.spy(Identity.prototype, Monad.flatMap));
-    afterEach(() => add.resetHistory());
+    beforeEach(() => spy.onMethod(Identity.prototype, Monad.flatMap));
+    afterEach(() => spy.restore(Identity.prototype, Monad.flatMap));
+    afterEach(() => spy.resetHistory(add));
 
     it("should call the [Monad.flatMap] symbol", () => {
       Identity(1) |> flatMap(add);
-      expect(Identity.prototype[Monad.flatMap]).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(Identity.prototype[Monad.flatMap]));
     });
 
     it("should call [fn]", () => {
       Identity(1) |> flatMap(add);
-      expect(add).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(add));
     });
 
     it("should call [fn] with inner [monad] value", () => {
       Identity(1) |> flatMap(add);
-      expect(add).to.have.been.calledWith(1);
+      assert.ok(spy.calledWith(add, 1));
     });
 
-    it("should returns the computation result " +
-       "wrapped into the input [Monad]", () => {
-      const result = Identity(1) |> flatMap(add);
-      expect(result.value).to.equal(2);
+    it("should returns the computation result "
+      + "wrapped into the input [Monad]", () => {
+      assert.deepStrictEqual(
+        Identity(1) |> flatMap(add),
+        Identity(2)
+      );
     });
   });
 
@@ -55,16 +53,20 @@ describe("@prelude/trait-monad", () => {
     else
       this.value = value;
   }
-  extension(Identity.prototype, {
+  Identity |> impl(Functor, {
     [Functor.map](fn) {
       return Identity(fn(this.value));
-    },
+    }
+  });
+  Identity |> impl(Applicative, {
     [Applicative.pure](x) {
       return Identity(x);
     },
     [Applicative.apply](fx) {
       return this[Applicative.pure](this.value(fx.value));
-    },
+    }
+  });
+  Identity |> impl(Monad, {
     [Monad.flatMap](fn) {
       return fn(this.value);
     }
