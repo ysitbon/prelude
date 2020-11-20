@@ -23,7 +23,7 @@ export const identity = x => x;
  * ```
  *
  * @template A, B, C
- * @param {function(B): C} f
+ * @param {function(B): C} g
  * @returns {function(function(A): B): C}
  */
 export const compose = g => f => x => f(g(x));
@@ -41,7 +41,7 @@ export const compose = g => f => x => f(g(x));
  * ```
  *
  * @template A, B, C
- * @param {function(A): B} g
+ * @param {function(A): B} f
  * @returns {function(function(B): C): C}
  */
 export const pipe = f => g => x => f(g(x));
