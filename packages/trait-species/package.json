@@ -1,0 +1,19 @@
+{
+  "name": "@prelude/trait-species",
+  "version": "1.0.0",
+  "description": "Species trait",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/trait-species#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "dependencies": {
+    "@prelude/data-trait": "1.0.0"
+  }
+}
