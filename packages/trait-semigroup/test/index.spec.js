@@ -1,28 +1,26 @@
 /*eslint-env mocha*/
-import {extension}         from "@prelude/data-trait";
+import assert              from "assert";
+import {impl}              from "@prelude/data-trait";
+import {spies}             from "@prelude/test-spies";
 import {Semigroup, append} from "../lib/index.js";
-import chai                from "chai";
-import sinon               from "sinon";
-import sinonChai           from "sinon-chai";
-const {expect} = chai;
-chai.use(sinonChai);
 
 describe("@prelude/trait-semigroup", () => {
-  const sandbox = sinon.createSandbox();
-
-  afterEach(() => sandbox.restore());
+  const spy = spies();
 
   describe("append()", () => {
-    beforeEach(() => sandbox.spy(List.prototype, Semigroup.append));
+    beforeEach(() => spy.onMethod(List.prototype, Semigroup.append));
+    afterEach(() => spy.restore(List.prototype, Semigroup.append));
 
     it("should call the [Semigroup.append] symbol", () => {
       List(1, 2, 3) |> append(List(4, 5, 6));
-      expect(List.prototype[Semigroup.append]).to.have.been.calledOnce;
+      assert.ok(spy.calledOnce(List.prototype[Semigroup.append]));
     });
 
     it("should returns the results of the associativity", () => {
-      expect(List(1, 2, 3) |> append(List(4, 5, 6)))
-        .to.deep.equal(List(1, 2, 3, 4, 5, 6));
+      assert.deepStrictEqual(
+        List(1, 2, 3) |> append(List(4, 5, 6)),
+        List(1, 2, 3, 4, 5, 6)
+      );
     });
   });
 
@@ -34,8 +32,7 @@ describe("@prelude/trait-semigroup", () => {
       this.values = [...values];
     }
   }
-
-  extension(List.prototype, {
+  List |> impl(Semigroup, {
     [Semigroup.append](list) {
       return List(...this.values, ...list.values);
     }
