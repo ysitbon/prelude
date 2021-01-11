@@ -15,11 +15,9 @@ describe("@prelude/trait-equality", () => {
       Identity(1) |> eq(Identity(1));
       assert.ok(spy.calledOnce(Identity.prototype[Equality.eq]));
     });
-
     it("should returns [true] if [x] and [y] are equal", () => {
       assert.ok(Identity(1) |> eq(Identity(1)));
     });
-
     it("should returns [false] if [x] and [y] are not equal", () => {
       assert.ok(!(Identity(1) |> eq(Identity(2))));
     });
@@ -30,11 +28,9 @@ describe("@prelude/trait-equality", () => {
       Identity(1) |> notEq(Identity(1));
       assert.ok(spy.calledOnce(Identity.prototype[Equality.eq]));
     });
-
     it("should returns [false] if [x] and [y] are equal", () => {
       assert.ok(!(Identity(1) |> notEq(Identity(1))));
     });
-
     it("should returns [true] if [x] and [y] are not equal", () => {
       assert.ok(Identity(1) |> notEq(Identity(2)));
     });
@@ -47,7 +43,6 @@ describe("@prelude/trait-equality", () => {
     else
       this.value = value;
   }
-
   Identity |> impl(Equality, {
     [Equality.eq](other) {
       return this.value === other.value;
