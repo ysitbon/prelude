@@ -27,7 +27,7 @@ trueFn(false);
 // => true
 ```
 
-#### compose :: () -> () -> c
+#### compose :: (b -> c) -> (a -> b) -> c
 
 Composes two functions from right to left.
 
@@ -40,7 +40,7 @@ greetings("Yoann");
 // -> Hello, Yoann!
 ```
 
-#### pipe()
+#### pipe :: (a -> b) -> (b -> c) -> c
 
 Composes two functions from left to right.
 
@@ -53,9 +53,9 @@ greetings("Yoann");
 // -> Hello, Yoann!
 ```
 
-#### flip()
+#### flip :: (a -> b -> c) -> (b -> a -> c)
 
-Flips the arguments in reverse order of a function. The created function's  
+Flips the arguments in reverse order of a function. The created function's
 curried.
 
 ```js
@@ -68,7 +68,7 @@ const addStrRight = addStr |> flip;
 // => "hello world"
 ```
 
-#### until()
+#### until :: (a -> bool) -> (a -> a) -> a -> a
 
 Calls the function `f` until the predicate `p` matches. Each time `f` is
 computed, the returned value is used as the next input of `until` cycle.
