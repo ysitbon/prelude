@@ -32,6 +32,8 @@ trueFn(false);
 Composes two functions from right to left.
 
 ```js
+import {compose} from "@prelude/data-function";
+
 const greet = str => `Hello, ${str}`;
 const exclaim = str => `${str}!`;
 const greetings = exclaim |> compose(greet);
@@ -45,6 +47,8 @@ greetings("Yoann");
 Composes two functions from left to right.
 
 ```js
+import {pipe} from "@prelude/data-function";
+
 const greet = str => `Hello, ${str}`;
 const exclaim = str => `${str}!`;
 const greetings = greet |> compose(exclaim);
