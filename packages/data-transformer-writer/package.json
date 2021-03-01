@@ -1,0 +1,23 @@
+{
+  "name": "@prelude/data-transformer-writer",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/data-transformer-writer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysaskia/prelude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ysaskia/prelude/issues"
+  },
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "dependencies": {
+    "@prelude/data-function": "1.0.0",
+    "@prelude/data-trait": "1.0.0",
+    "@prelude/trait-applicative": "1.0.0",
+    "@prelude/trait-functor": "1.0.0",
+    "@prelude/trait-monad": "1.0.0"
+  }
+}
