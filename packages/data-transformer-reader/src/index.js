@@ -92,8 +92,6 @@ const makeReaderT = M => {
 
   const reader = f => ReaderT(f |> pipe(pure(M)));
 
-  // const runReader = reader => runReaderT(reader) |> pipe(m => m.value);
-
   const mapReaderT = (F, fn) => mReaderT =>
     getReaderT(F).ReaderT(runReaderT(mReaderT) |> pipe(fn));
 
