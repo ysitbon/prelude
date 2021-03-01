@@ -6,7 +6,7 @@ import {flatMap}                from "@prelude/trait-monad";
 import {Identity}               from "@prelude/data-identity";
 import {getReaderT, runReaderT} from "../lib/index.js";
 
-describe("@prelude/data-reader-transformer (example)", () => {
+describe("@prelude/data-transformer-reader (example)", () => {
   const {ask} = getReaderT(Identity);
 
   it("Readme.md", () => {

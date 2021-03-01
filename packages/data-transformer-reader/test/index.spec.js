@@ -7,7 +7,7 @@ import {Maybe, Just}            from "@prelude/data-maybe";
 import {getReaderT, runReaderT} from "../lib/index.js";
 import assert                   from "assert";
 
-describe("@prelude/data-reader-transformer", () => {
+describe("@prelude/data-transformer-reader", () => {
   const {ReaderT, mapReaderT, ask} = getReaderT(Identity);
 
   describe("mapReaderT", () => {
