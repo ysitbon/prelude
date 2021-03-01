@@ -1,12 +1,38 @@
 /*eslint-env mocha*/
 import {Maybe, Just, Nothing, isJust, isNothing, fromJust, fromMaybe,
   mapMaybe, catMaybes}  from "../lib/index.js";
+import {pure}           from "@prelude/trait-applicative";
 import * as functor     from "@prelude/trait-functor/lib/laws.js";
 import * as applicative from "@prelude/trait-applicative/lib/laws.js";
 import * as monad       from "@prelude/trait-monad/lib/laws.js";
 import assert           from "assert";
 
 describe("@prelude/data-maybe", () => {
+  describe("Maybe", () => {
+    it("should not be instantiable", () => {
+      assert.throws(
+        () => new Maybe(10),
+        TypeError,
+        "Data type violation."
+      );
+    });
+  });
+  describe("Just", () => {
+    it("should throws when instantiate with undefined value", () => {
+      assert.throws(
+        () => Just(undefined),
+        TypeError,
+        "Just value cannot be null"
+      );
+    });
+    it("should throws when instantiate with null value", () => {
+      assert.throws(
+        () => Just(null),
+        TypeError,
+        "Just value cannot be null"
+      );
+    });
+  });
   describe("isJust()", () => {
     it("should return [true] when [Just]", () => {
       assert.ok(Just(1) |> isJust);
@@ -65,6 +91,17 @@ describe("@prelude/data-maybe", () => {
   });
   describe("impl Maybe.prototype for @prelude/applicative", () => {
     applicative.testLaw(Maybe);
+    describe("implementation specific", () => {
+      it("should return Nothing when pure is called with undefined", () => {
+        assert.deepStrictEqual(undefined |> pure(Maybe), Nothing());
+      });
+      it("should return Nothing when pure is called with null", () => {
+        assert.deepStrictEqual(null |> pure(Maybe), Nothing());
+      });
+      it("should return Nothing when pure is called with NaN", () => {
+        assert.deepStrictEqual(NaN |> pure(Maybe), Nothing());
+      });
+    });
   });
   describe("impl Maybe.prototype for @prelude/monad", () => {
     monad.testLaw(Maybe);
