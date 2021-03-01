@@ -5,7 +5,7 @@ import {Identity}             from "@prelude/data-identity";
 import {getStateT, runStateT} from "../lib/index.js";
 import assert                 from "assert";
 
-describe("@prelude/data-state-transformer", () => {
+describe("@prelude/data-transformer-state", () => {
   const {put, get, modify, state} = getStateT(Identity);
 
   describe("get()", () => {
