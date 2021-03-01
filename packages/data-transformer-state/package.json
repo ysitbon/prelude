@@ -1,9 +1,9 @@
 {
-  "name": "@prelude/data-state-transformer",
+  "name": "@prelude/data-transformer-state",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Yoann Sitbon <sitbon.yoann@gmail.com>",
-  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/data-state-transformer#readme",
+  "homepage": "https://github.com/ysaskia/prelude/tree/master/packages/data-transformer-state#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ysaskia/prelude.git"
