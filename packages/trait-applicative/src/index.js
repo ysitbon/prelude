@@ -1,5 +1,5 @@
 import {trait, deriving, impl} from "@prelude/data-trait";
-import {Functor}               from "@prelude/trait-functor";
+import {Functor, map}          from "@prelude/trait-functor";
 
 /**
  * A {@link Functor} with application. Instances of `Applicative` should satisfy
@@ -56,6 +56,12 @@ export const apply = functorArg => functorFn =>
  */
 export const pure = F => value =>
   F.prototype[Applicative.pure](value);
+
+
+export const liftA = fn => ([head, ...tail]) => tail.reduce(
+  (fResult, fValue) => fResult[Applicative.apply](fValue),
+  (head |> map(fn))
+);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Implementations

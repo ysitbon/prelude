@@ -1,5 +1,5 @@
 /*eslint-env mocha*/
-import {Applicative, apply, pure} from "../lib/index.js";
+import {Applicative, apply, pure, liftA} from "../lib/index.js";
 import {testLaw}                  from "../lib/laws.js";
 import {impl}                     from "@prelude/data-trait";
 import {Functor}                  from "@prelude/trait-functor";
@@ -44,7 +44,7 @@ describe("@prelude/trait-applicative", () => {
     });
   });
 
-  describe( "pure(FunctorConstructor, value)", () => {
+  describe( "pure", () => {
     beforeEach(() => spy.onMethod(Identity.prototype, Applicative.pure));
     afterEach(() => spy.restoreMethod(Identity.prototype, Applicative.pure));
 
@@ -59,6 +59,24 @@ describe("@prelude/trait-applicative", () => {
         1 |> pure(Identity),
         Identity(1)
       );
+    });
+  });
+
+  describe("liftA", () => {
+    const f1 = argA => [argA];
+    const f2 = argA => argB => [argA, argB];
+    const f3 = argA => argB => argC => [argA, argB, argC];
+    it("should lift a function of 1 functors", () => {
+      const result = liftA(f1)([Identity(1)]);
+      assert.deepStrictEqual(result, Identity([1]));
+    });
+    it("should lift a function of 2 functors", () => {
+      const result = liftA(f2)([Identity(1), Identity(2)]);
+      assert.deepStrictEqual(result, Identity([1, 2]));
+    });
+    it("should lift a function of 3 functors", () => {
+      const result = liftA(f3)([Identity(1), Identity(2), Identity(3)]);
+      assert.deepStrictEqual(result, Identity([1, 2, 3]));
     });
   });
 
