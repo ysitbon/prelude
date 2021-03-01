@@ -12,10 +12,12 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/data-maybe/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-object/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-object/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-reader-transformer/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-state-transformer/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/packages/data-state-transformer/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-reader/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-reader/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-state/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-state/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-writer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-writer/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-trait/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/data-trait/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-applicative/src" isTestSource="false" />
@@ -34,6 +36,7 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-semigroup/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-species/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/packages/trait-species/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/data-transformer-writer/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
