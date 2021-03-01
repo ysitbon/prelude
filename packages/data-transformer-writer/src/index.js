@@ -8,32 +8,47 @@ import {empty}                    from "@prelude/trait-monoid";
 import {append}                   from "@prelude/trait-semigroup";
 
 /**
- * @template {Monad} M
- * @template R, E
- * @param {WriterT<M, E>} writerT
- * @returns {function(E): M<E>}
+ * @template {Monad} KMonad
+ * @template TResult, TOutput
+ * @param {WriterT<TOutput, KMonad, TResult>} writerT
+ * The writer transformer reference to consume.
+ *
+ * @returns {KMonad<[TResult, TOutput]>}
+ * Returns a monad combining the result and the sum of all outputs.
  */
 export const runWriterT = writerT => writerT.value;
 
 /**
+ * Gets a writer transformer for a specific kind of monad.
  *
- * @param {*} M
+ * @template {Monad} KMonad
+ * @template TResult, TOutput
+ * @param {KMonad} MonadConstructor
+ * Reference to the monad constructor.
+ *
+ * @returns {Constructor<WriterT>}
  */
-export const getWriterT = M => {
-  const writer = writers.get(M);
+export const getWriterT = MonadConstructor => {
+  const writer = writers.get(MonadConstructor);
   if (undefined === writer) {
-    const newWriter = makeWriterT(M);
-    writers.set(M, newWriter);
+    const newWriter = makeWriterT(MonadConstructor);
+    writers.set(MonadConstructor, newWriter);
     return newWriter;
   }
   return writer;
 };
 
+/**
+ * Builds a writer transformer implementation for a specific kind of monad.
+ *
+ * @return {ImplWriterT}
+ * Returns the implemented transformer interface.
+ */
 const makeWriterT = M => {
   /**
    * @template {Monad} M
    * @template TResult, TOutput
-   * @param {function(): M<[TResult, TOutput]>} runner
+   * @param {M<[TResult, TOutput]>} runner
    */
   function WriterT(runner) {
     if (new.target === undefined) {
@@ -96,9 +111,12 @@ const makeWriterT = M => {
    * @param fn
    * @return {function(*=): WriterT}
    */
-  const mapWriterT = (MonadConstructor, fn) => writerT =>
-    getWriterT(MonadConstructor).WriterT(runWriterT(writerT) |> pipe(fn));
+  const mapWriterT = (MonadConstructor, fn) => writerT => {
+    const {WriterT} = getWriterT(MonadConstructor);
+    return WriterT(runWriterT(writerT) |> pipe(fn));
+  };
 
+  /** @typedef ImplWriterT */
   return {WriterT, execWriterT, mapWriterT};
 };
 
