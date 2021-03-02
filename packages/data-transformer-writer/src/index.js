@@ -26,7 +26,7 @@ export const runWriterT = writerT => writerT.value;
  * @param {KMonad} MonadConstructor
  * Reference to the monad constructor.
  *
- * @returns {Constructor<WriterT>}
+ * @returns {WriterTImpl}
  */
 export const getWriterT = MonadConstructor => {
   const writer = writers.get(MonadConstructor);
@@ -41,21 +41,26 @@ export const getWriterT = MonadConstructor => {
 /**
  * Builds a writer transformer implementation for a specific kind of monad.
  *
- * @return {ImplWriterT}
+ * @return {WriterTImpl}
  * Returns the implemented transformer interface.
  */
-const makeWriterT = M => {
+const makeWriterT = MonadConstructor => {
+  // TODO: consider lazy writer instead?
   /**
-   * @template {Monad} M
-   * @template TResult, TOutput
-   * @param {M<[TResult, TOutput]>} runner
+   * Constructs a new WriterT reference.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} TStream
+   * @template TResult
+   * @param {KMonad<[TResult, TStream]>} writer
+   * The internal writer monad.
    */
-  function WriterT(runner) {
+  function WriterT(writer) {
     if (new.target === undefined) {
-      return new WriterT(runner);
+      return new WriterT(writer);
     }
     else {
-      this.value = runner;
+      this.value = writer;
     }
   }
 
@@ -67,8 +72,8 @@ const makeWriterT = M => {
 
   WriterT |> impl(Applicative, {
     [Applicative.pure](initialResult, MonoidConstructor) {
-      return WriterT(
-        [initialResult, MonoidConstructor |> empty] |> pure(M)
+      return WriterT([initialResult, MonoidConstructor |> empty]
+        |> pure(MonadConstructor)
       );
     },
     [Applicative.apply](writerArg) {
@@ -97,7 +102,14 @@ const makeWriterT = M => {
   /**
    * Extract the output from a writer computation.
    *
-   * @param writerT
+   * @template {Monad} KMonad
+   * @template {Monoid} TStream
+   * @template TResult
+   * @param {WriterT<TStream, KMonad, TResult>} writerT
+   * The writer from which to extract computation output.
+   *
+   * @return {KMonad<TStream>}
+   * Returns the extracted writer computation.
    */
   const execWriterT = writerT =>
     runWriterT(writerT) |> map(([_, output]) => output);
@@ -105,19 +117,32 @@ const makeWriterT = M => {
   /**
    * Maps a writer monad into a new kind of writer monad.
    *
-   * @param MonadConstructor
+   * @template {Monad} KInputMonad
+   * @template {Monad} KOutputMonad
+   * @template TInputResult, TInputStream
+   * @template TOutputResult, TOutputStream
+   * @param {KOutputMonad} NewMonadConstructor
    * The monad constructor to map into.
    *
-   * @param fn
-   * @return {function(*=): WriterT}
+   * @param {function(KInputMonad<[TInputResult, TInputStream]>)
+   *   : KOutputMonad<[TOutputResult, TOutputStream]>} fn
+   * The function which maps over 2 monads kind.
+   *
+   * @return {function(WriterT<TInputStream, KInputMonad, TInputResult>)
+   *   : WriterT<TOutputStream, KOutputMonad, TOutputResult>}
+   * Returns the new created writer monad.
    */
-  const mapWriterT = (MonadConstructor, fn) => writerT => {
-    const {WriterT} = getWriterT(MonadConstructor);
+  const mapWriterT = (NewMonadConstructor, fn) => writerT => {
+    const {WriterT} = getWriterT(NewMonadConstructor);
     return WriterT(runWriterT(writerT) |> pipe(fn));
   };
 
-  /** @typedef ImplWriterT */
+  /** @typedef WriterTImpl **/
   return {WriterT, execWriterT, mapWriterT};
 };
 
+/**
+ * @template {Monad} KMonad
+ * @type {WeakMap<Constructor<KMonad>, ImplWriterT<KMonad>}
+ */
 const writers = new WeakMap();
