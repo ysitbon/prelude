@@ -117,19 +117,21 @@ const makeWriterT = MonadConstructor => {
   /**
    * Maps a writer monad into a new kind of writer monad.
    *
-   * @template {Monad} KInputMonad
-   * @template {Monad} KOutputMonad
-   * @template TInputResult, TInputStream
-   * @template TOutputResult, TOutputStream
-   * @param {KOutputMonad} NewMonadConstructor
+   * @template {Monad} KMonadIn
+   * @template {Monoid} KStreamIn
+   * @template TResultIn
+   * @template {Monad} KMonadOut
+   * @template {Monoid} KStreamOut
+   * @template TResultOut
+   * @param {KMonadOut} NewMonadConstructor
    * The monad constructor to map into.
    *
-   * @param {function(KInputMonad<[TInputResult, TInputStream]>)
-   *   : KOutputMonad<[TOutputResult, TOutputStream]>} fn
+   * @param {function(KMonadIn<[TResultIn, KStreamIn]>)
+   *   : KMonadOut<[TResultOut, KStreamOut]>} fn
    * The function which maps over 2 monads kind.
    *
-   * @return {function(WriterT<TInputStream, KInputMonad, TInputResult>)
-   *   : WriterT<TOutputStream, KOutputMonad, TOutputResult>}
+   * @return {function(WriterT<KStreamIn, KMonadIn, TResultIn>)
+   *   : WriterT<KStreamOut, KMonadOut, TResultOut>}
    * Returns the new created writer monad.
    */
   const mapWriterT = (NewMonadConstructor, fn) => writerT => {
@@ -137,8 +139,103 @@ const makeWriterT = MonadConstructor => {
     return WriterT(runWriterT(writerT) |> pipe(fn));
   };
 
+  /**
+   * Construct a writer computation from a `[result, output]` pair.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResult
+   * @param {[TResult, KStream]} context
+   * The writer output to set.
+   *
+   * @return {WriterT<KStream, KMonad, TResult>}
+   * Returns created writer monad.
+   */
+  const writer = WriterT |> pipe(pure(MonadConstructor));
+
+  /**
+   * Produces a writer from a stream.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResult
+   * @param {KStream} output
+   * The writer output to set.
+   *
+   * @return {WriterT<KStream, KMonad, TResult>}
+   * Returns created writer monad.
+   */
+  const tell = output => writer([{}, output]);
+
+  /**
+   * Executes the action and adds its output stream to the result of the
+   * computation.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResult
+   * @return {WriterT<KStream, KMonad, [TResult, KStream]>}
+   * Returns a new writer monad.
+   */
+  const listen = writerT => runWriterT(writerT)
+    |> map(([result, stream]) => [[result, stream], stream]);
+
+  /**
+   * Executes `writerT` action, and adds the result of applying `fn` to the
+   * output stream to the value of the computation.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResultA
+   * @template TResultB
+   * @param {function(KStream): TResultB} fn
+   * @return {function(WriterT<KStream, KMonad, [TResultA, KStream]>)
+   *   : WriterT<KStream, KMonad, [TResultA, TResultB]>}
+   * Returns a new writer monad.
+   */
+  const listens = fn => writerT => runWriterT(writerT)
+    |> map(([result, stream]) => [[result, fn(stream)], stream]);
+
+  /**
+   * Executes `writerT` action, which returns a value and a function, and
+   * returns the value, applying the function to the output stream.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResult
+   * @return {WriterT<KStream, KMonad, [TResult, KStream]>}
+   * Returns a new writer monad.
+   */
+  const pass = writerT => runWriterT(writerT)
+    |> map(([[result, fn], stream]) => [result, fn(stream)]);
+
+  /**
+   * Executes `writerT` action, and applies the function `fn` to its output
+   * stream, leaving the return value unchanged.
+   *
+   * @template {Monad} KMonad
+   * @template {Monoid} KStream
+   * @template TResult
+   * @param {function(KStream): KStream} fn
+   * @return {function(WriterT<KStream, KMonad, KStream>)
+   *   : WriterT<KStream, KMonad, KStream>}
+   * Returns a new writer monad.
+   */
+  const censor = fn => writerT => runWriterT(writerT)
+    |> map(([result, stream]) => [result, fn(stream)]);
+
   /** @typedef WriterTImpl **/
-  return {WriterT, execWriterT, mapWriterT};
+  return {
+    WriterT,
+    execWriterT,
+    mapWriterT,
+    writer,
+    tell,
+    listen,
+    listens,
+    pass,
+    censor
+  };
 };
 
 /**
