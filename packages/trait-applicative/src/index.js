@@ -1,5 +1,5 @@
 import {trait, deriving, impl} from "@prelude/data-trait";
-import {Functor, map}          from "@prelude/trait-functor";
+import {Functor}               from "@prelude/trait-functor";
 
 /**
  * A {@link Functor} with application. Instances of `Applicative` should satisfy
@@ -57,10 +57,26 @@ export const apply = functorArg => functorFn =>
 export const pure = F => value =>
   F.prototype[Applicative.pure](value);
 
-
-export const liftA = fn => ([head, ...tail]) => tail.reduce(
+/**
+ * Promote a function to a functor, scanning the functor arguments from left
+ * to right.
+ *
+ * @example
+ * const add = mx => my => mx |> flatMap(x => my |> flatMap(y => x + y));
+ * [Just(1), Just(2)] |> lift(add);
+ * // -> Just(3)
+ *
+ * @template TArgs
+ * @template TResult
+ * @param {function(...*): TResult} fn
+ * The function to lift.
+ *
+ * @return {function(...*): TResult}
+ * Returns the lifted function which takes a tuple as arguments.
+ */
+export const lift = fn => ([head, ...tail]) => tail.reduce(
   (fResult, fValue) => fResult[Applicative.apply](fValue),
-  (head |> map(fn))
+  (head[Functor.map](fn))
 );
 
 ////////////////////////////////////////////////////////////////////////////////

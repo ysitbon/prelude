@@ -1,11 +1,11 @@
 /* eslint-disable no-inner-declarations*/
-import {pipe}                     from "@prelude/data-function";
-import {impl}                     from "@prelude/data-trait";
-import {Functor, map}             from "@prelude/trait-functor";
-import {Applicative, pure, liftA} from "@prelude/trait-applicative";
-import {Monad, flatMap}           from "@prelude/trait-monad";
-import {empty}                    from "@prelude/trait-monoid";
-import {append}                   from "@prelude/trait-semigroup";
+import {pipe}                    from "@prelude/data-function";
+import {impl}                    from "@prelude/data-trait";
+import {Functor, map}            from "@prelude/trait-functor";
+import {Applicative, pure, lift} from "@prelude/trait-applicative";
+import {Monad, flatMap}          from "@prelude/trait-monad";
+import {empty}                   from "@prelude/trait-monoid";
+import {append}                  from "@prelude/trait-semigroup";
 
 /**
  * @template {Monad} KMonad
@@ -78,7 +78,7 @@ const makeWriterT = MonadConstructor => {
     },
     [Applicative.apply](writerArg) {
       return WriterT([runWriterT(this), runWriterT(writerArg)]
-        |> liftA(([fn, outputA], [arg, outputB]) => [
+        |> lift(([fn, outputA], [arg, outputB]) => [
           fn(arg),
           outputA |> append(outputB)
         ])
