@@ -1,5 +1,5 @@
 /*eslint-env node*/
-const fs     = require("fs");
+const fs     = require("fs").promises;
 const path   = require("path");
 const {exec} = require("child_process");
 
@@ -41,12 +41,13 @@ exports.run = (program, cwd) => new Promise((ok, err) => {
  * @returns {Promise<string[]>}
  * Returns the list of packages directories.
  */
-exports.listPackages = async () => {
-  const dir = await fs.promises.opendir(exports.packagesRoot);
+exports.lsPkg = async () => {
+  const dir = await fs.opendir(exports.pkgRoot);
   const out = [];
   for await (const entry of dir) {
     if (!entry.isDirectory()) continue;
-    if (!fs.existsSync(`${exports.package(entry.name)}/src`)) continue;
+    const stat = await fs.stat(`${exports.pkgPath(entry.name)}/src`);
+    if (!stat.isDirectory()) continue;
     out.push(entry.name);
   }
   return out;
@@ -62,8 +63,8 @@ exports.listPackages = async () => {
  * Returns the built command.
  */
 exports.build = name => {
-  const packagePath = exports.package(name);
-  return `npx babel ${packagePath}/src --out-dir ${packagePath}/lib`;
+  const absPath = exports.pkgPath(name);
+  return `npx babel ${absPath}/src --out-dir ${absPath}/lib`;
 };
 
 /**
@@ -86,7 +87,7 @@ exports.watch = name => `${exports.build(name)} --watch`;
  * @returns {string}
  * Returns the absolute path of the package.
  */
-exports.package = name => `${exports.packagesRoot}/${name}`;
+exports.pkgPath = name => `${exports.pkgRoot}/${name}`;
 
 /// Specifies the packages root path.
-exports.packagesRoot = path.resolve(process.cwd(), "./packages");
+exports.pkgRoot = path.resolve(process.cwd(), "./packages");
